@@ -1,0 +1,42 @@
+{
+    "name": "recoil/dev",
+    "description": "Development and debugging tools for Recoil applications.",
+    "require": {
+        "php": "^7"
+    },
+    "require-dev": {
+        "eloquent/phony": "^0.13",
+        "friendsofphp/php-cs-fixer": "^1",
+        "peridot-php/leo": "^1",
+        "peridot-php/peridot": "^1",
+        "peridot-php/peridot-code-coverage-reporters": "^2",
+        "recoil/peridot": "^0.2",
+        "recoil/recoil": "^0.5.2"
+    },
+    "conflict": {
+        "recoil/recoil": "<0.5 || >=0.6"
+    },
+    "autoload": {
+        "psr-4": { "Recoil\\Dev\\": "src" }
+    },
+    "autoload-dev": { "psr-4" : { "Recoil\\Dev\\": "test/src" }},
+    "keywords": [
+        "async",
+        "asynchronous",
+        "stack",
+        "trace",
+        "instrumentation",
+        "debug",
+        "exception",
+        "recoil"
+    ],
+    "homepage": "https://github.com/recoilphp/dev",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "James Harris",
+            "email": "james.harris@icecave.com.au",
+            "homepage": "https://github.com/jmalloc"
+        }
+    ]
+}
