@@ -14,8 +14,6 @@ use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\NodeVisitorAbstract;
 use PhpParser\Parser;
 use PhpParser\ParserFactory;
-use Recoil\Dev\Trace\CoroutineTrace;
-use Recoil\Dev\Trace\YieldTrace;
 
 /**
  * Instruments PHP code to provide additional debugging / trace information to
@@ -78,13 +76,19 @@ final class Instrumentor extends NodeVisitorAbstract
 
         // Insert a 'coroutine trace' at the first statement of the coroutine ...
         $this->consume($statements[0]->getAttribute('startFilePos'));
-        $this->lastYieldLine = $statements[0]->getAttribute('startLine');
-        $this->generateDirective(
-            CoroutineTrace::class,
-            '__FILE__',
-            '__LINE__',
-            '__FUNCTION__',
-            '\func_get_args()'
+        $this->lastLine = $statements[0]->getAttribute('startLine');
+
+        $this->output .= \sprintf(
+            'assert(!\class_exists(\\%s::class) || (%s = yield \\%s::install()) || true); ',
+            Trace::class,
+            self::TRACE_VARIABLE_NAME,
+            Trace::class
+        );
+
+        $this->output .= \sprintf(
+            'assert(!isset(%s) || %s->setFunction(__FILE__, __LINE__, __FUNCTION__, \func_get_args()) || true); ',
+            self::TRACE_VARIABLE_NAME,
+            self::TRACE_VARIABLE_NAME
         );
 
         // Search all statements for yields and insert 'yield traces' ...
@@ -92,23 +96,18 @@ final class Instrumentor extends NodeVisitorAbstract
             if ($statement instanceof Yield_) {
                 $lineNumber = $statement->getAttribute('startLine');
 
-                if ($lineNumber > $this->lastYieldLine) {
-                    $this->lastYieldLine = $lineNumber;
+                if ($lineNumber > $this->lastLine) {
+                    $this->lastLine = $lineNumber;
                     $this->consume($statement->getAttribute('startFilePos'));
-                    $this->generateDirective(YieldTrace::class, '__LINE__');
+
+                    $this->output .= \sprintf(
+                        'assert(!isset(%s) || %s->setLine(__LINE__) || true); ',
+                        self::TRACE_VARIABLE_NAME,
+                        self::TRACE_VARIABLE_NAME
+                    );
                 }
             }
         }
-    }
-
-    private function generateDirective(string $class, ...$arguments)
-    {
-        $this->output .= \sprintf(
-            'assert(!\class_exists(%s) || yield new \\%s(%s)); ',
-            var_export($class, true),
-            $class,
-            implode(', ', $arguments)
-        );
     }
 
     /**
@@ -168,6 +167,8 @@ final class Instrumentor extends NodeVisitorAbstract
         }
     }
 
+    const TRACE_VARIABLE_NAME = "\$\xe2\x9d\xb0trace\xe2\x9d\xb1";
+
     /**
      * @var Parser The PHP parser.
      */
@@ -195,7 +196,8 @@ final class Instrumentor extends NodeVisitorAbstract
     private $position;
 
     /**
-     * @var int The line number of the most recently encountered yield statement.
+     * @var int The most recent line number where instrumentation updated the
+     *          strand trace.
      */
-    private $lastYieldLine;
+    private $lastLine;
 }

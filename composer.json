@@ -2,7 +2,8 @@
     "name": "recoil/dev",
     "description": "Development and debugging tools for Recoil applications.",
     "require": {
-        "php": "^7"
+        "php": "^7",
+        "nikic/php-parser": "^2.1"
     },
     "require-dev": {
         "eloquent/phony": "^0.13",
@@ -11,10 +12,7 @@
         "peridot-php/peridot": "^1",
         "peridot-php/peridot-code-coverage-reporters": "^2",
         "recoil/peridot": "^0.2",
-        "recoil/recoil": "^0.5.2"
-    },
-    "conflict": {
-        "recoil/recoil": "<0.5 || >=0.6"
+        "recoil/recoil": "dev-126-instrumentation as 0.5.99-dev"
     },
     "autoload": {
         "psr-4": { "Recoil\\Dev\\": "src" }

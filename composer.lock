@@ -4,9 +4,61 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d302ac4e106659c8f5fe805c24cb7aa1",
-    "content-hash": "556128bada34c0864a5a543d407960cb",
-    "packages": [],
+    "hash": "b8c97913b00a40dc71178f1308cd9ce0",
+    "content-hash": "a4cd50be6590c6605bb3d46ae4505584",
+    "packages": [
+        {
+            "name": "nikic/php-parser",
+            "version": "v2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nikic/PHP-Parser.git",
+                "reference": "47b254ea51f1d6d5dc04b9b299e88346bf2369e3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/47b254ea51f1d6d5dc04b9b299e88346bf2369e3",
+                "reference": "47b254ea51f1d6d5dc04b9b299e88346bf2369e3",
+                "shasum": ""
+            },
+            "require": {
+                "ext-tokenizer": "*",
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "bin": [
+                "bin/php-parse"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PhpParser\\": "lib/PhpParser"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Nikita Popov"
+                }
+            ],
+            "description": "A PHP parser written in PHP",
+            "keywords": [
+                "parser",
+                "php"
+            ],
+            "time": "2016-04-19 13:41:41"
+        }
+    ],
     "packages-dev": [
         {
             "name": "eloquent/phony",
@@ -818,16 +870,16 @@
         },
         {
             "name": "recoil/recoil",
-            "version": "0.5.2",
+            "version": "dev-126-instrumentation",
             "source": {
                 "type": "git",
                 "url": "https://github.com/recoilphp/recoil.git",
-                "reference": "f25e204f23310c19c37b97f9baf6d581c2b12af9"
+                "reference": "5461d077807b0d32972cd63bad43c8ed1e2847c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/recoilphp/recoil/zipball/f25e204f23310c19c37b97f9baf6d581c2b12af9",
-                "reference": "f25e204f23310c19c37b97f9baf6d581c2b12af9",
+                "url": "https://api.github.com/repos/recoilphp/recoil/zipball/5461d077807b0d32972cd63bad43c8ed1e2847c1",
+                "reference": "5461d077807b0d32972cd63bad43c8ed1e2847c1",
                 "shasum": ""
             },
             "require": {
@@ -841,7 +893,7 @@
                 "ext-posix": "*",
                 "friendsofphp/php-cs-fixer": "^1",
                 "hamcrest/hamcrest-php": "^2",
-                "peridot-php/leo": "dev-php7",
+                "peridot-php/leo": "^1",
                 "peridot-php/peridot": "^1",
                 "peridot-php/peridot-code-coverage-reporters": "^2",
                 "react/dns": "^0.4"
@@ -877,7 +929,7 @@
                 "multitasking",
                 "react"
             ],
-            "time": "2016-07-15 04:08:38"
+            "time": "2016-07-26 03:41:43"
         },
         {
             "name": "sebastian/diff",
@@ -1392,9 +1444,18 @@
             "time": "2016-06-29 05:41:56"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.5.99-dev",
+            "alias_normalized": "0.5.99.0-dev",
+            "version": "dev-126-instrumentation",
+            "package": "recoil/recoil"
+        }
+    ],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "recoil/recoil": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
