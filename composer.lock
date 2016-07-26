@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b8c97913b00a40dc71178f1308cd9ce0",
-    "content-hash": "a4cd50be6590c6605bb3d46ae4505584",
+    "hash": "880ab3c5592c97ea7917a7ead1b66030",
+    "content-hash": "b6895f52c2c2a5b9b6dae496073669a3",
     "packages": [
         {
             "name": "nikic/php-parser",
@@ -870,16 +870,16 @@
         },
         {
             "name": "recoil/recoil",
-            "version": "dev-126-instrumentation",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/recoilphp/recoil.git",
-                "reference": "5461d077807b0d32972cd63bad43c8ed1e2847c1"
+                "reference": "c1ae0832026a226bd5905e183d2d4435c75cd0d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/recoilphp/recoil/zipball/5461d077807b0d32972cd63bad43c8ed1e2847c1",
-                "reference": "5461d077807b0d32972cd63bad43c8ed1e2847c1",
+                "url": "https://api.github.com/repos/recoilphp/recoil/zipball/c1ae0832026a226bd5905e183d2d4435c75cd0d1",
+                "reference": "c1ae0832026a226bd5905e183d2d4435c75cd0d1",
                 "shasum": ""
             },
             "require": {
@@ -929,7 +929,7 @@
                 "multitasking",
                 "react"
             ],
-            "time": "2016-07-26 03:41:43"
+            "time": "2016-07-26 07:11:24"
         },
         {
             "name": "sebastian/diff",
@@ -1446,9 +1446,9 @@
     ],
     "aliases": [
         {
-            "alias": "0.5.99-dev",
-            "alias_normalized": "0.5.99.0-dev",
-            "version": "dev-126-instrumentation",
+            "alias": "0.5.999-dev",
+            "alias_normalized": "0.5.999.0-dev",
+            "version": "9999999-dev",
             "package": "recoil/recoil"
         }
     ],
