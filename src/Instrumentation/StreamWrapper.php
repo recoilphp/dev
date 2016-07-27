@@ -148,7 +148,7 @@ final class StreamWrapper
     }
 
     /**
-     * @var Instrumentor|null The default instrumentor for instances fo the
+     * @var Instrumentor|null The default instrumentor for instances of the
      *                        stream wrapper.
      */
     private static $defaultInstrumentor;
