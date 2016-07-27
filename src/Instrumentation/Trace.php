@@ -190,7 +190,7 @@ final class Trace implements StrandTrace
     private $currentFile = 'Unknown';
 
     /**
-     * @var string The most recently executed instrumented line number.
+     * @var int The most recently executed instrumented line number.
      */
     private $currentLine = 0;
 
