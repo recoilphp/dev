@@ -1,4 +1,4 @@
-# Recoil Dev
+# Recoil Development Tools
 
 [![Build Status](http://img.shields.io/travis/recoilphp/dev/master.svg?style=flat-square)](https://travis-ci.org/recoilphp/dev)
 [![Code Coverage](https://img.shields.io/codecov/c/github/recoilphp/dev/master.svg?style=flat-square)](https://codecov.io/github/recoilphp/dev)
