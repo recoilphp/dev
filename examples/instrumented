@@ -2,8 +2,16 @@
 <?php
 declare (strict_types = 1);
 
-$autoloader = require __DIR__ . '/../vendor/autoload.php';
-(new \Recoil\Dev\Instrumentation\Autoloader($autoloader))->register();
+use Recoil\Dev\Instrumentation\Instrumentor;
+use Recoil\Dev\Instrumentation\Autoloader\Autoloader;
+use Recoil\Dev\Instrumentation\Autoloader\StreamWrapper;
 
-// readfile(\Recoil\Dev\Instrumentation\StreamWrapper::PREFIX . __DIR__ . '/include.php');
-require \Recoil\Dev\Instrumentation\StreamWrapper::PREFIX . __DIR__ . '/include.php';
+$composerLoader = require __DIR__ . '/../vendor/autoload.php';
+
+$instrumentor = new Instrumentor();
+$scheme = StreamWrapper::install($instrumentor);
+$loader = new Autoloader($composerLoader, $scheme);
+$loader->register();
+
+// readfile($scheme . '://' . __DIR__ . '/include.php');
+require $scheme . '://' . __DIR__ . '/include.php';

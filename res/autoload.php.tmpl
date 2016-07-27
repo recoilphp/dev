@@ -1,0 +1,38 @@
+<?php
+/**
+ * Recoil instrumenting autoloader.
+ *
+ * This autoloader instruments Recoil coroutines with debugging code that allows
+ * the Recoil development tools to inspect strand behaviour at run-time. All
+ * other code is unaffected. The standard Composer autoloader is used to locate
+ * files for inclusion.
+ *
+ * If you are seeing this file in your vendor directory and you're not sure why
+ * it's here, run:
+ *
+ *    composer why recoilphp/dev
+ *
+ * Instrumentation is only intended to occur during development, as both the
+ * generation and execution of the instrumentation code incurs an overhead.
+ *
+ * To disable the execution of instrumented code, set "zend.assertions" to
+ * "production mode" (-1) in the PHP configuration.
+ *
+ * To disable the instrumentation (and remove this autoloader entirely), run
+ * the following command in the root directory of the project:
+ *
+ *     composer config extra.recoil.instrumentation none && composer update
+ *
+ * Additionally, this autoloader will not be installed if composer install is
+ * run with the --no-dev option, even if recoil/dev is installed.
+ *
+ * @link https://github.com/recoilphp/recoil
+ * @link https://github.com/recoilphp/dev
+ */
+
+use Recoil\Dev\Instrumentation\Autoloader;
+
+return Autoloader::initialize(
+    require __DIR__ . '/autoload.original.php',
+    %mode%
+);

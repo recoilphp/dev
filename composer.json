@@ -1,11 +1,15 @@
 {
     "name": "recoil/dev",
+    "type": "composer-plugin",
     "description": "Development and debugging tools for Recoil applications.",
     "require": {
         "php": "^7",
+        "composer-plugin-api": "^1",
+        "eloquent/enumeration": "^5",
         "nikic/php-parser": "^2.1"
     },
     "require-dev": {
+        "composer/composer": "^1",
         "eloquent/phony": "^0.13",
         "friendsofphp/php-cs-fixer": "^1",
         "peridot-php/leo": "^1",
@@ -18,6 +22,12 @@
         "psr-4": { "Recoil\\Dev\\": "src" }
     },
     "autoload-dev": { "psr-4" : { "Recoil\\Dev\\": "test/src" }},
+    "extra": {
+        "class": "Recoil\\Dev\\Composer\\Plugin",
+        "recoil": {
+            "instrumentation": "none"
+        }
+    },
     "keywords": [
         "async",
         "asynchronous",
