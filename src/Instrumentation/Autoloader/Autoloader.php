@@ -2,7 +2,7 @@
 
 declare (strict_types = 1); // @codeCoverageIgnore
 
-namespace Recoil\Dev\Instrumentation;
+namespace Recoil\Dev\Instrumentation\Autoloader;
 
 use Composer\Autoload\ClassLoader;
 

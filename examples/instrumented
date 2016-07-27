@@ -3,7 +3,7 @@
 declare (strict_types = 1);
 
 $autoloader = require __DIR__ . '/../vendor/autoload.php';
-(new \Recoil\Dev\Instrumentation\Autoloader($autoloader))->register();
+(new \Recoil\Dev\Instrumentation\Autoloader\Autoloader($autoloader))->register();
 
 // readfile(\Recoil\Dev\Instrumentation\StreamWrapper::PREFIX . __DIR__ . '/include.php');
-require \Recoil\Dev\Instrumentation\StreamWrapper::PREFIX . __DIR__ . '/include.php';
+require \Recoil\Dev\Instrumentation\Autoloader\StreamWrapper::PREFIX . __DIR__ . '/include.php';
