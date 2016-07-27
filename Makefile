@@ -27,5 +27,5 @@ vendor: composer.lock
 composer.lock: composer.json
 	composer update
 
-src/%.php: FORCE
+%.php: FORCE
 	@php -l $@ > /dev/null
