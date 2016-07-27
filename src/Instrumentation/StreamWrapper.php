@@ -2,10 +2,9 @@
 
 declare (strict_types = 1); // @codeCoverageIgnore
 
-namespace Recoil\Dev\Instrumentation\Autoloader;
+namespace Recoil\Dev\Instrumentation;
 
 use PhpParser\Error;
-use Recoil\Dev\Instrumentation\Instrumentor;
 
 /**
  * A PHP stream wrapper that instruments code.
