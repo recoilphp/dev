@@ -30,9 +30,10 @@
  * @link https://github.com/recoilphp/dev
  */
 
+use Recoil\Dev\Composer\Plugin;
 use Recoil\Dev\Instrumentation\Autoloader;
 
 return Autoloader::initialize(
-    require __DIR__ . '/autoload.original.php',
+    require __DIR__ . '/' . Plugin::COMPOSER_AUTOLOAD_FILE,
     %mode%
 );

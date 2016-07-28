@@ -50,12 +50,16 @@ final class Plugin implements PluginInterface, EventSubscriberInterface
             $this->io->write('Recoil code instrumentation is disabled (in composer.json)');
         } elseif (!$devMode) {
             $this->io->write('Recoil code instrumentation is disabled (installing with --no-dev)');
-        } elseif (!is_file(self::TEMPLATE_FILE)) {
+        } elseif (!file_exists(self::TEMPLATE_PATH)) {
             $this->io->write('Recoil code instrumentation is disabled (uninstalling recoil/dev)');
         } else {
             $this->io->write('Recoil code instrumentation is enabled');
             $this->installAutoloader();
+
+            return;
         }
+
+        $this->removeAutoloader();
     }
 
     /**
@@ -69,10 +73,10 @@ final class Plugin implements PluginInterface, EventSubscriberInterface
             ->get('vendor-dir');
 
         // Create a copy of the original composer autoloader ...
-        copy($vendorDir . '/autoload.php', $vendorDir . '/autoload.original.php');
+        copy($vendorDir . '/autoload.php', $vendorDir . '/' . self::COMPOSER_AUTOLOAD_FILE);
 
         // Read the instrumentation autoloader template and replace the %mode% place-holder ...
-        $content = file_get_contents(self::TEMPLATE_FILE);
+        $content = file_get_contents(self::TEMPLATE_PATH);
         $content = str_replace(
             '%mode%',
             var_export($this->instrumentationMode, true),
@@ -83,7 +87,25 @@ final class Plugin implements PluginInterface, EventSubscriberInterface
         file_put_contents($vendorDir . '/autoload.php', $content);
     }
 
-    const TEMPLATE_FILE = __DIR__ . '/../../res/autoload.php.tmpl';
+    /**
+     * Remove the "original" autoloader file.
+     */
+    private function removeAutoloader()
+    {
+        $vendorDir = $this
+            ->composer
+            ->getConfig()
+            ->get('vendor-dir');
+
+        $filename = $vendorDir . '/' . self::COMPOSER_AUTOLOAD_FILE;
+
+        if (file_exists($filename)) {
+            unlink($filename);
+        }
+    }
+
+    const TEMPLATE_PATH = __DIR__ . '/../../res/autoload.php.tmpl';
+    const COMPOSER_AUTOLOAD_FILE = 'autoload.uninstrumented.php';
 
     /**
      * @var Composer|null The composer object (null = not yet activated).

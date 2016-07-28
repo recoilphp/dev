@@ -26,17 +26,19 @@ describe(Plugin::class, function () {
         $this->config->get->with('vendor-dir')->returns('/tmp/vendor');
 
         $this->copy = Phony::stubGlobal('copy', __NAMESPACE__);
-        $this->isFile = Phony::stubGlobal('is_file', __NAMESPACE__);
+        $this->fileExists = Phony::stubGlobal('file_exists', __NAMESPACE__);
+        $this->unlink = Phony::stubGlobal('unlink', __NAMESPACE__);
         $this->fileGetContents = Phony::stubGlobal('file_get_contents', __NAMESPACE__);
         $this->filePutContents = Phony::stubGlobal('file_put_contents', __NAMESPACE__);
 
         $reflector = new ReflectionClass(Plugin::class);
         $this->templateFile = dirname($reflector->getFilename()) . '/../../res/autoload.php.tmpl';
 
-        $this->isFile->returns(true);
+        $this->fileExists->returns(true);
         $this->fileGetContents->returns('<template %mode%>');
 
         $this->subject = new Plugin();
+        $this->subject->activate($this->composer->get(), $this->io->get());
     });
 
     afterEach(function () {
@@ -52,57 +54,128 @@ describe(Plugin::class, function () {
     });
 
     describe('->onPostAutoloadDump()', function () {
-        it('replaces the autoloader', function () {
-            $this->subject->activate($this->composer->get(), $this->io->get());
-            $this->subject->onPostAutoloadDump(true);
+        context('when instrumentation is enabled', function () {
+            beforeEach(function () {
+                $this->subject->onPostAutoloadDump(true);
+            });
 
-            $this->io->write->calledWith('Recoil code instrumentation is enabled');
+            it('prints a message', function () {
+                $this->io->write->calledWith('Recoil code instrumentation is enabled');
+            });
 
-            $this->copy->calledWith(
-                '/tmp/vendor/autoload.php',
-                '/tmp/vendor/autoload.original.php'
-            );
+            it('replaces the composer autoloader', function () {
+                $this->copy->calledWith(
+                    '/tmp/vendor/autoload.php',
+                    '/tmp/vendor/autoload.uninstrumented.php'
+                );
 
-            $this->fileGetContents->calledWith($this->templateFile);
+                $this->fileGetContents->calledWith($this->templateFile);
 
-            $this->filePutContents->calledWith(
-                '/tmp/vendor/autoload.php',
-                "<template 'all'>"
-            );
+                $this->filePutContents->calledWith(
+                    '/tmp/vendor/autoload.php',
+                    "<template 'all'>"
+                );
+            });
+
+            it('does not remove the uninstrumented autoloader', function () {
+                $this->unlink->never()->called();
+            });
         });
 
-        it('does not replace the autoloader when --no-dev is specified', function () {
-            $this->subject->activate($this->composer->get(), $this->io->get());
-            $this->subject->onPostAutoloadDump(false);
+        context('when instrumentation is disabled due to --no-dev', function () {
+            it('prints a message', function () {
+                $this->subject->onPostAutoloadDump(false);
 
-            $this->io->write->calledWith('Recoil code instrumentation is disabled (installing with --no-dev)');
+                $this->io->write->calledWith('Recoil code instrumentation is disabled (installing with --no-dev)');
+            });
 
-            $this->copy->never()->called();
-            $this->filePutContents->never()->called();
+            it('does not replace the composer autoloader', function () {
+                $this->subject->onPostAutoloadDump(false);
+
+                $this->copy->never()->called();
+                $this->filePutContents->never()->called();
+            });
+
+            it('removes the copy of the original composer file', function () {
+                $this->subject->onPostAutoloadDump(false);
+
+                $this->unlink->calledWith('/tmp/vendor/autoload.uninstrumented.php');
+            });
+
+            it('does not remove copy of the original composer file if it does not exist', function () {
+                $this->fileExists->with('/tmp/vendor/autoload.uninstrumented.php')->returns(false);
+
+                $this->subject->onPostAutoloadDump(false);
+
+                $this->unlink->never()->called();
+            });
         });
 
-        it('does not replace the autoloader when disabled in composer.json', function () {
-            $this->package->getExtra->returns(['recoil' => ['instrumentation' => 'none']]);
-            $this->subject->activate($this->composer->get(), $this->io->get());
-            $this->subject->onPostAutoloadDump(true);
+        context('when instrumentation is disabled in composer.json', function () {
+            beforeEach(function () {
+                $this->package->getExtra->returns(['recoil' => ['instrumentation' => 'none']]);
+                $this->subject->activate($this->composer->get(), $this->io->get());
+            });
 
-            $this->io->write->calledWith('Recoil code instrumentation is disabled (in composer.json)');
+            it('prints a message', function () {
+                $this->subject->onPostAutoloadDump(true);
 
-            $this->copy->never()->called();
-            $this->filePutContents->never()->called();
+                $this->io->write->calledWith('Recoil code instrumentation is disabled (in composer.json)');
+            });
+
+            it('does not replace the composer autoloader', function () {
+                $this->subject->onPostAutoloadDump(true);
+
+                $this->copy->never()->called();
+                $this->filePutContents->never()->called();
+            });
+
+            it('removes the copy of the original composer file', function () {
+                $this->subject->onPostAutoloadDump(true);
+
+                $this->unlink->calledWith('/tmp/vendor/autoload.uninstrumented.php');
+            });
+
+            it('does not remove copy of the original composer file if it does not exist', function () {
+                $this->fileExists->with('/tmp/vendor/autoload.uninstrumented.php')->returns(false);
+
+                $this->subject->onPostAutoloadDump(true);
+
+                $this->unlink->never()->called();
+            });
         });
 
-        it('does not replace the autoloader when being uninstalled', function () {
-            $this->isFile->with('*')->returns(false);
+        context('when instrumentation is disabled in composer.json', function () {
+            beforeEach(function () {
+                $this->fileExists->with($this->templateFile)->returns(false);
+            });
 
-            $this->subject->activate($this->composer->get(), $this->io->get());
-            $this->subject->onPostAutoloadDump(true);
+            it('prints a message', function () {
+                $this->subject->onPostAutoloadDump(true);
 
-            $this->isFile->calledWith($this->templateFile);
-            $this->io->write->calledWith('Recoil code instrumentation is disabled (uninstalling recoil/dev)');
+                $this->io->write->calledWith('Recoil code instrumentation is disabled (uninstalling recoil/dev)');
+            });
 
-            $this->copy->never()->called();
-            $this->filePutContents->never()->called();
+            it('does not replace the composer autoloader', function () {
+                $this->subject->onPostAutoloadDump(true);
+
+                $this->copy->never()->called();
+                $this->filePutContents->never()->called();
+            });
+
+            it('removes the copy of the original composer file', function () {
+                $this->subject->onPostAutoloadDump(true);
+
+                $this->unlink->calledWith('/tmp/vendor/autoload.uninstrumented.php');
+            });
+
+            it('does not remove copy of the original composer file if it does not exist', function () {
+                $this->fileExists->with('/tmp/vendor/autoload.uninstrumented.php')->returns(false);
+
+                $this->subject->onPostAutoloadDump(true);
+
+                $this->unlink->never()->called();
+            });
         });
     });
 
