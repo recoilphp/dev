@@ -63,7 +63,6 @@ final class Plugin implements PluginInterface, EventSubscriberInterface
     {
         $vendorDir = $this
             ->composer
-            ->getPackage()
             ->getConfig()
             ->get('vendor-dir');
 

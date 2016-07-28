@@ -16,12 +16,12 @@ describe(Plugin::class, function () {
     beforeEach(function () {
         $this->composer = Phony::mock(Composer::class);
         $this->io = Phony::mock(IOInterface::class);
-        $this->package = Phony::mock(RootPackageInterface::class);
         $this->config = Phony::mock(Config::class);
+        $this->package = Phony::mock(RootPackageInterface::class);
 
         $this->composer->getPackage->returns($this->package);
+        $this->composer->getConfig->returns($this->config);
         $this->package->getExtra->returns([]);
-        $this->package->getConfig->returns($this->config);
         $this->config->get->with('vendor-dir')->returns('/tmp/vendor');
 
         $this->copy = Phony::stubGlobal('copy', __NAMESPACE__);

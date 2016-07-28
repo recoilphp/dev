@@ -9,7 +9,7 @@
         "nikic/php-parser": "^2.1"
     },
     "require-dev": {
-        "composer/composer": "^1",
+        "composer/composer": "1.0.0",
         "eloquent/phony": "^0.13",
         "friendsofphp/php-cs-fixer": "^1",
         "peridot-php/leo": "^1",
