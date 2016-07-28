@@ -31,7 +31,7 @@
  */
 
 use Recoil\Dev\Composer\Plugin;
-use Recoil\Dev\Instrumentation\Autoloader;
+use Recoil\Dev\Instrumentation\Autoloader\Autoloader;
 
 return Autoloader::initialize(
     require __DIR__ . '/' . Plugin::COMPOSER_AUTOLOAD_FILE,
