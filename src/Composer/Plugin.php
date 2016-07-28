@@ -5,10 +5,11 @@ declare (strict_types = 1); // @codeCoverageIgnore
 namespace Recoil\Dev\Composer;
 
 use Composer\Composer;
+use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\ScriptEvents;
-use RuntimeException;
+use Recoil\Dev\Instrumentation\Mode;
 
 final class Plugin implements PluginInterface, EventSubscriberInterface
 {
@@ -24,7 +25,7 @@ final class Plugin implements PluginInterface, EventSubscriberInterface
         $this->io = $io;
 
         $extra = $this->composer->getPackage()->getExtra();
-        $this->instrumentationMode = $extra['recoil']['instrumentation'] ?? self::MODE_ALL;
+        $this->instrumentationMode = $extra['recoil']['instrumentation'] ?? Mode::ALL;
     }
 
     public static function getSubscribedEvents()
@@ -34,53 +35,40 @@ final class Plugin implements PluginInterface, EventSubscriberInterface
 
     public function onPostAutoloadDump($devMode)
     {
-        if ($this->instrumentationMode === self::MODE_NONE) {
+        assert($this->composer !== null, 'plugin not activated');
+
+        if ($this->instrumentationMode === Mode::NONE) {
             $this->io->write('Recoil code instrumentation is disabled (in composer.json)');
         } elseif (!$devMode) {
             $this->io->write('Recoil code instrumentation is disabled (installing with --no-dev)');
         } else {
             $this->io->write('Recoil code instrumentation is enabled');
-
-            try {
-                $this->installAutoloader();
-            } catch (RuntimeException $e) {
-                $this->io->writeError('Unable to install instrumenting autoloader.');
-                $this->io->writeError($e->getMessage(), IOInterface::VERBOSE);
-            }
+            $this->installAutoloader();
         }
     }
 
     private function installAutoloader()
     {
-        $config = $this->composer->getConfig();
-        $vendorDir = $config->get('vendor-dir');
+        $vendorDir = $this
+            ->composer
+            ->getPackage()
+            ->getConfig()
+            ->get('vendor-dir');
 
         // Create a copy of the original composer autoloader ...
-        if (!@copy($vendorDir . '/autoload.php', $vendorDir . '/autoload.original.php')) {
-            throw new RuntimeException(error_get_last());
-        }
+        copy($vendorDir . '/autoload.php', $vendorDir . '/autoload.original.php');
 
-        // Read the instrumentation autoloader template ...
-        $content = @file_get_contents(__DIR__ . '/../../res/autoload.php.tmpl');
-        if ($content === false) {
-            throw new RuntimeException(error_get_last());
-        }
-
-        // Replace the %mode% place-holder ...
+        // Read the instrumentation autoloader template and replace the %mode% place-holder ...
+        $content = file_get_contents(__DIR__ . '/../../res/autoload.php.tmpl');
         $content = str_replace(
-            $content,
             '%mode%',
-            var_export($this->instrumentationMode, true)
+            var_export($this->instrumentationMode, true),
+            $content
         );
 
         // Write the autoload.php file over the original Composer autoloader ...
-        if (!@file_put_contents($vendorDir . '/autoload.php', $content)) {
-            throw new RuntimeException(error_get_last());
-        }
+        file_put_contents($vendorDir . '/autoload.php', $content);
     }
-
-    const MODE_ALL = 'all';
-    const MODE_NONE = 'all';
 
     /**
      * @var Composer|null The composer object (null = not yet activated).
@@ -95,5 +83,5 @@ final class Plugin implements PluginInterface, EventSubscriberInterface
     /**
      * @var string The instrumentation mode ('all' or 'none').
      */
-    private $instrumentationMode = self::MODE_ALL;
+    private $instrumentationMode = Mode::ALL;
 }
