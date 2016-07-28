@@ -139,22 +139,6 @@ final class StreamWrapper
     }
 
     /**
-     * Please note that this code is not part of the public API. It may be
-     * changed or removed at any time without notice.
-     *
-     * @access private
-     *
-     * This constructor is public so that it may be used by PHP's stream-wrapper
-     * system.
-     *
-     * @see StreamWrapper::install()
-     */
-    public function __construct(Instrumentor $instrumentor = null)
-    {
-        $this->instrumentor = $instrumentor;
-    }
-
-    /**
      * Parse the scheme and original path from a stream wrapper path.
      *
      * @return tuple<string, string>
@@ -184,11 +168,7 @@ final class StreamWrapper
         }
 
         // Find the appropriate instrumentor ...
-        if ($this->instrumentor === null) {
-            $instrumentor = self::$instrumentors[$scheme];
-        } else {
-            $instrumentor = $this->instrumentor;
-        }
+        $instrumentor = self::$instrumentors[$scheme];
 
         // Instrument the source ...
         try {
@@ -217,11 +197,6 @@ final class StreamWrapper
      * @var array<string, Instrumentor> A map of scheme to instrumentor.
      */
     private static $instrumentors = [];
-
-    /**
-     * @var Instrumentor|null The instrumentor to use (null = find based on scheme).
-     */
-    private $instrumentor;
 
     /**
      * @var resource|false The underlying stream object, false unless stream_open()
