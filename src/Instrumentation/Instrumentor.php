@@ -137,8 +137,8 @@ final class Instrumentor extends NodeVisitorAbstract
 
         return $realReturnType instanceof FullyQualified
             && $hintReturnType instanceof Name
-            && $realReturnType->toString() === 'Generator'
-            && $hintReturnType->toString() === 'Coroutine'
+            && \strcasecmp($realReturnType->toString(), 'Generator') === 0
+            && \strcasecmp($hintReturnType->toString(), 'Coroutine') === 0
             && !empty($node->getStmts());
     }
 
