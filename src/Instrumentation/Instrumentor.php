@@ -25,7 +25,7 @@ final class Instrumentor extends NodeVisitorAbstract
     /**
      * Create an instrumentor.
      *
-     * @param Mode $mode The instrumentation mode (null = Mode::ALL).
+     * @param Mode|null $mode The instrumentation mode (null = Mode::ALL).
      */
     public static function create(Mode $mode = null) : self
     {
@@ -82,7 +82,7 @@ final class Instrumentor extends NodeVisitorAbstract
         );
 
         $this->output .= \sprintf(
-            'assert(!isset(%s) || %s->setFunction(__FILE__, __LINE__, __FUNCTION__, \func_get_args()) || true); ',
+            'assert(!isset(%s) || %s->setCoroutine(__FILE__, __LINE__, __FUNCTION__, \func_get_args()) || true); ',
             self::TRACE_VARIABLE_NAME,
             self::TRACE_VARIABLE_NAME
         );

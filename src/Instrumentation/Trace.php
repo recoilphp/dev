@@ -4,12 +4,11 @@ declare (strict_types = 1); // @codeCoverageIgnore
 
 namespace Recoil\Dev\Instrumentation;
 
-use Error;
-use Exception;
 use Recoil\Kernel\Awaitable;
 use Recoil\Kernel\Strand;
 use Recoil\Kernel\StrandTrace;
-use ReflectionClass;
+use ReflectionException;
+use ReflectionProperty;
 use Throwable;
 
 final class Trace implements StrandTrace
@@ -24,10 +23,14 @@ final class Trace implements StrandTrace
     }
 
     /**
-     * Set information about the current function on the strand's call stack.
+     * Record information about the currently executing coroutine.
      */
-    public function setFunction(string $file, int $line, string $function, array $arguments)
-    {
+    public function setCoroutine(
+        string $file,
+        int $line,
+        string $function,
+        array $arguments
+    ) {
         assert($this->stackDepth > 0);
 
         $this->currentFile = $file;
@@ -39,7 +42,7 @@ final class Trace implements StrandTrace
     }
 
     /**
-     * Set the most recently executed line number.
+     * Record the most recently executed line number.
      */
     public function setLine(int $line)
     {
@@ -101,10 +104,10 @@ final class Trace implements StrandTrace
      */
     public function resume(Strand $strand, int $depth, string $action, $value)
     {
-        if ($action === 'throw') {
+        if ($action === 'throw' && $this->hasMutableTrace($value)) {
             $this->updateStackTrace($value);
 
-        // Trapping the resume of the instrumentation code to setup the correct
+        // Trapping the resume of the instrumentation code to setup the initial
         // number of stack frames ...
         } elseif ($value === $this) {
             while ($this->stackDepth < $depth) {
@@ -135,16 +138,12 @@ final class Trace implements StrandTrace
     {
     }
 
+    /**
+     * Modify an exception's stack trace to match the strand, rather than the
+     * native PHP stack trace.
+     */
     private function updateStackTrace(Throwable $exception)
     {
-        if ($exception instanceof Error) {
-            $reflector = new ReflectionClass(Error::class);
-        } elseif ($exception instanceof Exception) {
-            $reflector = new ReflectionClass(Exception::class);
-        } else {
-            return;
-        }
-
         $updatedTrace = [];
 
         // Keep the original trace up until we find the internal generator code ...
@@ -168,9 +167,25 @@ final class Trace implements StrandTrace
         }
 
         // Replace the exception's trace property with the updated stack trace ...
-        $property = $reflector->getProperty('trace');
+        $property = new ReflectionProperty($exception, 'trace');
         $property->setAccessible(true);
         $property->setValue($exception, $updatedTrace);
+    }
+
+    /**
+     * Check if an exception has a "trace" property that can be modified.
+     */
+    private function hasMutableTrace(Throwable $exception) : bool
+    {
+        try {
+            $property = new ReflectionProperty($exception, 'trace');
+            $className = $property->getDeclaringClass()->getName();
+        } catch (ReflectionException $e) {
+            return false;
+        }
+
+        return $className === 'Exception' ||
+               $className === 'Error';
     }
 
     /**
