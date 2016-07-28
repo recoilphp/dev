@@ -6,6 +6,7 @@ namespace Recoil\Dev\Instrumentation\Autoloader;
 
 use Composer\Autoload\ClassLoader;
 use Recoil\Dev\Instrumentation\Mode;
+use Recoil\Dev\Instrumentation\Instrumentor;
 
 /**
  * An autoloader that instruments code.
