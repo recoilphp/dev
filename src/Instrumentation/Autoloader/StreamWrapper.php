@@ -9,16 +9,22 @@ use Recoil\Dev\Instrumentation\Instrumentor;
 
 /**
  * A PHP stream wrapper that instruments code.
+ *
+ * This stream wrapper is used by the autoloader to filter included source code
+ * through the instrumentor without affecting the __FILE__ and __DIR__ constants
+ * within the instrumented code.
  */
 final class StreamWrapper
 {
     /**
-     * Install the stream wrapper, if it has not already been installed.
+     * Install the stream wrapper for the given instrumentor and return the
+     * scheme (aka protocol) used to filter file contents through that
+     * instrumentor.
      *
-     * @param Instrumentor|null $instrumentor The instrumentor to use to
-     *                                        instrument the code.
+     * @param Instrumentor $instrumentor The instrumentor used to instrument the
+     *                                   source code.
      *
-     * @return string The stream wrapper's scheme (aka protocol).
+     * @return string The scheme.
      */
     public static function install(Instrumentor $instrumentor) : string
     {
@@ -33,17 +39,14 @@ final class StreamWrapper
     }
 
     /**
-     * Create a stream wrapper instance.
-     *
-     * @param Instrumentor|null $instrumentor The instrumentor (null = find based on scheme).
-     */
-    public function __construct(Instrumentor $instrumentor = null)
-    {
-        $this->instrumentor = $instrumentor;
-    }
-
-    /**
      * Open the stream.
+     *
+     * This method is part of the stream wrapper specification.
+     * @see http://php.net/manual/en/class.streamwrapper.php
+     *
+     * The $openedPath variable is assigned the real path of the instrumented
+     * file. This ensures that __FILE__ and __DIR__ constants are unchanged
+     * when instrumentation is added.
      */
     public function stream_open(
         string $path,
@@ -60,7 +63,7 @@ final class StreamWrapper
         $stream = $this->openInstrumentedStream($scheme, $path);
 
         // The code could not be instrumented, just load the original file ...
-        if ($stream === null) {
+        if ($stream === false) {
             $stream = fopen($path, $mode);
 
             if ($stream === false) {
@@ -75,7 +78,102 @@ final class StreamWrapper
     }
 
     /**
-     * @return resource|null
+     * Read from the stream.
+     *
+     * This method is part of the stream wrapper specification.
+     * @see http://php.net/manual/en/class.streamwrapper.php
+     */
+    public function stream_read(int $count) : string
+    {
+        return fread($this->stream, $count);
+    }
+
+    /**
+     * Close the stream.
+     *
+     * This method is part of the stream wrapper specification.
+     * @see http://php.net/manual/en/class.streamwrapper.php
+     */
+    public function stream_close() : bool
+    {
+        return fclose($this->stream);
+    }
+
+    /**
+     * Check if the stream has reached EOF.
+     *
+     * This method is part of the stream wrapper specification.
+     * @see http://php.net/manual/en/class.streamwrapper.php
+     */
+    public function stream_eof() : bool
+    {
+        return feof($this->stream);
+    }
+
+    /**
+     * Perform a stat() operation on the stream.
+     *
+     * This method is part of the stream wrapper specification.
+     * @see http://php.net/manual/en/class.streamwrapper.php
+     *
+     * @return array|bool
+     */
+    public function stream_stat()
+    {
+        return fstat($this->stream);
+    }
+
+    /**
+     * Perform a stat() operation on a specific path.
+     *
+     * This method is part of the stream wrapper specification.
+     * @see http://php.net/manual/en/class.streamwrapper.php
+     *
+     * @return array|bool
+     */
+    public static function url_stat(string $path, int $flags)
+    {
+        list(, $path) = self::parse($path);
+
+        return @stat($path);
+    }
+
+    /**
+     * Please note that this code is not part of the public API. It may be
+     * changed or removed at any time without notice.
+     *
+     * @access private
+     *
+     * This constructor is public so that it may be used by PHP's stream-wrapper
+     * system.
+     *
+     * @see StreamWrapper::install()
+     */
+    public function __construct(Instrumentor $instrumentor = null)
+    {
+        $this->instrumentor = $instrumentor;
+    }
+
+    /**
+     * Parse the scheme and original path from a stream wrapper path.
+     *
+     * @return tuple<string, string>
+     */
+    private static function parse(string $path) : array
+    {
+        $index = \strpos($path, '://');
+        assert($index !== false);
+
+        return [
+            \substr($path, 0, $index),
+            \substr($path, $index + 3),
+        ];
+    }
+
+    /**
+     * Open a stream that contains the instrumented code.
+     *
+     * @return resource|false The stream (false = unable to add instrumentation).
      */
     private function openInstrumentedStream(string $scheme, string $path)
     {
@@ -96,83 +194,21 @@ final class StreamWrapper
         try {
             $source = $instrumentor->instrument($source);
         } catch (Error $e) {
-            return null;
+            return false;
         }
 
         // Write the instrumented code to a temporary file ...
         $stream = tmpfile();
 
         if (fwrite($stream, $source) === false) {
-            return null;
+            return false;
         }
 
         if (fseek($stream, 0) === false) {
-            return null;
+            return false;
         }
 
         return $stream;
-    }
-
-    /**
-     * Read from the stream.
-     */
-    public function stream_read(int $count) : string
-    {
-        return fread($this->stream, $count);
-    }
-
-    /**
-     * Close the stream.
-     */
-    public function stream_close() : bool
-    {
-        return fclose($this->stream);
-    }
-
-    /**
-     * Check if the stream has reached EOF.
-     */
-    public function stream_eof() : bool
-    {
-        return feof($this->stream);
-    }
-
-    /**
-     * Perform a stat() operation on the stream.
-     *
-     * @return array|bool
-     */
-    public function stream_stat()
-    {
-        return fstat($this->stream);
-    }
-
-    /**
-     * Perform a stat() operation on a specific path.
-     *
-     * @return array|bool
-     */
-    public static function url_stat(string $path, int $flags)
-    {
-        list(, $path) = self::parse($path);
-
-        return @stat($path);
-    }
-
-    /**
-     * Parse the scheme and original path from a stream wrapper path.
-     *
-     * @return tuple<string, string>
-     */
-    private static function parse(string $path) : array
-    {
-        $index = \strpos($path, '://');
-        assert($index !== false);
-
-        return [
-            \substr($path, 0, $index),
-            \substr($path, $index + 3),
-        ];
     }
 
     const SCHEME_PREFIX = 'recoil-instrumentation-';
@@ -188,8 +224,8 @@ final class StreamWrapper
     private $instrumentor;
 
     /**
-     * @var resource|null The underlying stream object, null unless stream_open()
-     *                    has been called successfully.
+     * @var resource|false The underlying stream object, false unless stream_open()
+     *                     has been called successfully.
      */
-    private $stream;
+    private $stream = false;
 }

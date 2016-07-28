@@ -9,7 +9,7 @@ use Recoil\Dev\Instrumentation\Autoloader\StreamWrapper;
 
 $composerLoader = require __DIR__ . '/../vendor/autoload.php';
 
-$instrumentor = new Instrumentor(Mode::ALL());
+$instrumentor = Instrumentor::create();
 $scheme = StreamWrapper::install($instrumentor);
 $loader = new Autoloader($composerLoader, $scheme);
 $loader->register();

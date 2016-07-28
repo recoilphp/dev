@@ -35,7 +35,7 @@ final class Autoloader
         }
 
         $mode = Mode::memberByValue($mode);
-        $scheme = StreamWrapper::install(new Instrumentor($mode));
+        $scheme = StreamWrapper::install(Instrumentor::create($mode));
 
         self::$instance = new self($composerLoader, $scheme);
         self::$instance->register();

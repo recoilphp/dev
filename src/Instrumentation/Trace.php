@@ -33,8 +33,6 @@ final class Trace implements StrandTrace
         $this->currentFile = $file;
         $this->currentLine = $line;
 
-        // echo '-- SET ', $function, ' (', $file, ':', $line, ')', PHP_EOL;
-
         $frame = &$this->stackFrames[$this->stackDepth - 1];
         $frame['function'] = $function;
         $frame['args'] = $arguments;
@@ -63,8 +61,6 @@ final class Trace implements StrandTrace
             'line' => $this->currentLine,
         ];
 
-        // echo '-- PUSH ', $this->currentFile, ':', $this->currentLine, PHP_EOL;
-
         $this->currentFile = 'Unknown';
         $this->currentLine = 0;
     }
@@ -81,8 +77,6 @@ final class Trace implements StrandTrace
         $this->currentFile = $frame['file'];
         $this->currentLine = $frame['line'];
         $frame = null;
-
-        // echo '-- POP ', $this->currentFile, ':', $this->currentLine, PHP_EOL;
     }
 
     /**

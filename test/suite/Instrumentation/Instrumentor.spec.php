@@ -12,7 +12,7 @@ describe(Instrumentor::class, function () {
 
     context('when mode is ALL the code is instrumented', function () {
         beforeEach(function () {
-            $this->subject = new Instrumentor(Mode::ALL());
+            $this->subject = Instrumentor::create(Mode::ALL());
         });
 
         foreach ($this->fixtures as $path) {
@@ -30,7 +30,7 @@ describe(Instrumentor::class, function () {
 
     context('when mode is NONE the code is not instrumented', function () {
         beforeEach(function () {
-            $this->subject = new Instrumentor(Mode::NONE());
+            $this->subject = Instrumentor::create(Mode::NONE());
         });
 
         foreach ($this->fixtures as $path) {

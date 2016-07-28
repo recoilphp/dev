@@ -22,28 +22,14 @@ use PhpParser\ParserFactory;
  */
 final class Instrumentor extends NodeVisitorAbstract
 {
-    public function __construct(Mode $mode)
+    /**
+     * Create an instrumentor.
+     *
+     * @param Mode $mode The instrumentation mode (null = Mode::ALL).
+     */
+    public static function create(Mode $mode = null) : self
     {
-        $this->mode = $mode;
-
-        if ($this->mode === Mode::NONE()) {
-            return;
-        }
-
-        $factory = new ParserFactory();
-        $this->parser = $factory->create(
-            ParserFactory::ONLY_PHP7,
-            new Lexer(['usedAttributes' => [
-                'comments',
-                'startLine',
-                'startFilePos',
-                'endFilePos',
-            ]])
-        );
-
-        $this->nameResolver = new NameResolver();
-        $this->traverser = new NodeTraverser();
-        $this->traverser->addVisitor($this);
+        return new self($mode ?? Mode::ALL());
     }
 
     /**
@@ -78,10 +64,9 @@ final class Instrumentor extends NodeVisitorAbstract
     /**
      * Add instrumentation to a coroutine.
      *
-     * @param FunctionLike $node         The original AST node, as parsed from the source code.
-     * @param FunctionLike $resolvedNode The same AST node, after passing through the name resolver.
+     * @param FunctionLike $node The original AST node, as parsed from the source code.
      */
-    private function instrumentCoroutine(FunctionLike $node, FunctionLike $resolvedNode)
+    private function instrumentCoroutine(FunctionLike $node)
     {
         $statements = $node->getStmts();
 
@@ -169,7 +154,7 @@ final class Instrumentor extends NodeVisitorAbstract
             $originalNode = clone $node;
             $this->nameResolver->enterNode($node);
             if ($this->isCoroutine($originalNode, $node)) {
-                $this->instrumentCoroutine($originalNode, $node);
+                $this->instrumentCoroutine($originalNode);
             }
         } else {
             $this->nameResolver->enterNode($node);
@@ -192,6 +177,44 @@ final class Instrumentor extends NodeVisitorAbstract
         return $this->nameResolver->afterTraverse($nodes);
     }
 
+    /**
+     * Please note that this code is not part of the public API. It may be
+     * changed or removed at any time without notice.
+     *
+     * @access private
+     *
+     * This constructor is public so that it may be used by auto-wiring
+     * dependency injection containers. If you are explicitly constructing an
+     * instance please use one of the static factory methods listed below.
+     *
+     * @see Instrumentor::create()
+     *
+     * @param Mode $mode The instrumenation mode.
+     */
+    public function __construct(Mode $mode)
+    {
+        $this->mode = $mode;
+
+        if ($this->mode === Mode::NONE()) {
+            return;
+        }
+
+        $factory = new ParserFactory();
+        $this->parser = $factory->create(
+            ParserFactory::ONLY_PHP7,
+            new Lexer(['usedAttributes' => [
+                'comments',
+                'startLine',
+                'startFilePos',
+                'endFilePos',
+            ]])
+        );
+
+        $this->nameResolver = new NameResolver();
+        $this->traverser = new NodeTraverser();
+        $this->traverser->addVisitor($this);
+    }
+
     const TRACE_VARIABLE_NAME = '$μ';
 
     /**
@@ -203,6 +226,11 @@ final class Instrumentor extends NodeVisitorAbstract
      * @var Parser The PHP parser.
      */
     private $parser;
+
+    /**
+     * @var NameResolver The visitor used to resolve type aliases.
+     */
+    private $nameResolver;
 
     /**
      * @var NodeTraverser The object that traverses the AST.
