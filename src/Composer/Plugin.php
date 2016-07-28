@@ -50,6 +50,8 @@ final class Plugin implements PluginInterface, EventSubscriberInterface
             $this->io->write('Recoil code instrumentation is disabled (in composer.json)');
         } elseif (!$devMode) {
             $this->io->write('Recoil code instrumentation is disabled (installing with --no-dev)');
+        } elseif (!is_file(self::TEMPLATE_FILE)) {
+            $this->io->write('Recoil code instrumentation is disabled (uninstalling recoil/dev)');
         } else {
             $this->io->write('Recoil code instrumentation is enabled');
             $this->installAutoloader();
@@ -70,7 +72,7 @@ final class Plugin implements PluginInterface, EventSubscriberInterface
         copy($vendorDir . '/autoload.php', $vendorDir . '/autoload.original.php');
 
         // Read the instrumentation autoloader template and replace the %mode% place-holder ...
-        $content = file_get_contents(__DIR__ . '/../../res/autoload.php.tmpl');
+        $content = file_get_contents(self::TEMPLATE_FILE);
         $content = str_replace(
             '%mode%',
             var_export($this->instrumentationMode, true),
@@ -80,6 +82,8 @@ final class Plugin implements PluginInterface, EventSubscriberInterface
         // Write the autoload.php file over the original Composer autoloader ...
         file_put_contents($vendorDir . '/autoload.php', $content);
     }
+
+    const TEMPLATE_FILE = __DIR__ . '/../../res/autoload.php.tmpl';
 
     /**
      * @var Composer|null The composer object (null = not yet activated).

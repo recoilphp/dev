@@ -10,6 +10,7 @@ use Composer\IO\IOInterface;
 use Composer\Package\RootPackageInterface;
 use Composer\Script\ScriptEvents;
 use Eloquent\Phony\Phony;
+use ReflectionClass;
 
 describe(Plugin::class, function () {
 
@@ -25,9 +26,14 @@ describe(Plugin::class, function () {
         $this->config->get->with('vendor-dir')->returns('/tmp/vendor');
 
         $this->copy = Phony::stubGlobal('copy', __NAMESPACE__);
+        $this->isFile = Phony::stubGlobal('is_file', __NAMESPACE__);
         $this->fileGetContents = Phony::stubGlobal('file_get_contents', __NAMESPACE__);
         $this->filePutContents = Phony::stubGlobal('file_put_contents', __NAMESPACE__);
 
+        $reflector = new ReflectionClass(Plugin::class);
+        $this->templateFile = dirname($reflector->getFilename()) . '/../../res/autoload.php.tmpl';
+
+        $this->isFile->returns(true);
         $this->fileGetContents->returns('<template %mode%>');
 
         $this->subject = new Plugin();
@@ -57,6 +63,8 @@ describe(Plugin::class, function () {
                 '/tmp/vendor/autoload.original.php'
             );
 
+            $this->fileGetContents->calledWith($this->templateFile);
+
             $this->filePutContents->calledWith(
                 '/tmp/vendor/autoload.php',
                 "<template 'all'>"
@@ -70,7 +78,6 @@ describe(Plugin::class, function () {
             $this->io->write->calledWith('Recoil code instrumentation is disabled (installing with --no-dev)');
 
             $this->copy->never()->called();
-            $this->fileGetContents->never()->called();
             $this->filePutContents->never()->called();
         });
 
@@ -82,7 +89,19 @@ describe(Plugin::class, function () {
             $this->io->write->calledWith('Recoil code instrumentation is disabled (in composer.json)');
 
             $this->copy->never()->called();
-            $this->fileGetContents->never()->called();
+            $this->filePutContents->never()->called();
+        });
+
+        it('does not replace the autoloader when being uninstalled', function () {
+            $this->isFile->with('*')->returns(false);
+
+            $this->subject->activate($this->composer->get(), $this->io->get());
+            $this->subject->onPostAutoloadDump(true);
+
+            $this->isFile->calledWith($this->templateFile);
+            $this->io->write->calledWith('Recoil code instrumentation is disabled (uninstalling recoil/dev)');
+
+            $this->copy->never()->called();
             $this->filePutContents->never()->called();
         });
     });
