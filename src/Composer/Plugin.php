@@ -8,6 +8,7 @@ use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
+use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 use Recoil\Dev\Instrumentation\Mode;
 
@@ -42,13 +43,13 @@ final class Plugin implements PluginInterface, EventSubscriberInterface
      * Replaces the composer autoloader with an instrumenting autoloader, if
      * configuration allows.
      */
-    public function onPostAutoloadDump($devMode)
+    public function onPostAutoloadDump(Event $event)
     {
         assert($this->composer !== null, 'plugin not activated');
 
         if ($this->instrumentationMode === Mode::NONE) {
             $this->io->write('Recoil code instrumentation is disabled (in composer.json)');
-        } elseif (!$devMode) {
+        } elseif (!$event->isDevMode()) {
             $this->io->write('Recoil code instrumentation is disabled (installing with --no-dev)');
         } elseif (!file_exists(self::TEMPLATE_PATH)) {
             $this->io->write('Recoil code instrumentation is disabled (uninstalling recoil/dev)');

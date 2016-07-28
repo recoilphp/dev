@@ -5,8 +5,8 @@ declare (strict_types = 1); // @codeCoverageIgnore
 namespace Recoil\Dev\Instrumentation\Autoloader;
 
 use Composer\Autoload\ClassLoader;
-use Recoil\Dev\Instrumentation\Mode;
 use Recoil\Dev\Instrumentation\Instrumentor;
+use Recoil\Dev\Instrumentation\Mode;
 
 /**
  * An autoloader that instruments code.

@@ -8,6 +8,7 @@ use Composer\Composer;
 use Composer\Config;
 use Composer\IO\IOInterface;
 use Composer\Package\RootPackageInterface;
+use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 use Eloquent\Phony\Phony;
 use ReflectionClass;
@@ -19,11 +20,13 @@ describe(Plugin::class, function () {
         $this->io = Phony::mock(IOInterface::class);
         $this->config = Phony::mock(Config::class);
         $this->package = Phony::mock(RootPackageInterface::class);
+        $this->event = Phony::mock(Event::class);
 
         $this->composer->getPackage->returns($this->package);
         $this->composer->getConfig->returns($this->config);
         $this->package->getExtra->returns([]);
         $this->config->get->with('vendor-dir')->returns('/tmp/vendor');
+        $this->event->isDevMode->returns(true);
 
         $this->copy = Phony::stubGlobal('copy', __NAMESPACE__);
         $this->fileExists = Phony::stubGlobal('file_exists', __NAMESPACE__);
@@ -56,7 +59,7 @@ describe(Plugin::class, function () {
     describe('->onPostAutoloadDump()', function () {
         context('when instrumentation is enabled', function () {
             beforeEach(function () {
-                $this->subject->onPostAutoloadDump(true);
+                $this->subject->onPostAutoloadDump($this->event->get());
             });
 
             it('prints a message', function () {
@@ -83,21 +86,25 @@ describe(Plugin::class, function () {
         });
 
         context('when instrumentation is disabled due to --no-dev', function () {
+            beforeEach(function () {
+                $this->event->isDevMode->returns(false);
+            });
+
             it('prints a message', function () {
-                $this->subject->onPostAutoloadDump(false);
+                $this->subject->onPostAutoloadDump($this->event->get());
 
                 $this->io->write->calledWith('Recoil code instrumentation is disabled (installing with --no-dev)');
             });
 
             it('does not replace the composer autoloader', function () {
-                $this->subject->onPostAutoloadDump(false);
+                $this->subject->onPostAutoloadDump($this->event->get());
 
                 $this->copy->never()->called();
                 $this->filePutContents->never()->called();
             });
 
             it('removes the copy of the original composer file', function () {
-                $this->subject->onPostAutoloadDump(false);
+                $this->subject->onPostAutoloadDump($this->event->get());
 
                 $this->unlink->calledWith('/tmp/vendor/autoload.uninstrumented.php');
             });
@@ -105,7 +112,7 @@ describe(Plugin::class, function () {
             it('does not remove copy of the original composer file if it does not exist', function () {
                 $this->fileExists->with('/tmp/vendor/autoload.uninstrumented.php')->returns(false);
 
-                $this->subject->onPostAutoloadDump(false);
+                $this->subject->onPostAutoloadDump($this->event->get());
 
                 $this->unlink->never()->called();
             });
@@ -118,20 +125,20 @@ describe(Plugin::class, function () {
             });
 
             it('prints a message', function () {
-                $this->subject->onPostAutoloadDump(true);
+                $this->subject->onPostAutoloadDump($this->event->get());
 
                 $this->io->write->calledWith('Recoil code instrumentation is disabled (in composer.json)');
             });
 
             it('does not replace the composer autoloader', function () {
-                $this->subject->onPostAutoloadDump(true);
+                $this->subject->onPostAutoloadDump($this->event->get());
 
                 $this->copy->never()->called();
                 $this->filePutContents->never()->called();
             });
 
             it('removes the copy of the original composer file', function () {
-                $this->subject->onPostAutoloadDump(true);
+                $this->subject->onPostAutoloadDump($this->event->get());
 
                 $this->unlink->calledWith('/tmp/vendor/autoload.uninstrumented.php');
             });
@@ -139,7 +146,7 @@ describe(Plugin::class, function () {
             it('does not remove copy of the original composer file if it does not exist', function () {
                 $this->fileExists->with('/tmp/vendor/autoload.uninstrumented.php')->returns(false);
 
-                $this->subject->onPostAutoloadDump(true);
+                $this->subject->onPostAutoloadDump($this->event->get());
 
                 $this->unlink->never()->called();
             });
@@ -151,20 +158,20 @@ describe(Plugin::class, function () {
             });
 
             it('prints a message', function () {
-                $this->subject->onPostAutoloadDump(true);
+                $this->subject->onPostAutoloadDump($this->event->get());
 
                 $this->io->write->calledWith('Recoil code instrumentation is disabled (uninstalling recoil/dev)');
             });
 
             it('does not replace the composer autoloader', function () {
-                $this->subject->onPostAutoloadDump(true);
+                $this->subject->onPostAutoloadDump($this->event->get());
 
                 $this->copy->never()->called();
                 $this->filePutContents->never()->called();
             });
 
             it('removes the copy of the original composer file', function () {
-                $this->subject->onPostAutoloadDump(true);
+                $this->subject->onPostAutoloadDump($this->event->get());
 
                 $this->unlink->calledWith('/tmp/vendor/autoload.uninstrumented.php');
             });
@@ -172,7 +179,7 @@ describe(Plugin::class, function () {
             it('does not remove copy of the original composer file if it does not exist', function () {
                 $this->fileExists->with('/tmp/vendor/autoload.uninstrumented.php')->returns(false);
 
-                $this->subject->onPostAutoloadDump(true);
+                $this->subject->onPostAutoloadDump($this->event->get());
 
                 $this->unlink->never()->called();
             });
