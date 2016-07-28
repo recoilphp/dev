@@ -8,6 +8,7 @@ use PhpParser\Lexer;
 use PhpParser\Node;
 use PhpParser\Node\Expr\Yield_;
 use PhpParser\Node\FunctionLike;
+use PhpParser\Node\Name;
 use PhpParser\Node\Name\FullyQualified;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
@@ -21,8 +22,14 @@ use PhpParser\ParserFactory;
  */
 final class Instrumentor extends NodeVisitorAbstract
 {
-    public function __construct()
+    public function __construct(Mode $mode)
     {
+        $this->mode = $mode;
+
+        if ($this->mode === Mode::NONE()) {
+            return;
+        }
+
         $factory = new ParserFactory();
         $this->parser = $factory->create(
             ParserFactory::ONLY_PHP7,
@@ -34,8 +41,8 @@ final class Instrumentor extends NodeVisitorAbstract
             ]])
         );
 
+        $this->nameResolver = new NameResolver();
         $this->traverser = new NodeTraverser();
-        $this->traverser->addVisitor(new NameResolver());
         $this->traverser->addVisitor($this);
     }
 
@@ -48,7 +55,9 @@ final class Instrumentor extends NodeVisitorAbstract
      */
     public function instrument(string $source) : string
     {
-        if (\strpos($source, '@recoil-coroutine') === false) {
+        if ($this->mode === Mode::NONE()) {
+            return $source;
+        } elseif (\stripos($source, 'coroutine') === false) {
             return $source;
         }
 
@@ -59,18 +68,20 @@ final class Instrumentor extends NodeVisitorAbstract
         $ast = $this->parser->parse($source);
         $this->traverser->traverse($ast);
 
-        try {
-            return $this->output . \substr($this->input, $this->position);
-        } finally {
-            $this->input = '';
-            $this->output = '';
-        }
+        $output = $this->output . \substr($this->input, $this->position);
+        $this->input = '';
+        $this->output = '';
+
+        return $output;
     }
 
     /**
      * Add instrumentation to a coroutine.
+     *
+     * @param FunctionLike $node         The original AST node, as parsed from the source code.
+     * @param FunctionLike $resolvedNode The same AST node, after passing through the name resolver.
      */
-    private function instrumentCoroutine(FunctionLike $node)
+    private function instrumentCoroutine(FunctionLike $node, FunctionLike $resolvedNode)
     {
         $statements = $node->getStmts();
 
@@ -113,36 +124,22 @@ final class Instrumentor extends NodeVisitorAbstract
     /**
      * Check if an AST node represents a function that is a coroutine.
      *
-     * A function is considered a coroutine if it meets all of the following
-     * criteria:
+     * A function is considered a coroutine if it has a return type hint of
+     * "Coroutine" which is aliases to the "\Generator" type.
      *
-     *  - Has a return type hint that resolves to \Generator.
-     *  - Is annotated with @recoil-coroutine.
-     *  - Has at least one statement (generators MUST have a yield in the body).
+     * @param FunctionLike $node         The original AST node, as parsed from the source code.
+     * @param FunctionLike $resolvedNode The same AST node, after passing through the name resolver.
      */
-    private function isCoroutine(Node $node) : bool
+    private function isCoroutine(FunctionLike $node, FunctionLike $resolvedNode) : bool
     {
-        if (!$node instanceof FunctionLike) {
-            return false;
-        }
+        $hintReturnType = $node->getReturnType();
+        $realReturnType = $resolvedNode->getReturnType();
 
-        $returnType = $node->getReturnType();
-
-        if (!$returnType instanceof FullyQualified) {
-            return false;
-        } elseif ($returnType->toString() !== 'Generator') {
-            return false;
-        }
-
-        $doc = $node->getDocComment();
-
-        if ($doc === null) {
-            return false;
-        } elseif (!preg_match('/@recoil-coroutine\b/m', $doc->getText())) {
-            return false;
-        }
-
-        return !empty($node->getStmts());
+        return $realReturnType instanceof FullyQualified
+            && $hintReturnType instanceof Name
+            && $realReturnType->toString() === 'Generator'
+            && $hintReturnType->toString() === 'Coroutine'
+            && !empty($node->getStmts());
     }
 
     /**
@@ -156,18 +153,51 @@ final class Instrumentor extends NodeVisitorAbstract
     }
 
     /**
-     * Visit the given node.
-     *
+     * @access private
+     */
+    public function beforeTraverse(array $nodes)
+    {
+        return $this->nameResolver->beforeTraverse($nodes);
+    }
+
+    /**
      * @access private
      */
     public function enterNode(Node $node)
     {
-        if ($this->isCoroutine($node)) {
-            $this->instrumentCoroutine($node);
+        if ($node instanceof FunctionLike) {
+            $originalNode = clone $node;
+            $this->nameResolver->enterNode($node);
+            if ($this->isCoroutine($originalNode, $node)) {
+                $this->instrumentCoroutine($originalNode, $node);
+            }
+        } else {
+            $this->nameResolver->enterNode($node);
         }
     }
 
-    const TRACE_VARIABLE_NAME = "\$\xe2\x9d\xb0trace\xe2\x9d\xb1";
+    /**
+     * @access private
+     */
+    public function leaveNode(Node $node)
+    {
+        return $this->nameResolver->leaveNode($node);
+    }
+
+    /**
+     * @access private
+     */
+    public function afterTraverse(array $nodes)
+    {
+        return $this->nameResolver->afterTraverse($nodes);
+    }
+
+    const TRACE_VARIABLE_NAME = '$μ';
+
+    /**
+     * @var Mode The instrumentation mode.
+     */
+    private $mode;
 
     /**
      * @var Parser The PHP parser.

@@ -67,7 +67,7 @@ final class Plugin implements PluginInterface, EventSubscriberInterface
         }
 
         // Replace the %mode% place-holder ...
-        $content = strtr(
+        $content = str_replace(
             $content,
             '%mode%',
             var_export($this->instrumentationMode, true)

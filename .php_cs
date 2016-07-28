@@ -12,6 +12,7 @@ $finder = Symfony\CS\Finder\DefaultFinder::create()
             'src-web',
             'src-generated',
             'vendor',
+            'test/fixture/Instrumentation',
         )
     );
 

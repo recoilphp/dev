@@ -2,13 +2,14 @@
 <?php
 declare (strict_types = 1);
 
+use Recoil\Dev\Instrumentation\Mode;
 use Recoil\Dev\Instrumentation\Instrumentor;
 use Recoil\Dev\Instrumentation\Autoloader\Autoloader;
 use Recoil\Dev\Instrumentation\Autoloader\StreamWrapper;
 
 $composerLoader = require __DIR__ . '/../vendor/autoload.php';
 
-$instrumentor = new Instrumentor();
+$instrumentor = new Instrumentor(Mode::ALL());
 $scheme = StreamWrapper::install($instrumentor);
 $loader = new Autoloader($composerLoader, $scheme);
 $loader->register();

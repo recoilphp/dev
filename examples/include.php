@@ -2,42 +2,28 @@
 
 declare (strict_types = 1);
 
-namespace Foo;
+namespace Recoil\Dev\Examples;
 
-use Generator as Chump;
+use Generator as Coroutine;
 use Recoil\React\ReactKernel;
-use Recoil\Recoil;
-use Throwable;
 
-/**
- * @recoil-coroutine
- */
-function outer(int $value) : Chump
+function outer(int $value) : Coroutine
 {
     yield middle($value + 1);
 }
 
-/**
- * @recoil-coroutine
- */
-function middle(int $value) : \Generator
+function middle(int $value) : Coroutine
 {
     yield 0.25;
     yield inner($value + 1);
 }
 
-/**
- * @recoil-coroutine
- */
-function inner(int $value) : \Generator
+function inner(int $value) : Coroutine
 {
     yield from failer($value + 1);
 }
 
-/**
- * @recoil-coroutine
- */
-function failer(int $value) : Chump
+function failer(int $value) : Coroutine
 {
     yield;
     fail($value + 1);
@@ -48,17 +34,4 @@ function fail(int $value)
     throw new \Exception('<OH SHIT>');
 }
 
-// try {
-    ReactKernel::start(outer(100));
-// } catch (Throwable $e) {
-//     echo get_class($e), ': ', $e->getMessage(), PHP_EOL;
-//     echo 'Exception thrown on: ', $e->getFile(), ':', $e->getLine(), PHP_EOL;
-//     foreach ($e->getTrace() as $frame) {
-//         echo '---------------------------------------', PHP_EOL;
-//         foreach ($frame as $key => $value) {
-//             if ($key !== 'args') {
-//                 printf('%-10s: %s' . PHP_EOL, $key, $value);
-//             }
-//         }
-//     }
-// }
+ReactKernel::start(outer(100));
