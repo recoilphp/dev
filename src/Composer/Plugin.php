@@ -28,11 +28,20 @@ final class Plugin implements PluginInterface, EventSubscriberInterface
         $this->instrumentationMode = $extra['recoil']['instrumentation'] ?? Mode::ALL;
     }
 
+    /**
+     * Returns an array of event names this subscriber wants to listen to.
+     *
+     * @return array The event names to listen to.
+     */
     public static function getSubscribedEvents()
     {
         return [ScriptEvents::POST_AUTOLOAD_DUMP => 'onPostAutoloadDump'];
     }
 
+    /**
+     * Replaces the composer autoloader with an instrumenting autoloader, if
+     * configuration allows.
+     */
     public function onPostAutoloadDump($devMode)
     {
         assert($this->composer !== null, 'plugin not activated');
@@ -47,6 +56,9 @@ final class Plugin implements PluginInterface, EventSubscriberInterface
         }
     }
 
+    /**
+     * Replaces the composer autoloader with an instrumenting autoloader.
+     */
     private function installAutoloader()
     {
         $vendorDir = $this
