@@ -8,7 +8,7 @@ use Eloquent\Phony\Phony;
 
 describe(Instrumentor::class, function () {
 
-    $this->fixtures = glob(__DIR__ . '/../../fixture/Instrumentation/*.input.php');
+    $this->fixtures = glob(__DIR__ . '/../../fixture/Instrumentation/Instrumentor/*.input.php');
 
     context('when mode is ALL the code is instrumented', function () {
         beforeEach(function () {
