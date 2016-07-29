@@ -178,7 +178,7 @@ final class Trace implements StrandTrace
         foreach ($exception->getTrace() as $index => $frame) {
             if ($frame['recoil_synthesized'] ?? false) {
                 return;
-            } elseif (isset($frame['class']) && $frame['class'] === 'Generator') {
+            } elseif (($frame['class'] ?? '') === 'Generator') {
                 $updatedTrace[$index - 1]['file'] = $this->currentFile;
                 $updatedTrace[$index - 1]['line'] = $this->currentLine;
 
