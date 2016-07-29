@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2ce968cd6756e01666fe3d858e609f2e",
-    "content-hash": "9c35292a2e2314065e5f9bf8729643be",
+    "hash": "c76690b87ca832c19d49421f80c5459f",
+    "content-hash": "075eeaf8552658519d2e3419354c0c1b",
     "packages": [
         {
             "name": "eloquent/enumeration",
@@ -1127,21 +1127,21 @@
         },
         {
             "name": "recoil/peridot",
-            "version": "0.2.0",
+            "version": "0.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/recoilphp/peridot.git",
-                "reference": "45fc0368b4eb63c160280658dd7903ccb162dc4f"
+                "reference": "678f52be1e1f54e025b8dd4d422c823a55e513f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/recoilphp/peridot/zipball/45fc0368b4eb63c160280658dd7903ccb162dc4f",
-                "reference": "45fc0368b4eb63c160280658dd7903ccb162dc4f",
+                "url": "https://api.github.com/repos/recoilphp/peridot/zipball/678f52be1e1f54e025b8dd4d422c823a55e513f0",
+                "reference": "678f52be1e1f54e025b8dd4d422c823a55e513f0",
                 "shasum": ""
             },
             "require": {
                 "php": "^7",
-                "recoil/recoil": "^0.5"
+                "recoil/recoil": "^0.5|^0.6"
             },
             "require-dev": {
                 "eloquent/phony": "^0.13",
@@ -1181,20 +1181,20 @@
                 "testing",
                 "unit"
             ],
-            "time": "2016-07-18 04:23:19"
+            "time": "2016-07-29 03:50:49"
         },
         {
             "name": "recoil/recoil",
-            "version": "dev-master",
+            "version": "0.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/recoilphp/recoil.git",
-                "reference": "ef24bf316c044d8042d16c43b9f18e82c9cdee77"
+                "reference": "4b24c810b96565f6ab297903a662d87b5aa9eaae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/recoilphp/recoil/zipball/ef24bf316c044d8042d16c43b9f18e82c9cdee77",
-                "reference": "ef24bf316c044d8042d16c43b9f18e82c9cdee77",
+                "url": "https://api.github.com/repos/recoilphp/recoil/zipball/4b24c810b96565f6ab297903a662d87b5aa9eaae",
+                "reference": "4b24c810b96565f6ab297903a662d87b5aa9eaae",
                 "shasum": ""
             },
             "require": {
@@ -1244,7 +1244,7 @@
                 "multitasking",
                 "react"
             ],
-            "time": "2016-07-27 02:54:54"
+            "time": "2016-07-29 03:45:29"
         },
         {
             "name": "sebastian/diff",
@@ -1897,18 +1897,9 @@
             "time": "2016-06-29 05:41:56"
         }
     ],
-    "aliases": [
-        {
-            "alias": "0.5.999-dev",
-            "alias_normalized": "0.5.999.0-dev",
-            "version": "9999999-dev",
-            "package": "recoil/recoil"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "recoil/recoil": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
