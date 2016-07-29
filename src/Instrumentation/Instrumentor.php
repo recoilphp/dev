@@ -16,8 +16,7 @@ use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\NodeVisitorAbstract;
-use PhpParser\Parser;
-use PhpParser\ParserFactory;
+use PhpParser\Parser\Php7;
 use SplStack;
 
 /**
@@ -182,30 +181,32 @@ final class Instrumentor extends NodeVisitorAbstract
     public function enterNode(Node $node)
     {
         if ($node instanceof FunctionLike) {
-            $this->functionStack->push($node);
-
-            // Get the return type out before it is replaced by the name
-            // resolver ...
-            $returnType = $node->getReturnType();
+            $this->enterFunction($node);
+        } else {
             $this->nameResolver->enterNode($node);
 
-            $isCoroutine = $this->isCoroutine($node, $returnType);
-            $node->setAttribute('isCoroutine', $isCoroutine);
-
-            if ($isCoroutine) {
-                $this->instrumentCoroutine($node);
+            if (
+                $node instanceof Yield_ &&
+                $this->functionStack->top()->hasAttribute('isCoroutine')
+            ) {
+                $this->instrumentYield($node);
             }
-
-            return;
         }
+    }
 
-        $this->nameResolver->enterNode($node);
+    private function enterFunction(FunctionLike $function)
+    {
+        // Take a copy of the "unresolved" return type before passing the node
+        // through the name resolver, as both are required to determine if this
+        // function is a coroutine ...
+        $unresolvedReturnType = $function->getReturnType();
+        $this->nameResolver->enterNode($function);
 
-        if (
-            $node instanceof Yield_ &&
-            $this->functionStack->top()->getAttribute('isCoroutine')
-        ) {
-            $this->instrumentYield($node);
+        $this->functionStack->push($function);
+
+        if ($this->isCoroutine($function, $unresolvedReturnType)) {
+            $function->setAttribute('isCoroutine', true);
+            $this->instrumentCoroutine($function);
         }
     }
 
@@ -245,15 +246,7 @@ final class Instrumentor extends NodeVisitorAbstract
      */
     public function __construct(Mode $mode)
     {
-        $this->mode = $mode;
-
-        if ($this->mode === Mode::NONE()) {
-            return;
-        }
-
-        $factory = new ParserFactory();
-        $this->parser = $factory->create(
-            ParserFactory::ONLY_PHP7,
+        $this->parser = new Php7(
             new Lexer(['usedAttributes' => [
                 'comments',
                 'startLine',
@@ -262,6 +255,7 @@ final class Instrumentor extends NodeVisitorAbstract
             ]])
         );
 
+        $this->mode = $mode;
         $this->nameResolver = new NameResolver();
         $this->traverser = new NodeTraverser();
         $this->traverser->addVisitor($this);

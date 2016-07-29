@@ -21,30 +21,26 @@ final class Trace implements StrandTrace
      */
     public static function install() : Awaitable
     {
-        if (self::$installer === null) {
-            self::$installer = new class() implements Awaitable
+        return new class() implements Awaitable
+        {
+            public function await(Listener $listener, Api $api)
             {
-                public function await(Listener $listener, Api $api)
-                {
-                    assert($listener instanceof Strand);
+                assert($listener instanceof Strand);
 
-                    $trace = $listener->trace();
+                $trace = $listener->trace();
 
-                    if ($trace === null) {
-                        $trace = new Trace();
-                        $listener->setTrace($trace);
-                    }
-
-                    if ($trace instanceof Trace) {
-                        $listener->send($trace);
-                    } else {
-                        $listener->send(null);
-                    }
+                if ($trace === null) {
+                    $trace = new Trace();
+                    $listener->setTrace($trace);
                 }
-            };
-        }
 
-        return self::$installer;
+                if ($trace instanceof Trace) {
+                    $listener->send($trace);
+                } else {
+                    $listener->send(null);
+                }
+            }
+        };
     }
 
     /**
@@ -227,11 +223,6 @@ final class Trace implements StrandTrace
             self::$errorTraceProperty->setAccessible(true);
         }
     }
-
-    /**
-     * @var Awaitable|null
-     */
-    private static $installer;
 
     /**
      * @var ReflectionProperty The Exception::trace property.
