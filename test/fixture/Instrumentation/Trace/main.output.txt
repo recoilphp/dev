@@ -1,0 +1,2 @@
+#0 Unknown(0): Peridot\Core\Scope->Recoil\Dev\Instrumentation\{closure}()
+#1 {main}

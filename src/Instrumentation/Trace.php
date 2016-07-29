@@ -4,19 +4,44 @@ declare (strict_types = 1); // @codeCoverageIgnore
 
 namespace Recoil\Dev\Instrumentation;
 
+use Error;
+use Exception;
+use Recoil\Kernel\Api;
 use Recoil\Kernel\Awaitable;
+use Recoil\Kernel\Listener;
 use Recoil\Kernel\Strand;
 use Recoil\Kernel\StrandTrace;
-use ReflectionException;
 use ReflectionProperty;
 use Throwable;
 
 final class Trace implements StrandTrace
 {
+    /**
+     * Install a trace on the current strand.
+     */
     public static function install() : Awaitable
     {
         if (self::$installer === null) {
-            self::$installer = new TraceInstaller();
+            self::$installer = new class() implements Awaitable
+            {
+                public function await(Listener $listener, Api $api)
+                {
+                    assert($listener instanceof Strand);
+
+                    $trace = $listener->trace();
+
+                    if ($trace === null) {
+                        $trace = new Trace();
+                        $listener->setTrace($trace);
+                    }
+
+                    if ($trace instanceof Trace) {
+                        $listener->send($trace);
+                    } else {
+                        $listener->send(null);
+                    }
+                }
+            };
         }
 
         return self::$installer;
@@ -104,7 +129,7 @@ final class Trace implements StrandTrace
      */
     public function resume(Strand $strand, int $depth, string $action, $value)
     {
-        if ($action === 'throw' && $this->hasMutableTrace($value)) {
+        if ($action === 'throw') {
             $this->updateStackTrace($value);
 
         // Trapping the resume of the instrumentation code to setup the initial
@@ -136,6 +161,9 @@ final class Trace implements StrandTrace
      */
     public function exit(Strand $strand, int $depth, string $action, $value)
     {
+        if ($action === 'throw') {
+            $this->updateStackTrace($value);
+        }
     }
 
     /**
@@ -167,31 +195,43 @@ final class Trace implements StrandTrace
         }
 
         // Replace the exception's trace property with the updated stack trace ...
-        $property = new ReflectionProperty($exception, 'trace');
-        $property->setAccessible(true);
-        $property->setValue($exception, $updatedTrace);
-    }
-
-    /**
-     * Check if an exception has a "trace" property that can be modified.
-     */
-    private function hasMutableTrace(Throwable $exception) : bool
-    {
-        try {
-            $property = new ReflectionProperty($exception, 'trace');
-            $className = $property->getDeclaringClass()->getName();
-        } catch (ReflectionException $e) {
-            return false;
+        if ($exception instanceof Error) {
+            self::$errorTraceProperty->setValue($exception, $updatedTrace);
+        } else {
+            self::$exceptionTraceProperty->setValue($exception, $updatedTrace);
         }
-
-        return $className === 'Exception' ||
-               $className === 'Error';
     }
 
     /**
-     * @var TraceInstaller|null
+     * @access private
+     *
+     * @see Trace::install()
+     */
+    public function __construct()
+    {
+        if (self::$exceptionTraceProperty === null) {
+            self::$exceptionTraceProperty = new ReflectionProperty(Exception::class, 'trace');
+            self::$exceptionTraceProperty->setAccessible(true);
+
+            self::$errorTraceProperty = new ReflectionProperty(Error::class, 'trace');
+            self::$errorTraceProperty->setAccessible(true);
+        }
+    }
+
+    /**
+     * @var Awaitable|null
      */
     private static $installer;
+
+    /**
+     * @var ReflectionProperty The Exception::trace property.
+     */
+    private static $exceptionTraceProperty;
+
+    /**
+     * @var ReflectionProperty The Error::trace property.
+     */
+    private static $errorTraceProperty;
 
     /**
      * @var string The filename of the currently executing coroutine.
