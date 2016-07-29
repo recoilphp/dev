@@ -5,9 +5,11 @@
 
 use Generator as Coroutine;
 
-function () {
+function () : Coroutine {
     function () : Coroutine {
         yield 1;
         yield 2;
     };
+
+    yield 3;
 };
