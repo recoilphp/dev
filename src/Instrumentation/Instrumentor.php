@@ -78,21 +78,16 @@ final class Instrumentor extends NodeVisitorAbstract
             return;
         }
 
-        // Insert a 'coroutine trace' at the first statement of the coroutine ...
         $firstStatement = $statements[0];
+        $function->setAttribute('lastInstrumentedLine', $firstStatement->getLine());
         $this->consume($firstStatement->getAttribute('startFilePos'));
-        $function->lastInstrumentedLine = $firstStatement->getAttribute('startLine');
 
-        $this->output .= \sprintf(
-            'assert(!\class_exists(\\%s::class) || (%s = yield \\%s::install()) || true); ',
+        $this->inject(
+            '(%s = \class_exists(\\%s::class) ? yield \\%s::install() : null) && '
+            . '%s->setCoroutine(__FILE__, __LINE__, __CLASS__, __FUNCTION__, %s, \func_get_args())',
+            self::TRACE_VARIABLE_NAME,
             Trace::class,
-            self::TRACE_VARIABLE_NAME,
-            Trace::class
-        );
-
-        $this->output .= \sprintf(
-            'assert(!isset(%s) || %s->setCoroutine(__FILE__, __LINE__, __CLASS__, __FUNCTION__, %s, \func_get_args()) || true); ',
-            self::TRACE_VARIABLE_NAME,
+            Trace::class,
             self::TRACE_VARIABLE_NAME,
             var_export($this->callType($function), true)
         );
@@ -106,13 +101,14 @@ final class Instrumentor extends NodeVisitorAbstract
     private function instrumentYield(Yield_ $yield)
     {
         $function = $this->functionStack->top();
+        $startLine = $yield->getLine();
 
-        if ($yield->getAttribute('startLine') > $function->lastInstrumentedLine) {
+        if ($startLine > $function->getAttribute('lastInstrumentedLine')) {
+            $function->setAttribute('lastInstrumentedLine', $startLine);
             $this->consume($yield->getAttribute('startFilePos'));
-            $function->lastInstrumentedLine = $yield->getAttribute('startLine');
 
-            $this->output .= \sprintf(
-                'assert(!isset(%s) || %s->setLine(__LINE__) || true); ',
+            $this->inject(
+                '%s && %s->setLine(__LINE__)',
                 self::TRACE_VARIABLE_NAME,
                 self::TRACE_VARIABLE_NAME
             );
@@ -165,6 +161,14 @@ final class Instrumentor extends NodeVisitorAbstract
     }
 
     /**
+     * Injection instrumentation code inside an assertion.
+     */
+    private function inject(string $pattern, string ...$arguments)
+    {
+        $this->output .= 'assert((' . sprintf($pattern, ...$arguments) . ') || true); ';
+    }
+
+    /**
      * @access private
      */
     public function beforeTraverse(array $nodes)
@@ -180,11 +184,15 @@ final class Instrumentor extends NodeVisitorAbstract
         if ($node instanceof FunctionLike) {
             $this->functionStack->push($node);
 
+            // Get the return type out before it is replaced by the name
+            // resolver ...
             $returnType = $node->getReturnType();
             $this->nameResolver->enterNode($node);
-            $node->isCoroutine = $this->isCoroutine($node, $returnType);
 
-            if ($node->isCoroutine) {
+            $isCoroutine = $this->isCoroutine($node, $returnType);
+            $node->setAttribute('isCoroutine', $isCoroutine);
+
+            if ($isCoroutine) {
                 $this->instrumentCoroutine($node);
             }
 
@@ -195,7 +203,7 @@ final class Instrumentor extends NodeVisitorAbstract
 
         if (
             $node instanceof Yield_ &&
-            $this->functionStack->top()->isCoroutine
+            $this->functionStack->top()->getAttribute('isCoroutine')
         ) {
             $this->instrumentYield($node);
         }
