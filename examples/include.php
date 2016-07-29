@@ -9,29 +9,40 @@ use Recoil\React\ReactKernel;
 
 function outer(int $value) : Coroutine
 {
-    yield middle($value + 1);
+    $closure = function ($value) : Coroutine {
+        yield middle($value + 1);
+    };
+
+    yield $closure($value + 1);
 }
 
 function middle(int $value) : Coroutine
 {
     yield 0.25;
-    yield inner($value + 1);
+    yield Fail::inner($value + 1);
 }
 
-function inner(int $value) : Coroutine
+class Fail
 {
-    yield from failer($value + 1);
-}
+    public static function inner(int $value) : Coroutine
+    {
+        $closure = function ($value) : Coroutine {
+            yield Fail::failer($value + 1);
+        };
 
-function failer(int $value) : Coroutine
-{
-    yield;
-    fail($value + 1);
-}
+        yield $closure($value + 1);
+    }
 
-function fail(int $value)
-{
-    throw new \Exception('<OH SHIT>');
+    public static function failer(int $value) : Coroutine
+    {
+        yield;
+        self::fail($value + 1);
+    }
+
+    public static function fail(int $value)
+    {
+        throw new \Exception('<OH SHIT>');
+    }
 }
 
 ReactKernel::start(outer(100));

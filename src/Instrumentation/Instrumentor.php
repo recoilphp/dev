@@ -6,15 +6,19 @@ namespace Recoil\Dev\Instrumentation;
 
 use PhpParser\Lexer;
 use PhpParser\Node;
+use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Expr\Yield_;
 use PhpParser\Node\FunctionLike;
 use PhpParser\Node\Name;
 use PhpParser\Node\Name\FullyQualified;
+use PhpParser\Node\Stmt\Class_;
+use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\NodeVisitorAbstract;
 use PhpParser\Parser;
 use PhpParser\ParserFactory;
+use SplStack;
 
 /**
  * Instruments PHP code to provide additional debugging / trace information to
@@ -64,15 +68,20 @@ final class Instrumentor extends NodeVisitorAbstract
     /**
      * Add instrumentation to a coroutine.
      *
-     * @param FunctionLike $node The original AST node, as parsed from the source code.
+     * @param FunctionLike $node The AST node representing the function.
      */
-    private function instrumentCoroutine(FunctionLike $node)
+    private function instrumentCoroutine(FunctionLike $function)
     {
-        $statements = $node->getStmts();
+        $statements = $function->getStmts();
+
+        if (empty($statements)) {
+            return;
+        }
 
         // Insert a 'coroutine trace' at the first statement of the coroutine ...
-        $this->consume($statements[0]->getAttribute('startFilePos'));
-        $this->lastLine = $statements[0]->getAttribute('startLine');
+        $firstStatement = $statements[0];
+        $this->consume($firstStatement->getAttribute('startFilePos'));
+        $function->lastInstrumentedLine = $firstStatement->getAttribute('startLine');
 
         $this->output .= \sprintf(
             'assert(!\class_exists(\\%s::class) || (%s = yield \\%s::install()) || true); ',
@@ -82,28 +91,48 @@ final class Instrumentor extends NodeVisitorAbstract
         );
 
         $this->output .= \sprintf(
-            'assert(!isset(%s) || %s->setCoroutine(__FILE__, __LINE__, __FUNCTION__, \func_get_args()) || true); ',
+            'assert(!isset(%s) || %s->setCoroutine(__FILE__, __LINE__, __CLASS__, __FUNCTION__, %s, \func_get_args()) || true); ',
             self::TRACE_VARIABLE_NAME,
-            self::TRACE_VARIABLE_NAME
+            self::TRACE_VARIABLE_NAME,
+            var_export($this->callType($function), true)
         );
+    }
 
-        // Search all statements for yields and insert 'yield traces' ...
-        foreach ($statements as $statement) {
-            if ($statement instanceof Yield_) {
-                $lineNumber = $statement->getAttribute('startLine');
+    /**
+     * Add instrumentation to a yield statement inside a coroutine.
+     *
+     * @param Yield_ $node The AST node representing the yield statement.
+     */
+    private function instrumentYield(Yield_ $yield)
+    {
+        $function = $this->functionStack->top();
 
-                if ($lineNumber > $this->lastLine) {
-                    $this->lastLine = $lineNumber;
-                    $this->consume($statement->getAttribute('startFilePos'));
+        if ($yield->getAttribute('startLine') > $function->lastInstrumentedLine) {
+            $this->consume($yield->getAttribute('startFilePos'));
+            $function->lastInstrumentedLine = $yield->getAttribute('startLine');
 
-                    $this->output .= \sprintf(
-                        'assert(!isset(%s) || %s->setLine(__LINE__) || true); ',
-                        self::TRACE_VARIABLE_NAME,
-                        self::TRACE_VARIABLE_NAME
-                    );
-                }
-            }
+            $this->output .= \sprintf(
+                'assert(!isset(%s) || %s->setLine(__LINE__) || true); ',
+                self::TRACE_VARIABLE_NAME,
+                self::TRACE_VARIABLE_NAME
+            );
         }
+    }
+
+    /**
+     * Get the "type" of the call, as described debug_backtrace().
+     */
+    private function callType(FunctionLike $node) : string
+    {
+        if ($node instanceof Closure) {
+            $isStatic = $node->static;
+        } elseif ($node instanceof ClassMethod) {
+            $isStatic = $node->type & Class_::MODIFIER_STATIC;
+        } else {
+            return '';
+        }
+
+        return $isStatic ? '::' : '->';
     }
 
     /**
@@ -112,19 +141,17 @@ final class Instrumentor extends NodeVisitorAbstract
      * A function is considered a coroutine if it has a return type hint of
      * "Coroutine" which is aliases to the "\Generator" type.
      *
-     * @param FunctionLike $node         The original AST node, as parsed from the source code.
-     * @param FunctionLike $resolvedNode The same AST node, after passing through the name resolver.
+     * @param FunctionLike     $node           The AST node, after passing through the name resolver.
+     * @param Name|string|null $hintReturnType The original return type, before name resolution.
      */
-    private function isCoroutine(FunctionLike $node, FunctionLike $resolvedNode) : bool
+    private function isCoroutine(FunctionLike $node, $hintReturnType) : bool
     {
-        $hintReturnType = $node->getReturnType();
-        $realReturnType = $resolvedNode->getReturnType();
+        $realReturnType = $node->getReturnType();
 
         return $realReturnType instanceof FullyQualified
             && $hintReturnType instanceof Name
             && \strcasecmp($realReturnType->toString(), 'Generator') === 0
-            && \strcasecmp($hintReturnType->toString(), 'Coroutine') === 0
-            && !empty($node->getStmts());
+            && \strcasecmp($hintReturnType->toString(), 'Coroutine') === 0;
     }
 
     /**
@@ -151,13 +178,26 @@ final class Instrumentor extends NodeVisitorAbstract
     public function enterNode(Node $node)
     {
         if ($node instanceof FunctionLike) {
-            $originalNode = clone $node;
+            $this->functionStack->push($node);
+
+            $returnType = $node->getReturnType();
             $this->nameResolver->enterNode($node);
-            if ($this->isCoroutine($originalNode, $node)) {
-                $this->instrumentCoroutine($originalNode);
+            $node->isCoroutine = $this->isCoroutine($node, $returnType);
+
+            if ($node->isCoroutine) {
+                $this->instrumentCoroutine($node);
             }
-        } else {
-            $this->nameResolver->enterNode($node);
+
+            return;
+        }
+
+        $this->nameResolver->enterNode($node);
+
+        if (
+            $node instanceof Yield_ &&
+            $this->functionStack->top()->isCoroutine
+        ) {
+            $this->instrumentYield($node);
         }
     }
 
@@ -166,6 +206,10 @@ final class Instrumentor extends NodeVisitorAbstract
      */
     public function leaveNode(Node $node)
     {
+        if ($node instanceof FunctionLike) {
+            $this->functionStack->pop();
+        }
+
         return $this->nameResolver->leaveNode($node);
     }
 
@@ -213,6 +257,7 @@ final class Instrumentor extends NodeVisitorAbstract
         $this->nameResolver = new NameResolver();
         $this->traverser = new NodeTraverser();
         $this->traverser->addVisitor($this);
+        $this->functionStack = new SplStack();
     }
 
     const TRACE_VARIABLE_NAME = '$μ';
@@ -254,8 +299,7 @@ final class Instrumentor extends NodeVisitorAbstract
     private $position;
 
     /**
-     * @var int The most recent line number where instrumentation updated the
-     *          strand trace.
+     * @var SplStack<FunctionLike> The stack of functions being traversed.
      */
-    private $lastLine;
+    private $functionStack;
 }
