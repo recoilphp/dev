@@ -64,7 +64,7 @@ final class StreamWrapper
 
         // The code could not be instrumented, just load the original file ...
         if ($stream === false) {
-            $stream = fopen($path, $mode);
+            $stream = \fopen($path, $mode);
 
             if ($stream === false) {
                 return false;
@@ -85,7 +85,7 @@ final class StreamWrapper
      */
     public function stream_read(int $count) : string
     {
-        return fread($this->stream, $count);
+        return \fread($this->stream, $count);
     }
 
     /**
@@ -96,7 +96,7 @@ final class StreamWrapper
      */
     public function stream_close() : bool
     {
-        return fclose($this->stream);
+        return \fclose($this->stream);
     }
 
     /**
@@ -107,7 +107,7 @@ final class StreamWrapper
      */
     public function stream_eof() : bool
     {
-        return feof($this->stream);
+        return \feof($this->stream);
     }
 
     /**
@@ -120,7 +120,7 @@ final class StreamWrapper
      */
     public function stream_stat()
     {
-        return fstat($this->stream);
+        return \fstat($this->stream);
     }
 
     /**
@@ -135,7 +135,7 @@ final class StreamWrapper
     {
         list(, $path) = self::parse($path);
 
-        return @stat($path);
+        return @\stat($path);
     }
 
     /**
@@ -161,7 +161,7 @@ final class StreamWrapper
      */
     private function openInstrumentedStream(string $scheme, string $path)
     {
-        $source = file_get_contents($path);
+        $source = \file_get_contents($path);
 
         if ($source === false) {
             return false;
@@ -178,13 +178,13 @@ final class StreamWrapper
         }
 
         // Write the instrumented code to a temporary file ...
-        $stream = tmpfile();
+        $stream = \tmpfile();
 
-        if (fwrite($stream, $source) === false) {
+        if (\fwrite($stream, $source) === false) {
             return false;
         }
 
-        if (fseek($stream, 0) === false) {
+        if (\fseek($stream, 0) === false) {
             return false;
         }
 
