@@ -6,7 +6,8 @@
         "php": "^7",
         "composer-plugin-api": "^1",
         "eloquent/enumeration": "^5",
-        "nikic/php-parser": "^2.1"
+        "nikic/php-parser": "^2.1",
+        "recoil/recoil": "0.6.0"
     },
     "require-dev": {
         "composer/composer": "1.0.0",
@@ -15,18 +16,14 @@
         "peridot-php/leo": "^1",
         "peridot-php/peridot": "^1",
         "peridot-php/peridot-code-coverage-reporters": "^2",
-        "recoil/peridot": "^0.2",
-        "recoil/recoil": "0.6.0"
+        "recoil/peridot": "^0.2"
     },
     "autoload": {
         "psr-4": { "Recoil\\Dev\\": "src" }
     },
     "autoload-dev": { "psr-4" : { "Recoil\\Dev\\": "test/src" }},
     "extra": {
-        "class": "Recoil\\Dev\\Composer\\Plugin",
-        "recoil": {
-            "instrumentation": "none"
-        }
+        "class": "Recoil\\Dev\\Composer\\Plugin"
     },
     "keywords": [
         "async",
