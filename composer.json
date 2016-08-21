@@ -23,7 +23,7 @@
     },
     "autoload-dev": {
         "psr-4" : { "Recoil\\Dev\\": "test/src" },
-        "files": [ "test/src/functions.php" ]
+        "files": [ "test/src/Peridot/dsl.php" ]
     },
     "extra": {
         "class": "Recoil\\Dev\\Composer\\Plugin"
