@@ -19,12 +19,10 @@
         "recoil/peridot": "^0.2"
     },
     "autoload": {
-        "psr-4": { "Recoil\\Dev\\": "src" }
+        "psr-4": { "Recoil\\Dev\\": "src" },
+        "files": [ "src/Peridot/dsl.php" ]
     },
-    "autoload-dev": {
-        "psr-4" : { "Recoil\\Dev\\": "test/src" },
-        "files": [ "test/src/Peridot/dsl.php" ]
-    },
+    "autoload-dev": { "psr-4" : { "Recoil\\Dev\\": "test/src" } },
     "extra": {
         "class": "Recoil\\Dev\\Composer\\Plugin"
     },

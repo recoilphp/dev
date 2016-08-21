@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types = 1); // @codeCoverageIgnore
+declare(strict_types=1); // @codeCoverageIgnore
 
 namespace Recoil\Dev\Composer;
 
@@ -14,7 +14,6 @@ use Eloquent\Phony\Phony;
 use ReflectionClass;
 
 describe(Plugin::class, function () {
-
     beforeEach(function () {
         $this->composer = Phony::mock(Composer::class);
         $this->io = Phony::mock(IOInterface::class);
@@ -185,5 +184,4 @@ describe(Plugin::class, function () {
             });
         });
     });
-
 });
