@@ -25,10 +25,14 @@ final class Scope extends BaseScope
         EventEmitterInterface $emitter,
         callable $factory
     ) {
-        $scope = new self($factory());
+        $scope = new self();
 
         $emitter->on('suite.start', function ($test) use ($scope) {
             $test->getScope()->peridotAddChildScope($scope);
+        });
+
+        $emitter->on('test.start', function ($test) use ($scope, $factory) {
+            $scope->setKernel($factory());
         });
     }
 
@@ -41,11 +45,9 @@ final class Scope extends BaseScope
     }
 
     /**
-     * @access private
-     *
-     * @param Kernel $kernel The kernel to expose in the scope.
+     * Set the kernel.
      */
-    public function __construct(Kernel $kernel)
+    public function setKernel(Kernel $kernel)
     {
         $this->kernel = $kernel;
     }

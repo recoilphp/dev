@@ -5,7 +5,6 @@ declare(strict_types=1); // @codeCoverageIgnore
 namespace Recoil;
 
 use Eloquent\Phony\Phony;
-use Recoil\Recoil;
 
 context('kernel/strand-trace', function () {
     beforeEach(function () {

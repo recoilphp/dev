@@ -4,8 +4,8 @@ declare(strict_types=1); // @codeCoverageIgnore
 
 namespace Recoil;
 
-use Exception;
 use Eloquent\Phony\Phony;
+use Exception;
 
 context('api/thenable', function () {
     context('when it has a then method', function () {
