@@ -16,7 +16,7 @@ function rit(string $description, callable $test)
     Context::getInstance()->addTest(
         $description,
         function () use ($test) {
-            Executor::execute($this->kernel());
+            $executor = Executor::create($this->kernel());
             $executor->execute($test);
         }
     );
