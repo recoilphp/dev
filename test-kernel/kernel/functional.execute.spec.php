@@ -8,121 +8,123 @@ use Generator;
 use InvalidArgumentException;
 use Recoil\Kernel\Api;
 
-it('accepts a generator object', function () {
-    $this->kernel()->execute((function () {
-        echo '<ok>';
+context('kernel/execute', function () {
+    it('accepts a generator object', function () {
+        $this->kernel()->execute((function () {
+            echo '<ok>';
 
-        return;
-        yield;
-    })());
+            return;
+            yield;
+        })());
 
-    ob_start();
-    $this->kernel()->run();
-    expect(ob_get_clean())->to->equal('<ok>');
-});
-
-it('accepts a generator function', function () {
-    $this->kernel()->execute(function () {
-        echo '<ok>';
-
-        return;
-        yield;
+        ob_start();
+        $this->kernel()->run();
+        expect(ob_get_clean())->to->equal('<ok>');
     });
 
-    ob_start();
-    $this->kernel()->run();
-    expect(ob_get_clean())->to->equal('<ok>');
-});
-
-it('does not accept regular functions', function () {
-    try {
+    it('accepts a generator function', function () {
         $this->kernel()->execute(function () {
+            echo '<ok>';
+
+            return;
+            yield;
         });
-    } catch (InvalidArgumentException $e) {
-        expect($e->getMessage())->to->equal('Callable must return a generator.');
-    }
-});
 
-it('accepts a coroutine provider', function () {
-    $this->kernel()->execute(new class() implements CoroutineProvider {
-        public function coroutine() : Generator
-        {
-            echo '<ok>';
+        ob_start();
+        $this->kernel()->run();
+        expect(ob_get_clean())->to->equal('<ok>');
+    });
 
-            return;
-            yield;
+    it('does not accept regular functions', function () {
+        try {
+            $this->kernel()->execute(function () {
+            });
+        } catch (InvalidArgumentException $e) {
+            expect($e->getMessage())->to->equal('Callable must return a generator.');
         }
     });
 
-    ob_start();
-    $this->kernel()->run();
-    expect(ob_get_clean())->to->equal('<ok>');
-});
+    it('accepts a coroutine provider', function () {
+        $this->kernel()->execute(new class() implements CoroutineProvider {
+            public function coroutine() : Generator
+            {
+                echo '<ok>';
 
-it('accepts an awaitable provider', function () {
-    $this->kernel()->execute(new class() implements AwaitableProvider {
-        public function awaitable() : Awaitable
-        {
-            return new class() implements Awaitable {
-                public function await(Listener $listener)
-                {
-                    echo '<ok>';
-                }
-            };
-        }
+                return;
+                yield;
+            }
+        });
+
+        ob_start();
+        $this->kernel()->run();
+        expect(ob_get_clean())->to->equal('<ok>');
     });
 
-    ob_start();
-    $this->kernel()->run();
-    expect(ob_get_clean())->to->equal('<ok>');
-});
+    it('accepts an awaitable provider', function () {
+        $this->kernel()->execute(new class() implements AwaitableProvider {
+            public function awaitable() : Awaitable
+            {
+                return new class() implements Awaitable {
+                    public function await(Listener $listener)
+                    {
+                        echo '<ok>';
+                    }
+                };
+            }
+        });
 
-it('accepts an awaitable', function () {
-    $this->kernel()->execute(new class() implements Awaitable {
-        public function await(Listener $listener)
-        {
-            echo '<ok>';
-        }
+        ob_start();
+        $this->kernel()->run();
+        expect(ob_get_clean())->to->equal('<ok>');
     });
 
-    ob_start();
-    $this->kernel()->run();
-    expect(ob_get_clean())->to->equal('<ok>');
-});
+    it('accepts an awaitable', function () {
+        $this->kernel()->execute(new class() implements Awaitable {
+            public function await(Listener $listener)
+            {
+                echo '<ok>';
+            }
+        });
 
-it('dispatches other types via the kernel api', function () {
-    $this->kernel()->execute([
-        function () {
-            echo '<ok>';
+        ob_start();
+        $this->kernel()->run();
+        expect(ob_get_clean())->to->equal('<ok>');
+    });
 
-            return;
-            yield;
-        },
-    ]);
+    it('dispatches other types via the kernel api', function () {
+        $this->kernel()->execute([
+            function () {
+                echo '<ok>';
 
-    ob_start();
-    $this->kernel()->run();
-    expect(ob_get_clean())->to->equal('<ok>');
-});
+                return;
+                yield;
+            },
+        ]);
 
-it('returns the strand', function () {
-    $strand = $this->kernel()->execute('<coroutine>');
-    expect($strand)->to->be->an->instanceof(Strand::class);
-});
+        ob_start();
+        $this->kernel()->run();
+        expect(ob_get_clean())->to->equal('<ok>');
+    });
 
-it('defers execution', function () {
-    ob_start();
-    $this->kernel()->execute([
-        function () {
-            echo '<ok>';
+    it('returns the strand', function () {
+        $strand = $this->kernel()->execute('<coroutine>');
+        expect($strand)->to->be->an->instanceof(Strand::class);
+    });
 
-            return;
-            yield;
-        },
-    ]);
-    expect(ob_get_clean())->to->equal('');
+    it('defers execution', function () {
+        ob_start();
+        $this->kernel()->execute([
+            function () {
+                echo '<ok>';
 
-    ob_start();
-    $this->kernel()->run();
-    expect(ob_get_clean())->to->equal('<ok>');
+                return;
+                yield;
+            },
+        ]);
+        expect(ob_get_clean())->to->equal('');
+
+        ob_start();
+        $this->kernel()->run();
+        expect(ob_get_clean())->to->equal('<ok>');
+    });
 });

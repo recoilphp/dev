@@ -6,36 +6,38 @@ namespace Recoil;
 
 use Recoil\Kernel\Strand;
 
-rit('yields control to another strand', function () {
-    ob_start();
+context('api/cooperate', function () {
+    rit('yields control to another strand', function () {
+        ob_start();
 
-    yield Recoil::execute(function () {
-        echo 'b';
+        yield Recoil::execute(function () {
+            echo 'b';
 
-        return;
-        yield;
+            return;
+            yield;
+        });
+
+        echo 'a';
+        yield Recoil::cooperate();
+        echo 'c';
+
+        expect(ob_get_clean())->to->equal('abc');
     });
 
-    echo 'a';
-    yield Recoil::cooperate();
-    echo 'c';
+    rit('can be invoked by yielding null', function () {
+        ob_start();
 
-    expect(ob_get_clean())->to->equal('abc');
-});
+        yield Recoil::execute(function () {
+            echo 'b';
 
-rit('can be invoked by yielding null', function () {
-    ob_start();
+            return;
+            yield;
+        });
 
-    yield Recoil::execute(function () {
-        echo 'b';
-
-        return;
+        echo 'a';
         yield;
+        echo 'c';
+
+        expect(ob_get_clean())->to->equal('abc');
     });
-
-    echo 'a';
-    yield;
-    echo 'c';
-
-    expect(ob_get_clean())->to->equal('abc');
 });

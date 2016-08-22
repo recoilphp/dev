@@ -2,12 +2,12 @@
 
 declare(strict_types=1); // @codeCoverageIgnore
 
-namespace Recoil\Kernel;
+namespace Recoil;
 
 use Eloquent\Phony\Phony;
 use Recoil\Recoil;
 
-describe(StrandTrait::class, function () {
+context('kernel/strand-trace', function () {
     beforeEach(function () {
         $this->trace = Phony::mock(StrandTrace::class);
     });

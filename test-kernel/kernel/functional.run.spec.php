@@ -4,7 +4,7 @@ declare(strict_types=1); // @codeCoverageIgnore
 
 namespace Recoil;
 
-describe('->run()', function () {
+context('kernel/run', function () {
     it('waits for all strands to exit', function () {
         $this->kernel()->execute(function () {
             echo 'a';
