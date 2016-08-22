@@ -15,8 +15,7 @@
         "friendsofphp/php-cs-fixer": "^1",
         "peridot-php/leo": "^1",
         "peridot-php/peridot-code-coverage-reporters": "^2",
-        "peridot-php/peridot": "^1",
-        "recoil/peridot": "^0.2"
+        "peridot-php/peridot": "^1"
     },
     "autoload": {
         "psr-4": { "Recoil\\Dev\\": "src" },
