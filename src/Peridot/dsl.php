@@ -3,6 +3,7 @@
 declare(strict_types=1); // @codeCoverageIgnore
 
 use Peridot\Runner\Context;
+use Recoil\Dev\Peridot\Executor;
 
 /**
  * A coroutine-based version of Peridot's it() function, for use in the
