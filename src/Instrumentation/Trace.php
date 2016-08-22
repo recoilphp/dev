@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types = 1); // @codeCoverageIgnore
+declare(strict_types=1); // @codeCoverageIgnore
 
 namespace Recoil\Dev\Instrumentation;
 
@@ -21,8 +21,7 @@ final class Trace implements StrandTrace
      */
     public static function install() : Awaitable
     {
-        return new class() implements Awaitable
-        {
+        return new class() implements Awaitable {
             public function await(Listener $listener, Api $api)
             {
                 assert($listener instanceof Strand);

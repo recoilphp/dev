@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types = 1); // @codeCoverageIgnore
+declare(strict_types=1); // @codeCoverageIgnore
 
 namespace Recoil\Dev\Instrumentation;
 
@@ -11,7 +11,6 @@ use Recoil\Recoil;
 use RuntimeException;
 
 describe(Trace::class, function () {
-
     $context = ini_get('zend.assertions') > 0 ? 'context' : 'xcontext';
     $context('when assertions are enabled', function () {
         describe('::install()', function () {

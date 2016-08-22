@@ -1,13 +1,12 @@
 <?php
 
-declare (strict_types = 1); // @codeCoverageIgnore
+declare(strict_types=1); // @codeCoverageIgnore
 
 namespace Recoil\Dev\Instrumentation;
 
 use Eloquent\Phony\Phony;
 
 describe(Instrumentor::class, function () {
-
     $this->fixtures = glob(__DIR__ . '/../../fixture/Instrumentation/Instrumentor/*.input.php');
 
     context('when mode is ALL the code is instrumented', function () {
@@ -45,5 +44,4 @@ describe(Instrumentor::class, function () {
             });
         }
     });
-
 });
