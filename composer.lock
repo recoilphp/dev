@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d8ee186ae4570f9a749f690fdfeeb0cd",
-    "content-hash": "0c909a5c84a74aa22d488671739b251f",
+    "hash": "2da1ba01a8a7a30e123f6f8cd58571ef",
+    "content-hash": "f0115a867079086045ee89ac78aef755",
     "packages": [
         {
             "name": "eloquent/enumeration",
@@ -111,16 +111,16 @@
         },
         {
             "name": "recoil/api",
-            "version": "dev-master",
+            "version": "0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/recoilphp/api.git",
-                "reference": "cbb30c5351e0e43c30bf6a9e39aa54370e8fb8b3"
+                "reference": "cae1fea593f845bdb9f89c14dfdebf10b46345d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/recoilphp/api/zipball/cbb30c5351e0e43c30bf6a9e39aa54370e8fb8b3",
-                "reference": "cbb30c5351e0e43c30bf6a9e39aa54370e8fb8b3",
+                "url": "https://api.github.com/repos/recoilphp/api/zipball/cae1fea593f845bdb9f89c14dfdebf10b46345d0",
+                "reference": "cae1fea593f845bdb9f89c14dfdebf10b46345d0",
                 "shasum": ""
             },
             "require": {
@@ -164,7 +164,7 @@
                 "multitasking",
                 "react"
             ],
-            "time": "2016-08-14 04:19:56"
+            "time": "2016-08-22 04:10:11"
         }
     ],
     "packages-dev": [
@@ -1696,9 +1696,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "recoil/api": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
