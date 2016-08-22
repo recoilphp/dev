@@ -22,14 +22,14 @@ rit('can be invoked by yielding a number', function () {
 
 it('does not delay the kernel when a sleeping strand is terminated', function () {
     $time = microtime(true);
-    $strand = $this->kernel->execute(function () {
+    $strand = $this->kernel()->execute(function () {
         yield Recoil::sleep(1);
     });
-    $this->kernel->execute(function () use ($strand) {
+    $this->kernel()->execute(function () use ($strand) {
         $strand->terminate();
         yield;
     });
-    $this->kernel->run();
+    $this->kernel()->run();
     $diff = microtime(true) - $time;
 
     expect($diff)->to->be->below(0.01);

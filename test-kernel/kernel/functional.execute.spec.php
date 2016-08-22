@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use Recoil\Kernel\Api;
 
 it('accepts a generator object', function () {
-    $this->kernel->execute((function () {
+    $this->kernel()->execute((function () {
         echo '<ok>';
 
         return;
@@ -17,12 +17,12 @@ it('accepts a generator object', function () {
     })());
 
     ob_start();
-    $this->kernel->run();
+    $this->kernel()->run();
     expect(ob_get_clean())->to->equal('<ok>');
 });
 
 it('accepts a generator function', function () {
-    $this->kernel->execute(function () {
+    $this->kernel()->execute(function () {
         echo '<ok>';
 
         return;
@@ -30,13 +30,13 @@ it('accepts a generator function', function () {
     });
 
     ob_start();
-    $this->kernel->run();
+    $this->kernel()->run();
     expect(ob_get_clean())->to->equal('<ok>');
 });
 
 it('does not accept regular functions', function () {
     try {
-        $this->kernel->execute(function () {
+        $this->kernel()->execute(function () {
         });
     } catch (InvalidArgumentException $e) {
         expect($e->getMessage())->to->equal('Callable must return a generator.');
@@ -44,7 +44,7 @@ it('does not accept regular functions', function () {
 });
 
 it('accepts a coroutine provider', function () {
-    $this->kernel->execute(new class() implements CoroutineProvider {
+    $this->kernel()->execute(new class() implements CoroutineProvider {
         public function coroutine() : Generator
         {
             echo '<ok>';
@@ -55,12 +55,12 @@ it('accepts a coroutine provider', function () {
     });
 
     ob_start();
-    $this->kernel->run();
+    $this->kernel()->run();
     expect(ob_get_clean())->to->equal('<ok>');
 });
 
 it('accepts an awaitable provider', function () {
-    $this->kernel->execute(new class() implements AwaitableProvider {
+    $this->kernel()->execute(new class() implements AwaitableProvider {
         public function awaitable() : Awaitable
         {
             return new class() implements Awaitable {
@@ -73,12 +73,12 @@ it('accepts an awaitable provider', function () {
     });
 
     ob_start();
-    $this->kernel->run();
+    $this->kernel()->run();
     expect(ob_get_clean())->to->equal('<ok>');
 });
 
 it('accepts an awaitable', function () {
-    $this->kernel->execute(new class() implements Awaitable {
+    $this->kernel()->execute(new class() implements Awaitable {
         public function await(Listener $listener)
         {
             echo '<ok>';
@@ -86,12 +86,12 @@ it('accepts an awaitable', function () {
     });
 
     ob_start();
-    $this->kernel->run();
+    $this->kernel()->run();
     expect(ob_get_clean())->to->equal('<ok>');
 });
 
 it('dispatches other types via the kernel api', function () {
-    $this->kernel->execute([
+    $this->kernel()->execute([
         function () {
             echo '<ok>';
 
@@ -101,18 +101,18 @@ it('dispatches other types via the kernel api', function () {
     ]);
 
     ob_start();
-    $this->kernel->run();
+    $this->kernel()->run();
     expect(ob_get_clean())->to->equal('<ok>');
 });
 
 it('returns the strand', function () {
-    $strand = $this->kernel->execute('<coroutine>');
+    $strand = $this->kernel()->execute('<coroutine>');
     expect($strand)->to->be->an->instanceof(Strand::class);
 });
 
 it('defers execution', function () {
     ob_start();
-    $this->kernel->execute([
+    $this->kernel()->execute([
         function () {
             echo '<ok>';
 
@@ -123,6 +123,6 @@ it('defers execution', function () {
     expect(ob_get_clean())->to->equal('');
 
     ob_start();
-    $this->kernel->run();
+    $this->kernel()->run();
     expect(ob_get_clean())->to->equal('<ok>');
 });

@@ -97,7 +97,7 @@ rit('exception propagates up the call-stack', function () {
 });
 
 it('can be awaited by multiple strands', function () {
-    $this->kernel->execute(function () {
+    $this->kernel()->execute(function () {
         $strand = yield Recoil::strand();
 
         yield Recoil::execute(function () use ($strand) {
@@ -118,6 +118,6 @@ it('can be awaited by multiple strands', function () {
     });
 
     ob_start();
-    $this->kernel->run();
+    $this->kernel()->run();
     expect(ob_get_clean())->to->equal('abc');
 });
