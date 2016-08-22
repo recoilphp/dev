@@ -6,7 +6,6 @@ namespace Recoil\Kernel;
 
 use Eloquent\Phony\Phony;
 use Recoil\Recoil;
-use function Recoil\rit;
 
 describe(StrandTrait::class, function () {
     beforeEach(function () {
