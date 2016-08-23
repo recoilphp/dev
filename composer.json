@@ -9,13 +9,19 @@
         "nikic/php-parser": "^2.1",
         "recoil/api": "^0.1"
     },
+
+
+    "minimum-stability": "dev",
+
+
     "require-dev": {
         "composer/composer": "1.0.0",
         "eloquent/phony": "^0.13",
         "friendsofphp/php-cs-fixer": "^1",
         "peridot-php/leo": "^1",
+        "peridot-php/peridot": "^1",
         "peridot-php/peridot-code-coverage-reporters": "^2",
-        "peridot-php/peridot": "^1"
+        "recoil/react": "dev-master"
     },
     "autoload": {
         "psr-4": { "Recoil\\Dev\\": "src" },

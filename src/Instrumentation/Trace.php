@@ -6,11 +6,10 @@ namespace Recoil\Dev\Instrumentation;
 
 use Error;
 use Exception;
-use Recoil\Kernel\Api;
-use Recoil\Kernel\Awaitable;
-use Recoil\Kernel\Listener;
-use Recoil\Kernel\Strand;
-use Recoil\Kernel\StrandTrace;
+use Recoil\Awaitable;
+use Recoil\Listener;
+use Recoil\Strand;
+use Recoil\StrandTrace;
 use ReflectionProperty;
 use Throwable;
 
@@ -22,7 +21,7 @@ final class Trace implements StrandTrace
     public static function install() : Awaitable
     {
         return new class() implements Awaitable {
-            public function await(Listener $listener, Api $api)
+            public function await(Listener $listener)
             {
                 assert($listener instanceof Strand);
 

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2da1ba01a8a7a30e123f6f8cd58571ef",
-    "content-hash": "f0115a867079086045ee89ac78aef755",
+    "hash": "a46104dfc0eb8a4c9ffdfdf15d84ae3a",
+    "content-hash": "c422e2787000c8cccd02589a658cf5ce",
     "packages": [
         {
             "name": "eloquent/enumeration",
@@ -546,6 +546,59 @@
             "time": "2016-08-17 00:17:27"
         },
         {
+            "name": "icecave/repr",
+            "version": "dev-develop",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/IcecaveStudios/repr.git",
+                "reference": "99f3e6e2ce65468bc88380a066c0e8eea5c182a4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/IcecaveStudios/repr/zipball/99f3e6e2ce65468bc88380a066c0e8eea5c182a4",
+                "reference": "99f3e6e2ce65468bc88380a066c0e8eea5c182a4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "icecave/archer": "~1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-develop": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Icecave\\Repr\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "James Harris",
+                    "email": "james.harris@icecave.com.au",
+                    "homepage": "https://github.com/jmalloc"
+                }
+            ],
+            "description": "A library for generating string representations of any value, inspired by Python's reprlib library.",
+            "homepage": "https://github.com/IcecaveStudios/repr",
+            "keywords": [
+                "human",
+                "readable",
+                "repr",
+                "representation",
+                "string"
+            ],
+            "time": "2015-02-04 23:25:18"
+        },
+        {
             "name": "justinrainbow/json-schema",
             "version": "1.6.1",
             "source": {
@@ -1042,6 +1095,219 @@
                 "tokenizer"
             ],
             "time": "2015-09-15 10:49:45"
+        },
+        {
+            "name": "react/event-loop",
+            "version": "v0.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/reactphp/event-loop.git",
+                "reference": "164799f73175e1c80bba92a220ea35df6ca371dd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/reactphp/event-loop/zipball/164799f73175e1c80bba92a220ea35df6ca371dd",
+                "reference": "164799f73175e1c80bba92a220ea35df6ca371dd",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "suggest": {
+                "ext-event": "~1.0",
+                "ext-libev": "*",
+                "ext-libevent": ">=0.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.5-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "React\\EventLoop\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Event loop abstraction layer that libraries can use for evented I/O.",
+            "keywords": [
+                "asynchronous",
+                "event-loop"
+            ],
+            "time": "2016-03-08 02:09:32"
+        },
+        {
+            "name": "react/promise",
+            "version": "2.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/reactphp/promise.git",
+                "reference": "d3d5fdeadbb8489f73d74b8ec6bca1d3eb521d90"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/reactphp/promise/zipball/d3d5fdeadbb8489f73d74b8ec6bca1d3eb521d90",
+                "reference": "d3d5fdeadbb8489f73d74b8ec6bca1d3eb521d90",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "React\\Promise\\": "src/"
+                },
+                "files": [
+                    "src/functions_include.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jan Sorgalla",
+                    "email": "jsorgalla@gmail.com"
+                }
+            ],
+            "description": "A lightweight implementation of CommonJS Promises/A for PHP",
+            "time": "2016-05-09 07:16:19"
+        },
+        {
+            "name": "recoil/react",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/recoilphp/react.git",
+                "reference": "2139d77f4970935d46af48bb99da35cfd0fa8d36"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/recoilphp/react/zipball/2139d77f4970935d46af48bb99da35cfd0fa8d36",
+                "reference": "2139d77f4970935d46af48bb99da35cfd0fa8d36",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7",
+                "react/event-loop": "^0.4",
+                "react/promise": "^2",
+                "recoil/api": "^0.1",
+                "recoil/recoil": "dev-124-split-repos"
+            },
+            "require-dev": {
+                "eloquent/phony": "^0.13",
+                "friendsofphp/php-cs-fixer": "^1",
+                "hamcrest/hamcrest-php": "^2",
+                "peridot-php/leo": "^1",
+                "peridot-php/peridot": "^1",
+                "peridot-php/peridot-code-coverage-reporters": "^2",
+                "recoil/dev": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Recoil\\React\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "James Harris",
+                    "email": "james.harris@icecave.com.au",
+                    "homepage": "https://github.com/jmalloc"
+                }
+            ],
+            "description": "Integrate Recoil with ReactPHP.",
+            "homepage": "https://github.com/recoilphp/react",
+            "keywords": [
+                "Thread",
+                "async",
+                "asynchronous",
+                "continuation",
+                "coroutine",
+                "event",
+                "generator",
+                "green",
+                "multitasking",
+                "promise",
+                "react"
+            ],
+            "time": "2016-08-23 10:18:10"
+        },
+        {
+            "name": "recoil/recoil",
+            "version": "dev-124-split-repos",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/recoilphp/recoil.git",
+                "reference": "20e16f695970becfa7e5e5f45ed04dd19d75bc09"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/recoilphp/recoil/zipball/20e16f695970becfa7e5e5f45ed04dd19d75bc09",
+                "reference": "20e16f695970becfa7e5e5f45ed04dd19d75bc09",
+                "shasum": ""
+            },
+            "require": {
+                "icecave/repr": "^1",
+                "php": "^7",
+                "recoil/api": "^0.1"
+            },
+            "require-dev": {
+                "eloquent/phony": "^0.13",
+                "friendsofphp/php-cs-fixer": "^1",
+                "hamcrest/hamcrest-php": "^2",
+                "peridot-php/leo": "^1",
+                "peridot-php/peridot": "^1",
+                "peridot-php/peridot-code-coverage-reporters": "^2",
+                "recoil/dev": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Recoil\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "James Harris",
+                    "email": "james.harris@icecave.com.au",
+                    "homepage": "https://github.com/jmalloc"
+                }
+            ],
+            "description": "Asynchronous coroutines for PHP 7.",
+            "homepage": "https://github.com/recoilphp/recoil",
+            "keywords": [
+                "Thread",
+                "async",
+                "asynchronous",
+                "continuation",
+                "coroutine",
+                "event",
+                "generator",
+                "green",
+                "multitasking",
+                "react"
+            ],
+            "time": "2016-08-23 10:08:11"
         },
         {
             "name": "sebastian/diff",
@@ -1695,8 +1961,10 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "recoil/react": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
