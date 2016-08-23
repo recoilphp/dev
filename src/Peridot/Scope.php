@@ -31,7 +31,7 @@ final class Scope extends BaseScope
             $test->getScope()->peridotAddChildScope($scope);
         });
 
-        $emitter->on('test.start', function ($test) use ($scope, $factory) {
+        $emitter->on('test.start', function () use ($scope, $factory) {
             $scope->setKernel($factory());
         });
     }
@@ -52,5 +52,8 @@ final class Scope extends BaseScope
         $this->kernel = $kernel;
     }
 
+    /**
+     * @var Kernel|null The kernel.
+     */
     private $kernel;
 }
