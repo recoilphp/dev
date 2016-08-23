@@ -1,8 +1,8 @@
 filter:
     excluded_paths:
         - 'test/*'
+        - 'test-kernel/*'
         - 'examples/*'
-        - 'src-generated/*'
 
 tools:
     php_code_sniffer:
