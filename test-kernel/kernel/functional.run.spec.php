@@ -37,7 +37,7 @@ context('kernel/run', function () {
 
 it('stop() causes run() to return', function () {
     $this->kernel()->execute(function () {
-        yield 0.1;
+        yield;
         expect(false)->to->be->ok('not stopped');
     });
 
