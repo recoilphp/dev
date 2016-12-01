@@ -17,6 +17,7 @@ context('api/timeout', function () {
                     yield 0.1;
                 }
             );
+            expect(false)->to->be->ok('expected exception was not thrown');
         } catch (TimeoutException $e) {
             // ok ...
         }
