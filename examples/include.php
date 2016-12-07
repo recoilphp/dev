@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Recoil\Dev\Examples;
 
 use Generator as Coroutine;
-use Recoil\React\ReactKernel;
+use Recoil\ReferenceKernel\ReferenceKernel;
 
 function outer(int $value) : Coroutine
 {
@@ -45,4 +45,6 @@ class Fail
     }
 }
 
-ReactKernel::start(outer(100));
+$kernel = ReferenceKernel::create();
+$kernel->execute(outer(100));
+$kernel->run();

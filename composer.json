@@ -10,9 +10,8 @@
         "recoil/api": "^0.1"
     },
 
-
     "minimum-stability": "dev",
-
+    "prefer-stable": true,
 
     "require-dev": {
         "composer/composer": "1.0.0",
@@ -21,7 +20,7 @@
         "peridot-php/leo": "^1",
         "peridot-php/peridot": "^1",
         "peridot-php/peridot-code-coverage-reporters": "^2",
-        "recoil/react": "dev-master"
+        "recoil/recoil": "dev-124-split-repos"
     },
     "autoload": {
         "psr-4": { "Recoil\\Dev\\": "src" },
