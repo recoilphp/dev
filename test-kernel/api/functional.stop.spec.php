@@ -20,7 +20,7 @@ context('api/stop', function () {
         $kernel = $this->kernel();
 
         $kernel->execute(function () {
-            yield 1;
+            yield;
             expect(false)->to->be->ok('strand was resumed');
         });
 
@@ -29,5 +29,23 @@ context('api/stop', function () {
         });
 
         $kernel->run();
+    });
+
+    it('does not wait for sleeping strands', function () {
+        $kernel = $this->kernel();
+
+        $kernel->execute(function () {
+            yield 5;
+        });
+
+        $kernel->execute(function () {
+            yield Recoil::stop();
+        });
+
+        $time = microtime(true);
+        $kernel->run();
+        $diff = microtime(true) - $time;
+
+        expect($diff)->to->be->below(0.05);
     });
 });
