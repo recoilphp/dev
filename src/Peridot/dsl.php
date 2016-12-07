@@ -21,3 +21,22 @@ function rit(string $description, callable $test)
         }
     );
 }
+
+/**
+ * A coroutine-based version of Peridot's fit() function, for use in the
+ * functional test suite.
+ *
+ * @codeCoverageIgnore
+ */
+function frit(string $description, callable $test)
+{
+    Context::getInstance()->addTest(
+        $description,
+        function () use ($test) {
+            $executor = Executor::create($this->kernel());
+            $executor->execute($test);
+        },
+        null,
+        true
+    );
+}
