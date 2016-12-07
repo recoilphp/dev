@@ -9,10 +9,6 @@
         "nikic/php-parser": "^2.1",
         "recoil/api": "^0.1"
     },
-
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-
     "require-dev": {
         "composer/composer": "1.0.0",
         "eloquent/phony": "^0.13",
@@ -20,7 +16,7 @@
         "peridot-php/leo": "^1",
         "peridot-php/peridot": "^1",
         "peridot-php/peridot-code-coverage-reporters": "^2",
-        "recoil/recoil": "dev-124-split-repos"
+        "recoil/recoil": "dev-master#ed34cf7"
     },
     "autoload": {
         "psr-4": { "Recoil\\Dev\\": "src" },
@@ -48,5 +44,7 @@
             "email": "james.harris@icecave.com.au",
             "homepage": "https://github.com/jmalloc"
         }
-    ]
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

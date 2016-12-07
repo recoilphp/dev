@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9612297fe7317a8cae6d867bdb334796",
-    "content-hash": "8e366c80a6aecf65263b18243c1b93d6",
+    "hash": "f5a51b87583709708364fdb000c3635a",
+    "content-hash": "aef40a023487014c19297aef028b4136",
     "packages": [
         {
             "name": "eloquent/enumeration",
@@ -1144,16 +1144,16 @@
         },
         {
             "name": "recoil/recoil",
-            "version": "dev-124-split-repos",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/recoilphp/recoil.git",
-                "reference": "67a183a37615c1c48bc2a018a03b9a2730f6fe54"
+                "reference": "1d914504ffb9359fc96063b91be02af7a4c56583"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/recoilphp/recoil/zipball/67a183a37615c1c48bc2a018a03b9a2730f6fe54",
-                "reference": "67a183a37615c1c48bc2a018a03b9a2730f6fe54",
+                "url": "https://api.github.com/repos/recoilphp/recoil/zipball/1d914504ffb9359fc96063b91be02af7a4c56583",
+                "reference": "1d914504ffb9359fc96063b91be02af7a4c56583",
                 "shasum": ""
             },
             "require": {
@@ -1202,7 +1202,7 @@
                 "multitasking",
                 "react"
             ],
-            "time": "2016-12-07 04:21:14"
+            "time": "2016-12-07 05:20:02"
         },
         {
             "name": "sebastian/diff",
