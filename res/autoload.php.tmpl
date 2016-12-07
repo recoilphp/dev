@@ -36,5 +36,8 @@ use Recoil\Dev\Instrumentation\Autoloader\Autoloader;
 return (function () {
     $classLoader = require __DIR__ . '/autoload.uninstrumented.php';
 
-    return Autoloader::install($classLoader, %mode%);
+    return Autoloader::install(
+        $classLoader,
+        getenv('RECOIL_INSTRUMENTATION') ?: %mode%
+    );
 })();
