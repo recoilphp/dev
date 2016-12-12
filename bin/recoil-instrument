@@ -1,0 +1,10 @@
+#!/usr/bin/env php
+<?php
+
+if (!@include __DIR__ . '/..' . (is_dir(__DIR__ . '/../vendor') ? '/vendor' : '/../..') . '/autoload.php') {
+    fwrite(STDERR, 'Dependencies are not installed.' . PHP_EOL);
+    exit(1);
+}
+
+echo Recoil\Dev\Instrumentation\Instrumentor::create()
+    ->instrument(stream_get_contents(STDIN));

@@ -23,6 +23,9 @@
         "files": [ "src/Peridot/dsl.php" ]
     },
     "autoload-dev": { "psr-4" : { "Recoil\\Dev\\": "test/src" } },
+    "bin": [
+        "bin/recoil-instrument"
+    ],
     "extra": {
         "class": "Recoil\\Dev\\Composer\\Plugin"
     },
