@@ -46,7 +46,6 @@ final class Trace implements StrandTrace
      */
     public function setCoroutine(
         string $file,
-        int $line,
         string $class,
         string $function,
         string $type,
@@ -55,7 +54,6 @@ final class Trace implements StrandTrace
         assert($this->stackDepth > 0);
 
         $this->currentFile = $file;
-        $this->currentLine = $line;
 
         $frame = &$this->stackFrames[$this->stackDepth - 1];
         $frame['function'] = $function;

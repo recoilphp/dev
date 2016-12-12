@@ -78,19 +78,19 @@ final class Instrumentor extends NodeVisitorAbstract
             return;
         }
 
-        $firstStatement = $statements[0];
-        $function->setAttribute('lastInstrumentedLine', $firstStatement->getLine());
-        $this->consume($firstStatement->getAttribute('startFilePos'));
+        $this->consume($statements[0]->getAttribute('startFilePos'));
 
-        $this->inject(
+        $this->output .= 'assert((';
+        $this->output .= sprintf(
             '(%s = \class_exists(\\%s::class) ? yield \\%s::install() : null) && '
-            . '%s->setCoroutine(__FILE__, __LINE__, __CLASS__, __FUNCTION__, %s, \func_get_args())',
+            . '%s->setCoroutine(__FILE__, __CLASS__, __FUNCTION__, %s, \func_get_args())',
             self::TRACE_VARIABLE_NAME,
             Trace::class,
             Trace::class,
             self::TRACE_VARIABLE_NAME,
             var_export($this->callType($function), true)
         );
+        $this->output .= ') || true); ';
     }
 
     /**
@@ -100,19 +100,16 @@ final class Instrumentor extends NodeVisitorAbstract
      */
     private function instrumentYield(Yield_ $yield)
     {
-        $function = $this->functionStack->top();
-        $startLine = $yield->getLine();
-
-        if ($startLine > $function->getAttribute('lastInstrumentedLine')) {
-            $function->setAttribute('lastInstrumentedLine', $startLine);
-            $this->consume($yield->getAttribute('startFilePos'));
-
-            $this->inject(
-                '%s && %s->setLine(__LINE__)',
-                self::TRACE_VARIABLE_NAME,
-                self::TRACE_VARIABLE_NAME
-            );
-        }
+        $this->consume($yield->getAttribute('startFilePos'));
+        $this->output .= '(!assert((';
+        $this->output .= sprintf(
+            '%s && %s->setLine(__LINE__)',
+            self::TRACE_VARIABLE_NAME,
+            self::TRACE_VARIABLE_NAME
+        );
+        $this->output .= ') || true) ?: ';
+        $this->consume($yield->getAttribute('endFilePos') + 1);
+        $this->output .= ')';
     }
 
     /**
@@ -158,14 +155,6 @@ final class Instrumentor extends NodeVisitorAbstract
     {
         $this->output .= \substr($this->input, $this->position, $position - $this->position);
         $this->position = $position;
-    }
-
-    /**
-     * Injection instrumentation code inside an assertion.
-     */
-    private function inject(string $pattern, string ...$arguments)
-    {
-        $this->output .= 'assert((' . sprintf($pattern, ...$arguments) . ') || true); ';
     }
 
     /**
