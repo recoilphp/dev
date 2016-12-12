@@ -18,8 +18,11 @@
  * To disable the execution of instrumented code, set "zend.assertions" to
  * "production mode" (-1) in the PHP configuration.
  *
- * To disable the instrumentation (and remove this autoloader entirely), run
- * the following command in the root directory of the project:
+ * Instrumentation can be disabled temporarily by setting the environment
+ * variable RECOIL_INSTRUMENTATION to "none".
+ *
+ * To disable the instrumentation permantently (and remove this autoloader
+ * entirely), run the following command in the root directory of the project:
  *
  *     composer config extra.recoil.instrumentation none && composer dump-autoload
  *
