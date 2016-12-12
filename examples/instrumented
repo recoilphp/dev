@@ -14,5 +14,4 @@ $scheme = StreamWrapper::install($instrumentor);
 $loader = new Autoloader($composerLoader, $scheme);
 $loader->register();
 
-// readfile($scheme . '://' . __DIR__ . '/include.php');
 require $scheme . '://' . __DIR__ . '/include.php';
