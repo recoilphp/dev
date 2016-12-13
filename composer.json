@@ -7,16 +7,16 @@
         "composer-plugin-api": "^1",
         "eloquent/enumeration": "^5",
         "nikic/php-parser": "^2.1",
-        "recoil/api": "^0.1"
+        "recoil/api": "^0.1|^1@alpha"
     },
     "require-dev": {
         "composer/composer": "1.0.0",
-        "eloquent/phony": "^0.13",
+        "eloquent/phony": "^0.14",
         "friendsofphp/php-cs-fixer": "^1",
         "peridot-php/leo": "^1",
         "peridot-php/peridot": "^1",
         "peridot-php/peridot-code-coverage-reporters": "^2",
-        "recoil/recoil": "dev-master#ed34cf7"
+        "recoil/recoil": "dev-master"
     },
     "autoload": {
         "psr-4": { "Recoil\\Dev\\": "src" },

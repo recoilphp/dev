@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "90233128c403dc73336ac992fb076436",
-    "content-hash": "aef40a023487014c19297aef028b4136",
+    "hash": "7643d2fc2d3ee9789cae8104b4718ee8",
+    "content-hash": "0ba6e09caa575c079f5bd10082e20fa8",
     "packages": [
         {
             "name": "eloquent/enumeration",
@@ -111,23 +111,23 @@
         },
         {
             "name": "recoil/api",
-            "version": "0.1.0",
+            "version": "0.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/recoilphp/api.git",
-                "reference": "cae1fea593f845bdb9f89c14dfdebf10b46345d0"
+                "reference": "9e0cf0b5ffc0e5fbde5452400dbadf911c5985df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/recoilphp/api/zipball/cae1fea593f845bdb9f89c14dfdebf10b46345d0",
-                "reference": "cae1fea593f845bdb9f89c14dfdebf10b46345d0",
+                "url": "https://api.github.com/repos/recoilphp/api/zipball/9e0cf0b5ffc0e5fbde5452400dbadf911c5985df",
+                "reference": "9e0cf0b5ffc0e5fbde5452400dbadf911c5985df",
                 "shasum": ""
             },
             "require": {
                 "php": "^7"
             },
             "require-dev": {
-                "eloquent/phony": "^0.13",
+                "eloquent/phony": "^0.14",
                 "friendsofphp/php-cs-fixer": "^1",
                 "peridot-php/leo": "^1",
                 "peridot-php/peridot": "^1",
@@ -164,7 +164,7 @@
                 "multitasking",
                 "react"
             ],
-            "time": "2016-08-22 04:10:11"
+            "time": "2016-12-13 03:42:38"
         }
     ],
     "packages-dev": [
@@ -368,16 +368,16 @@
         },
         {
             "name": "eloquent/phony",
-            "version": "0.13.5",
+            "version": "0.14.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eloquent/phony.git",
-                "reference": "42cb187e65f55c259e006982f51ae266132d4797"
+                "reference": "c6b42391a4ef418afa83078a2405242123f50c01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eloquent/phony/zipball/42cb187e65f55c259e006982f51ae266132d4797",
-                "reference": "42cb187e65f55c259e006982f51ae266132d4797",
+                "url": "https://api.github.com/repos/eloquent/phony/zipball/c6b42391a4ef418afa83078a2405242123f50c01",
+                "reference": "c6b42391a4ef418afa83078a2405242123f50c01",
                 "shasum": ""
             },
             "require": {
@@ -387,7 +387,7 @@
                 "athletic/athletic": "^0.1",
                 "counterpart/counterpart": "^1",
                 "danielstjules/pho": "^1",
-                "eloquent/asplode": "^2",
+                "errors/exceptions": "dev-master",
                 "ext-pdo": "*",
                 "friendsofphp/php-cs-fixer": "1.11.4",
                 "hamcrest/hamcrest-php": "^2",
@@ -439,7 +439,7 @@
                 "stubbing",
                 "test"
             ],
-            "time": "2016-09-20 00:27:59"
+            "time": "2016-12-07 06:02:42"
         },
         {
             "name": "evenement/evenement",
@@ -1143,17 +1143,17 @@
             "time": "2016-10-10 12:19:37"
         },
         {
-            "name": "recoil/recoil",
-            "version": "dev-master",
+            "name": "recoil/kernel",
+            "version": "0.2.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/recoilphp/recoil.git",
-                "reference": "1d914504ffb9359fc96063b91be02af7a4c56583"
+                "url": "https://github.com/recoilphp/kernel.git",
+                "reference": "f388d5d43357abe78717b59235f1ae6908356dd9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/recoilphp/recoil/zipball/1d914504ffb9359fc96063b91be02af7a4c56583",
-                "reference": "1d914504ffb9359fc96063b91be02af7a4c56583",
+                "url": "https://api.github.com/repos/recoilphp/kernel/zipball/f388d5d43357abe78717b59235f1ae6908356dd9",
+                "reference": "f388d5d43357abe78717b59235f1ae6908356dd9",
                 "shasum": ""
             },
             "require": {
@@ -1162,19 +1162,79 @@
                 "recoil/api": "^0.1"
             },
             "require-dev": {
-                "eloquent/phony": "^0.13",
+                "eloquent/phony": "^0.14",
                 "friendsofphp/php-cs-fixer": "^1",
                 "hamcrest/hamcrest-php": "^2",
                 "peridot-php/leo": "^1",
-                "peridot-php/peridot": "dev-focused-specs-cli as 1.0.9999999999",
-                "peridot-php/peridot-code-coverage-reporters": "^2",
-                "phpunit/php-code-coverage": "dev-phpdbg-workaround as 2.2.9999999999",
-                "recoil/dev": "dev-master"
+                "peridot-php/peridot": "^1",
+                "peridot-php/peridot-code-coverage-reporters": "^2"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Recoil\\": "src"
+                    "Recoil\\Kernel\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "James Harris",
+                    "email": "james.harris@icecave.com.au",
+                    "homepage": "https://github.com/jmalloc"
+                }
+            ],
+            "description": "Reusable components for implementing Recoil kernels.",
+            "homepage": "https://github.com/recoilphp/kernel",
+            "keywords": [
+                "Thread",
+                "async",
+                "asynchronous",
+                "continuation",
+                "coroutine",
+                "event",
+                "generator",
+                "green",
+                "multitasking",
+                "react"
+            ],
+            "time": "2016-12-13 04:09:56"
+        },
+        {
+            "name": "recoil/recoil",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/recoilphp/recoil.git",
+                "reference": "ae4e0fcf77dcfa95498debf36a55fd696d508506"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/recoilphp/recoil/zipball/ae4e0fcf77dcfa95498debf36a55fd696d508506",
+                "reference": "ae4e0fcf77dcfa95498debf36a55fd696d508506",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7",
+                "recoil/api": "^0.1",
+                "recoil/kernel": "^0.2"
+            },
+            "require-dev": {
+                "eloquent/phony": "^0.14",
+                "friendsofphp/php-cs-fixer": "^1",
+                "peridot-php/leo": "^1",
+                "peridot-php/peridot": "^1",
+                "peridot-php/peridot-code-coverage-reporters": "^2",
+                "react/dns": "^0.4",
+                "recoil/dev": "^0.1",
+                "recoil/react": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Recoil\\ReferenceKernel\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1202,7 +1262,7 @@
                 "multitasking",
                 "react"
             ],
-            "time": "2016-12-07 05:20:02"
+            "time": "2016-12-13 04:12:21"
         },
         {
             "name": "sebastian/diff",
@@ -1481,16 +1541,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v3.2.0",
+            "version": "v3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "09d0fd33560e3573185a2ea17614e37ba38716c5"
+                "reference": "d12aa9ca20f4db83ec58410978dab6afcb9d6aaa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/09d0fd33560e3573185a2ea17614e37ba38716c5",
-                "reference": "09d0fd33560e3573185a2ea17614e37ba38716c5",
+                "url": "https://api.github.com/repos/symfony/console/zipball/d12aa9ca20f4db83ec58410978dab6afcb9d6aaa",
+                "reference": "d12aa9ca20f4db83ec58410978dab6afcb9d6aaa",
                 "shasum": ""
             },
             "require": {
@@ -1540,11 +1600,11 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2016-11-16 22:18:16"
+            "time": "2016-12-11 14:34:22"
         },
         {
             "name": "symfony/debug",
-            "version": "v3.2.0",
+            "version": "v3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
@@ -1601,7 +1661,7 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v3.2.0",
+            "version": "v3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
@@ -1661,7 +1721,7 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v3.2.0",
+            "version": "v3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
@@ -1710,16 +1770,16 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v3.2.0",
+            "version": "v3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "4263e35a1e342a0f195c9349c0dee38148f8a14f"
+                "reference": "a69cb5d455b4885ca376dc5bb3e1155cc8c08c4b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/4263e35a1e342a0f195c9349c0dee38148f8a14f",
-                "reference": "4263e35a1e342a0f195c9349c0dee38148f8a14f",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/a69cb5d455b4885ca376dc5bb3e1155cc8c08c4b",
+                "reference": "a69cb5d455b4885ca376dc5bb3e1155cc8c08c4b",
                 "shasum": ""
             },
             "require": {
@@ -1755,7 +1815,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2016-11-03 08:11:03"
+            "time": "2016-12-13 09:39:43"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -1818,7 +1878,7 @@
         },
         {
             "name": "symfony/process",
-            "version": "v3.2.0",
+            "version": "v3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
@@ -1867,7 +1927,7 @@
         },
         {
             "name": "symfony/stopwatch",
-            "version": "v3.2.0",
+            "version": "v3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/stopwatch.git",
@@ -1918,6 +1978,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "recoil/api": 15,
         "recoil/recoil": 20
     },
     "prefer-stable": true,
