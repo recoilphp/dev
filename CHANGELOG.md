@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.2 (2016-12-13)
+
+- **[NEW]** Added functional tests for callable as dispatchable values
+
 ## 0.1.1 (2016-12-12)
 
 - **[FIX]** Instrumentation now works correctly with yield expressions
