@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.3 (2016-12-14)
+
+- Allow `recoil/api` 1.0.0-alpha.1
+
 ## 0.1.2 (2016-12-13)
 
 - **[NEW]** Added functional tests for callable as dispatchable values
