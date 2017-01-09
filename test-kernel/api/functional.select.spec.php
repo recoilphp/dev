@@ -54,40 +54,6 @@ context('api/select', function () {
         expect($writable)->to->equal([$this->stream2]);
     });
 
-    rit('returns arrays of streams that are ready to read and write', function () {
-        fwrite($this->stream1, '<value>');
-
-        // fill the write buffer
-        do {
-            $bytes = fwrite(
-                $this->stream1,
-                str_repeat('.', 8192)
-            );
-        } while ($bytes > 0);
-
-        list($readable, $writable) = yield Recoil::select($this->streams, $this->streams);
-
-        expect($readable)->to->equal([$this->stream1]);
-        expect($writable)->to->equal([$this->stream2]);
-    });
-
-    rit('returns stream in both arrays when ready for both reading and writing', function () {
-        fwrite($this->stream1, '<value>');
-
-        // fill the write buffer
-        do {
-            $bytes = fwrite(
-                $this->stream2,
-                str_repeat('.', 8192)
-            );
-        } while ($bytes > 0);
-
-        list($readable, $writable) = yield Recoil::select($this->streams, $this->streams);
-
-        expect($readable)->to->equal($this->streams);
-        expect($writable)->to->equal([$this->stream1]);
-    });
-
     rit('stops waiting for the stream when the strand is terminated', function () {
         $strand = yield Recoil::execute(function () {
             yield Recoil::select([$this->stream1], []);
