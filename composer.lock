@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "44489c4d3ffbbe9b779b353326ca7679",
-    "content-hash": "86cab104713ae2e64780e364b67deb31",
+    "hash": "1b2d6a0454db22ced4c2bb84e14c3b39",
+    "content-hash": "7e66df8dd3e0d2413131a9fad8672ab9",
     "packages": [
         {
             "name": "eloquent/enumeration",
@@ -111,16 +111,16 @@
         },
         {
             "name": "recoil/api",
-            "version": "dev-3-select",
+            "version": "1.0.0-alpha.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/recoilphp/api.git",
-                "reference": "55abdd2f4a7c97881bc806af3236f70f2ff63265"
+                "reference": "b94f1fca853cd55d59c690132c201f3606d8df6b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/recoilphp/api/zipball/55abdd2f4a7c97881bc806af3236f70f2ff63265",
-                "reference": "55abdd2f4a7c97881bc806af3236f70f2ff63265",
+                "url": "https://api.github.com/repos/recoilphp/api/zipball/b94f1fca853cd55d59c690132c201f3606d8df6b",
+                "reference": "b94f1fca853cd55d59c690132c201f3606d8df6b",
                 "shasum": ""
             },
             "require": {
@@ -164,7 +164,7 @@
                 "multitasking",
                 "react"
             ],
-            "time": "2017-01-09 00:59:43"
+            "time": "2017-01-09 04:10:02"
         }
     ],
     "packages-dev": [
@@ -1145,22 +1145,22 @@
         },
         {
             "name": "recoil/kernel",
-            "version": "1.0.0-alpha.1",
+            "version": "1.0.0-alpha.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/recoilphp/kernel.git",
-                "reference": "fec9716dfcbb7db05378107433d156626cfd9cb6"
+                "reference": "37db28b95e7e12bc519925fb2e9fae29eb13ff7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/recoilphp/kernel/zipball/fec9716dfcbb7db05378107433d156626cfd9cb6",
-                "reference": "fec9716dfcbb7db05378107433d156626cfd9cb6",
+                "url": "https://api.github.com/repos/recoilphp/kernel/zipball/37db28b95e7e12bc519925fb2e9fae29eb13ff7e",
+                "reference": "37db28b95e7e12bc519925fb2e9fae29eb13ff7e",
                 "shasum": ""
             },
             "require": {
                 "icecave/repr": "^1",
                 "php": "^7",
-                "recoil/api": "^1@alpha"
+                "recoil/api": "1.0.0-alpha.2"
             },
             "require-dev": {
                 "eloquent/phony": "^0.14",
@@ -1201,26 +1201,26 @@
                 "multitasking",
                 "react"
             ],
-            "time": "2016-12-14 21:34:46"
+            "time": "2017-01-09 04:23:57"
         },
         {
             "name": "recoil/recoil",
-            "version": "1.0.0-alpha.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/recoilphp/recoil.git",
-                "reference": "c4c92a442a330652ab90dae7ec61fee9f8286469"
+                "reference": "5820aaaf1612d3bdb68edb0bcc5ccf1db5ec0bb7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/recoilphp/recoil/zipball/c4c92a442a330652ab90dae7ec61fee9f8286469",
-                "reference": "c4c92a442a330652ab90dae7ec61fee9f8286469",
+                "url": "https://api.github.com/repos/recoilphp/recoil/zipball/5820aaaf1612d3bdb68edb0bcc5ccf1db5ec0bb7",
+                "reference": "5820aaaf1612d3bdb68edb0bcc5ccf1db5ec0bb7",
                 "shasum": ""
             },
             "require": {
                 "php": "^7",
-                "recoil/api": "^1@alpha",
-                "recoil/kernel": "^1@alpha"
+                "recoil/api": "1.0.0-alpha.2",
+                "recoil/kernel": "1.0.0-alpha.2"
             },
             "require-dev": {
                 "eloquent/phony": "^0.14",
@@ -1263,7 +1263,7 @@
                 "multitasking",
                 "react"
             ],
-            "time": "2016-12-16 00:44:11"
+            "time": "2017-01-09 04:41:49"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -2029,18 +2029,10 @@
             "time": "2016-06-29 05:43:10"
         }
     ],
-    "aliases": [
-        {
-            "alias": "1.0.0-alpha.9999",
-            "alias_normalized": "1.0.0.0-alpha9999",
-            "version": "dev-3-select",
-            "package": "recoil/api"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "recoil/api": 20,
-        "recoil/recoil": 15
+        "recoil/recoil": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

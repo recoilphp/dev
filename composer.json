@@ -7,7 +7,7 @@
         "composer-plugin-api": "^1",
         "eloquent/enumeration": "^5",
         "nikic/php-parser": "^2.1",
-        "recoil/api": "dev-3-select as 1.0.0-alpha.9999"
+        "recoil/api": "1.0.0-alpha.2"
     },
     "require-dev": {
         "composer/composer": "1.0.0",
@@ -16,7 +16,7 @@
         "peridot-php/leo": "^1",
         "peridot-php/peridot": "^1",
         "peridot-php/peridot-code-coverage-reporters": "^2",
-        "recoil/recoil": "^1@alpha"
+        "recoil/recoil": "dev-master#5820aaa"
     },
     "autoload": {
         "psr-4": { "Recoil\\Dev\\": "src" },
