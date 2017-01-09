@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "393d36ab83770b8a279ab6a558c67f82",
-    "content-hash": "cf34943f87aaf1c59666df6fc4d2b0d5",
+    "hash": "44489c4d3ffbbe9b779b353326ca7679",
+    "content-hash": "86cab104713ae2e64780e364b67deb31",
     "packages": [
         {
             "name": "eloquent/enumeration",
@@ -111,16 +111,16 @@
         },
         {
             "name": "recoil/api",
-            "version": "1.0.0-alpha.1",
+            "version": "dev-3-select",
             "source": {
                 "type": "git",
                 "url": "https://github.com/recoilphp/api.git",
-                "reference": "66c0255cc1b71b576963800920dbc4a1ae7a6ebf"
+                "reference": "55abdd2f4a7c97881bc806af3236f70f2ff63265"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/recoilphp/api/zipball/66c0255cc1b71b576963800920dbc4a1ae7a6ebf",
-                "reference": "66c0255cc1b71b576963800920dbc4a1ae7a6ebf",
+                "url": "https://api.github.com/repos/recoilphp/api/zipball/55abdd2f4a7c97881bc806af3236f70f2ff63265",
+                "reference": "55abdd2f4a7c97881bc806af3236f70f2ff63265",
                 "shasum": ""
             },
             "require": {
@@ -164,7 +164,7 @@
                 "multitasking",
                 "react"
             ],
-            "time": "2016-12-13 23:07:28"
+            "time": "2017-01-09 00:59:43"
         }
     ],
     "packages-dev": [
@@ -774,26 +774,26 @@
         },
         {
             "name": "peridot-php/peridot-code-coverage-reporters",
-            "version": "2.0.1",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/peridot-php/peridot-code-coverage-reporters.git",
-                "reference": "4e0b90640647fe4d208931864252e1486b141ff2"
+                "reference": "40c31ba509c715bac699d9abae907af9e44b2cbf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/peridot-php/peridot-code-coverage-reporters/zipball/4e0b90640647fe4d208931864252e1486b141ff2",
-                "reference": "4e0b90640647fe4d208931864252e1486b141ff2",
+                "url": "https://api.github.com/repos/peridot-php/peridot-code-coverage-reporters/zipball/40c31ba509c715bac699d9abae907af9e44b2cbf",
+                "reference": "40c31ba509c715bac699d9abae907af9e44b2cbf",
                 "shasum": ""
             },
             "require": {
-                "peridot-php/peridot": "~1.0",
-                "phpunit/php-code-coverage": "~2.0"
+                "peridot-php/peridot": "^1",
+                "phpunit/php-code-coverage": "^2|^3"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Peridot\\Reporter\\": "src/"
+                    "Peridot\\Reporter\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -811,7 +811,7 @@
                 }
             ],
             "description": "Code coverage reporters for Peridot PHP.",
-            "time": "2016-03-13 21:02:59"
+            "time": "2017-01-06 04:12:39"
         },
         {
             "name": "peridot-php/peridot-scope",
@@ -854,39 +854,40 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "2.2.4",
+            "version": "3.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "eabf68b476ac7d0f73793aada060f1c1a9bf8979"
+                "reference": "44cd8e3930e431658d1a5de7d282d5cb37837fd5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/eabf68b476ac7d0f73793aada060f1c1a9bf8979",
-                "reference": "eabf68b476ac7d0f73793aada060f1c1a9bf8979",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/44cd8e3930e431658d1a5de7d282d5cb37837fd5",
+                "reference": "44cd8e3930e431658d1a5de7d282d5cb37837fd5",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3",
+                "php": "^5.6 || ^7.0",
                 "phpunit/php-file-iterator": "~1.3",
                 "phpunit/php-text-template": "~1.2",
-                "phpunit/php-token-stream": "~1.3",
+                "phpunit/php-token-stream": "^1.4.2",
+                "sebastian/code-unit-reverse-lookup": "~1.0",
                 "sebastian/environment": "^1.3.2",
-                "sebastian/version": "~1.0"
+                "sebastian/version": "~1.0|~2.0"
             },
             "require-dev": {
                 "ext-xdebug": ">=2.1.4",
-                "phpunit/phpunit": "~4"
+                "phpunit/phpunit": "~5"
             },
             "suggest": {
                 "ext-dom": "*",
-                "ext-xdebug": ">=2.2.1",
+                "ext-xdebug": ">=2.4.0",
                 "ext-xmlwriter": "*"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.2.x-dev"
+                    "dev-master": "3.3.x-dev"
                 }
             },
             "autoload": {
@@ -912,7 +913,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-10-06 15:47:00"
+            "time": "2016-05-27 16:24:29"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -1265,6 +1266,51 @@
             "time": "2016-12-16 00:44:11"
         },
         {
+            "name": "sebastian/code-unit-reverse-lookup",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/code-unit-reverse-lookup.git",
+                "reference": "c36f5e7cfce482fde5bf8d10d41a53591e0198fe"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/code-unit-reverse-lookup/zipball/c36f5e7cfce482fde5bf8d10d41a53591e0198fe",
+                "reference": "c36f5e7cfce482fde5bf8d10d41a53591e0198fe",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de"
+                }
+            ],
+            "description": "Looks up which function or method a line of code belongs to",
+            "homepage": "https://github.com/sebastianbergmann/code-unit-reverse-lookup/",
+            "time": "2016-02-13 06:45:14"
+        },
+        {
             "name": "sebastian/diff",
             "version": "1.4.1",
             "source": {
@@ -1368,19 +1414,27 @@
         },
         {
             "name": "sebastian/version",
-            "version": "1.0.6",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/version.git",
-                "reference": "58b3a85e7999757d6ad81c787a1fbf5ff6c628c6"
+                "reference": "99732be0ddb3361e16ad77b68ba41efc8e979019"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/version/zipball/58b3a85e7999757d6ad81c787a1fbf5ff6c628c6",
-                "reference": "58b3a85e7999757d6ad81c787a1fbf5ff6c628c6",
+                "url": "https://api.github.com/repos/sebastianbergmann/version/zipball/99732be0ddb3361e16ad77b68ba41efc8e979019",
+                "reference": "99732be0ddb3361e16ad77b68ba41efc8e979019",
                 "shasum": ""
             },
+            "require": {
+                "php": ">=5.6"
+            },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
             "autoload": {
                 "classmap": [
                     "src/"
@@ -1399,7 +1453,7 @@
             ],
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
-            "time": "2015-06-21 13:59:46"
+            "time": "2016-10-03 07:35:21"
         },
         {
             "name": "seld/cli-prompt",
@@ -1975,10 +2029,17 @@
             "time": "2016-06-29 05:43:10"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "1.0.0-alpha.9999",
+            "alias_normalized": "1.0.0.0-alpha9999",
+            "version": "dev-3-select",
+            "package": "recoil/api"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
-        "recoil/api": 15,
+        "recoil/api": 20,
         "recoil/recoil": 15
     },
     "prefer-stable": true,

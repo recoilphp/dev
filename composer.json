@@ -7,7 +7,7 @@
         "composer-plugin-api": "^1",
         "eloquent/enumeration": "^5",
         "nikic/php-parser": "^2.1",
-        "recoil/api": "^1@alpha"
+        "recoil/api": "dev-3-select as 1.0.0-alpha.9999"
     },
     "require-dev": {
         "composer/composer": "1.0.0",
