@@ -7,7 +7,7 @@ namespace Recoil;
 use Recoil\Kernel\Strand;
 
 context('api/cooperate', function () {
-    rit('yields control to another strand', function () {
+    it('yields control to another strand', function () {
         ob_start();
 
         yield Recoil::execute(function () {
@@ -24,7 +24,7 @@ context('api/cooperate', function () {
         expect(ob_get_clean())->to->equal('abc');
     });
 
-    rit('can be invoked by yielding null', function () {
+    it('can be invoked by yielding null', function () {
         ob_start();
 
         yield Recoil::execute(function () {

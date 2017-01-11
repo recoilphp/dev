@@ -8,7 +8,7 @@ use Exception;
 use Generator;
 
 context('strand', function () {
-    rit('can invoke generator as coroutine', function () {
+    it('can invoke generator as coroutine', function () {
         $result = yield (function () {
             yield;
 
@@ -18,7 +18,7 @@ context('strand', function () {
         expect($result)->to->equal('<ok>');
     });
 
-    rit('can invoke generator as coroutine with yield from', function () {
+    it('can invoke generator as coroutine with yield from', function () {
         $result = yield from (function () {
             yield;
 
@@ -28,7 +28,7 @@ context('strand', function () {
         expect($result)->to->equal('<ok>');
     });
 
-    rit('can invoke coroutine provider', function () {
+    it('can invoke coroutine provider', function () {
         $result = yield new class() implements CoroutineProvider {
             public function coroutine() : Generator
             {
@@ -40,7 +40,7 @@ context('strand', function () {
         expect($result)->to->equal('<ok>');
     });
 
-    rit('can invoke awaitable provider', function () {
+    it('can invoke awaitable provider', function () {
         $result = yield new class() implements AwaitableProvider {
             public function awaitable() : Awaitable
             {
@@ -56,7 +56,7 @@ context('strand', function () {
         expect($result)->to->equal('<ok>');
     });
 
-    rit('can invoke awaitable', function () {
+    it('can invoke awaitable', function () {
         $result = yield new class() implements Awaitable {
             public function await(Listener $listener)
             {
@@ -67,7 +67,7 @@ context('strand', function () {
         expect($result)->to->equal('<ok>');
     });
 
-    rit('prefers await() to awaitable()', function () {
+    it('prefers await() to awaitable()', function () {
         $result = yield new class() implements AwaitableProvider, Awaitable {
             public function awaitable() : Awaitable
             {
@@ -83,7 +83,7 @@ context('strand', function () {
         expect($result)->to->equal('<ok>');
     });
 
-    rit('exception propagates up the call-stack', function () {
+    it('exception propagates up the call-stack', function () {
         try {
             $fn = function () {
                 throw new Exception('<exception>');

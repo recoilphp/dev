@@ -14,14 +14,14 @@ describe(Trace::class, function () {
     $context = ini_get('zend.assertions') > 0 ? 'context' : 'xcontext';
     $context('when assertions are enabled', function () {
         describe('::install()', function () {
-            rit('installs an instrumentation trace', function () {
+            it('installs an instrumentation trace', function () {
                 yield Trace::install();
                 $strand = yield Recoil::strand();
 
                 expect($strand->trace())->to->be->an->instanceof(Trace::class);
             });
 
-            rit('does not replace an existing trace', function () {
+            it('does not replace an existing trace', function () {
                 $trace = Phony::mock(StrandTrace::class)->get();
                 $strand = yield Recoil::strand();
                 $strand->setTrace($trace);
@@ -31,20 +31,20 @@ describe(Trace::class, function () {
                 expect($strand->trace())->to->equal($trace);
             });
 
-            rit('returns a newly installed instrumentation trace', function () {
+            it('returns a newly installed instrumentation trace', function () {
                 $trace = yield Trace::install();
                 $strand = yield Recoil::strand();
 
                 expect($strand->trace())->to->equal($trace);
             });
 
-            rit('returns a previously installed instrumentation trace', function () {
+            it('returns a previously installed instrumentation trace', function () {
                 $trace = yield Trace::install();
 
                 expect(yield Trace::install())->to->equal($trace);
             });
 
-            rit('does not replace an existing third-party trace', function () {
+            it('does not replace an existing third-party trace', function () {
                 $trace = Phony::mock(StrandTrace::class)->get();
                 $strand = yield Recoil::strand();
                 $strand->setTrace($trace);
@@ -54,7 +54,7 @@ describe(Trace::class, function () {
                 expect($strand->trace())->to->equal($trace);
             });
 
-            rit('returns null when there is an existing third-party trace', function () {
+            it('returns null when there is an existing third-party trace', function () {
                 $trace = Phony::mock(StrandTrace::class)->get();
                 $strand = yield Recoil::strand();
                 $strand->setTrace($trace);
@@ -68,7 +68,7 @@ describe(Trace::class, function () {
             $scheme = StreamWrapper::install(Instrumentor::create());
 
             foreach ($fixtures as $path) {
-                rit(explode('.', basename($path))[0], function () use ($scheme, $path) {
+                it(explode('.', basename($path))[0], function () use ($scheme, $path) {
                     $fn = require $scheme . '://' . $path;
 
                     try {

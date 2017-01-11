@@ -3,7 +3,7 @@
  * This case verifies that regular generators are NOT instrumented.
  */
 
-class Class
+class Class_
 {
     public static function staticMethod() : Generator
     {
@@ -27,7 +27,7 @@ new class
     {
         yield;
     }
-}
+};
 
 function fn() : Generator
 {

@@ -10,7 +10,7 @@ use Recoil\Exception\CompositeException;
 use Recoil\Exception\TerminatedException;
 
 context('api/some', function () {
-    rit('executes the coroutines', function () {
+    it('executes the coroutines', function () {
         ob_start();
         yield Recoil::some(
             3,
@@ -30,7 +30,7 @@ context('api/some', function () {
         expect(ob_get_clean())->to->equal('abc');
     });
 
-    rit('terminates the substrands when the calling strand is terminated', function () {
+    it('terminates the substrands when the calling strand is terminated', function () {
         $strand = yield Recoil::execute(function () {
             yield (function () {
                 yield Recoil::some(
@@ -52,7 +52,7 @@ context('api/some', function () {
         $strand->terminate();
     });
 
-    rit('throws when the count is zero', function () {
+    it('throws when the count is zero', function () {
         try {
             yield Recoil::some(
                 0,
@@ -68,7 +68,7 @@ context('api/some', function () {
         }
     });
 
-    rit('throws when the count is negative', function () {
+    it('throws when the count is negative', function () {
         try {
             yield Recoil::some(
                 -1,
@@ -84,7 +84,7 @@ context('api/some', function () {
         }
     });
 
-    rit('throws when the count is greater than the number of coroutines', function () {
+    it('throws when the count is greater than the number of coroutines', function () {
         try {
             yield Recoil::some(
                 3,
@@ -101,7 +101,7 @@ context('api/some', function () {
     });
 
     context('when the required number of substrands succeed', function () {
-        rit('returns an array of coroutine return values', function () {
+        it('returns an array of coroutine return values', function () {
             expect(yield Recoil::some(
                 2,
                 function () {
@@ -123,7 +123,7 @@ context('api/some', function () {
             ]);
         });
 
-        rit('terminates the remaining strands', function () {
+        it('terminates the remaining strands', function () {
             yield Recoil::some(
                 1,
                 function () {
@@ -139,7 +139,7 @@ context('api/some', function () {
     });
 
     context('when too many substrands fail', function () {
-        rit('throws a composite exception', function () {
+        it('throws a composite exception', function () {
             try {
                 yield Recoil::some(
                     2,
@@ -162,7 +162,7 @@ context('api/some', function () {
             }
         });
 
-        rit('sorts the previous exceptions based on the order that the substrands exit', function () {
+        it('sorts the previous exceptions based on the order that the substrands exit', function () {
             try {
                 yield Recoil::some(
                     2,

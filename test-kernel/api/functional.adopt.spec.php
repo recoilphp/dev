@@ -7,7 +7,7 @@ namespace Recoil;
 use Exception;
 
 context('api/adopt', function () {
-    rit('resumes the calling strand on success', function () {
+    it('resumes the calling strand on success', function () {
         $substrand = yield Recoil::execute(function () {
             return '<result>';
             yield;
@@ -16,7 +16,7 @@ context('api/adopt', function () {
         expect(yield Recoil::adopt($substrand))->to->equal('<result>');
     });
 
-    rit('resumes the calling strand on failure', function () {
+    it('resumes the calling strand on failure', function () {
         $exception = new Exception('<exception>');
         $substrand = yield Recoil::execute(function () use ($exception) {
             throw $exception;
@@ -31,7 +31,7 @@ context('api/adopt', function () {
         }
     });
 
-    rit('terminates the substrand if the calling strand is terminated', function () {
+    it('terminates the substrand if the calling strand is terminated', function () {
         $substrand = yield Recoil::execute(function () {
             yield;
             expect(false)->to->be->ok('strand was not terminated');

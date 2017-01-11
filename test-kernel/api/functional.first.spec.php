@@ -8,7 +8,7 @@ use Exception;
 use Recoil\Exception\TerminatedException;
 
 context('api/first', function () {
-    rit('executes the coroutines', function () {
+    it('executes the coroutines', function () {
         ob_start();
         yield Recoil::first(
             function () {
@@ -25,7 +25,7 @@ context('api/first', function () {
         expect(ob_get_clean())->to->equal('ab');
     });
 
-    rit('terminates the substrands when the calling strand is terminated', function () {
+    it('terminates the substrands when the calling strand is terminated', function () {
         $strand = yield Recoil::execute(function () {
             yield (function () {
                 yield Recoil::first(
@@ -47,7 +47,7 @@ context('api/first', function () {
     });
 
     context('when one of the substrands succeeds', function () {
-        rit('returns the coroutine return value', function () {
+        it('returns the coroutine return value', function () {
             expect(yield Recoil::first(
                 function () {
                     yield;
@@ -61,7 +61,7 @@ context('api/first', function () {
             ))->to->equal('b');
         });
 
-        rit('terminates the remaining strands', function () {
+        it('terminates the remaining strands', function () {
             yield Recoil::first(
                 function () {
                     yield;
@@ -76,7 +76,7 @@ context('api/first', function () {
     });
 
     context('when one of the substrands fails', function () {
-        rit('propagates the exception', function () {
+        it('propagates the exception', function () {
             try {
                 yield Recoil::first(
                     function () {
@@ -92,7 +92,7 @@ context('api/first', function () {
             }
         });
 
-        rit('terminates the remaining strands', function () {
+        it('terminates the remaining strands', function () {
             try {
                 yield Recoil::first(
                     function () {
@@ -111,7 +111,7 @@ context('api/first', function () {
     });
 
     context('when one of the substrands is terminated', function () {
-        rit('throws an exception', function () {
+        it('throws an exception', function () {
             $id = null;
             try {
                 yield Recoil::first(
@@ -130,7 +130,7 @@ context('api/first', function () {
             }
         });
 
-        rit('terminates the remaining strands', function () {
+        it('terminates the remaining strands', function () {
             try {
                 yield Recoil::first(
                     function () {

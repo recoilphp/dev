@@ -7,7 +7,7 @@ namespace Recoil;
 use Recoil\Kernel\Strand;
 
 context('api/execute', function () {
-    rit('runs a coroutine in a new strand', function () {
+    it('runs a coroutine in a new strand', function () {
         ob_start();
 
         yield Recoil::execute(function () {
@@ -23,7 +23,7 @@ context('api/execute', function () {
         expect(ob_get_clean())->to->equal('ab');
     });
 
-    rit('allows the strand to be terminated immediately', function () {
+    it('allows the strand to be terminated immediately', function () {
         $strand = yield Recoil::execute(function () {
             expect(false)->to->be->ok('strand was not terminated');
             yield;

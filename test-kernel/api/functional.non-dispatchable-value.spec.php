@@ -7,7 +7,7 @@ namespace Recoil;
 use UnexpectedValueException;
 
 context('api/non-dispatchable-value', function () {
-    rit('invoked by yielding an non-dispatchable-value with no key', function () {
+    it('invoked by yielding an non-dispatchable-value with no key', function () {
         $strand = yield Recoil::execute(function () {
             yield '<string>';
         });
@@ -21,7 +21,7 @@ context('api/non-dispatchable-value', function () {
         }
     });
 
-    rit('invoked by yielding an non-dispatchable-value with a key', function () {
+    it('invoked by yielding an non-dispatchable-value with a key', function () {
         $strand = yield Recoil::execute(function () {
             yield 123 => '<string>';
         });

@@ -7,7 +7,7 @@ namespace Recoil;
 context('api/link', function () {
     context('when called with 1 parameter', function () {
         context('when a strand exits', function () {
-            rit('terminates the linked strand', function () {
+            it('terminates the linked strand', function () {
                 $strandA = yield Recoil::execute(function () {
                     yield 10;
                 });
@@ -22,7 +22,7 @@ context('api/link', function () {
                 expect($strandB->hasExited())->to->be->true;
             });
 
-            rit('does not terminate unlinked strand', function () {
+            it('does not terminate unlinked strand', function () {
                 $strandA = yield Recoil::execute(function () {
                     yield 10;
                 });
@@ -42,7 +42,7 @@ context('api/link', function () {
         });
 
         context('when a strand exits with an exception', function () {
-            rit('terminates the linked strand', function () {
+            it('terminates the linked strand', function () {
                 $strandA = yield Recoil::execute(function () {
                     yield 10;
                 });
@@ -62,7 +62,7 @@ context('api/link', function () {
                 }
             });
 
-            rit('does not terminate unlinked strand', function () {
+            it('does not terminate unlinked strand', function () {
                 $strandA = yield Recoil::execute(function () {
                     yield 10;
                 });
@@ -88,7 +88,7 @@ context('api/link', function () {
         });
 
         context('when a strand is terminated', function () {
-            rit('terminates the linked strand', function () {
+            it('terminates the linked strand', function () {
                 $strandA = yield Recoil::execute(function () {
                     yield 10;
                 });
@@ -105,7 +105,7 @@ context('api/link', function () {
                 expect($strandB->hasExited())->to->be->true;
             });
 
-            rit('does not terminate unlinked strand', function () {
+            it('does not terminate unlinked strand', function () {
                 $strandA = yield Recoil::execute(function () {
                     yield 10;
                 });
@@ -126,7 +126,7 @@ context('api/link', function () {
             });
         });
 
-        rit('creates bidirectional links', function () {
+        it('creates bidirectional links', function () {
             $strandA = yield Recoil::execute(function () {
                 yield 10;
             });
@@ -143,7 +143,7 @@ context('api/link', function () {
             expect($strandB->hasExited())->to->be->true;
         });
 
-        rit('breaks bidirectional links', function () {
+        it('breaks bidirectional links', function () {
             $strandA = yield Recoil::execute(function () {
                 yield 10;
             });
@@ -163,7 +163,7 @@ context('api/link', function () {
             $strandA->terminate();
         });
 
-        rit('does not fail if linked to itself', function () {
+        it('does not fail if linked to itself', function () {
             $strand = yield Recoil::execute(function () {
                 yield Recoil::link(yield Recoil::strand());
                 yield 10;
@@ -175,7 +175,7 @@ context('api/link', function () {
             expect($strand->hasExited())->to->be->true;
         });
 
-        rit('does not fail if unlinked from itself', function () {
+        it('does not fail if unlinked from itself', function () {
             $strand = yield Recoil::execute(function () {
                 yield Recoil::link(yield Recoil::strand());
                 yield Recoil::unlink(yield Recoil::strand());
@@ -191,7 +191,7 @@ context('api/link', function () {
 
     context('when called with 2 parameters', function () {
         context('when a strand exits', function () {
-            rit('terminates the linked strand', function () {
+            it('terminates the linked strand', function () {
                 $strandA = yield Recoil::execute(function () {
                     yield 10;
                 });
@@ -208,7 +208,7 @@ context('api/link', function () {
                 expect($strandB->hasExited())->to->be->true;
             });
 
-            rit('does not terminate unlinked strand', function () {
+            it('does not terminate unlinked strand', function () {
                 $strandA = yield Recoil::execute(function () {
                     yield 10;
                 });
@@ -230,7 +230,7 @@ context('api/link', function () {
         });
 
         context('when a strand exits with an exception', function () {
-            rit('terminates the linked strand', function () {
+            it('terminates the linked strand', function () {
                 $strandA = yield Recoil::execute(function () {
                     yield 10;
                 });
@@ -253,7 +253,7 @@ context('api/link', function () {
                 }
             });
 
-            rit('does not terminate unlinked strand', function () {
+            it('does not terminate unlinked strand', function () {
                 $strandA = yield Recoil::execute(function () {
                     yield 10;
                 });
@@ -281,7 +281,7 @@ context('api/link', function () {
         });
 
         context('when a strand is terminated', function () {
-            rit('terminates the linked strand', function () {
+            it('terminates the linked strand', function () {
                 $strandA = yield Recoil::execute(function () {
                     yield 10;
                 });
@@ -298,7 +298,7 @@ context('api/link', function () {
                 expect($strandB->hasExited())->to->be->true;
             });
 
-            rit('does not terminate unlinked strand', function () {
+            it('does not terminate unlinked strand', function () {
                 $strandA = yield Recoil::execute(function () {
                     yield 10;
                 });
@@ -319,7 +319,7 @@ context('api/link', function () {
             });
         });
 
-        rit('creates bidirectional links', function () {
+        it('creates bidirectional links', function () {
             $strandA = yield Recoil::execute(function () {
                 yield 10;
             });
@@ -336,7 +336,7 @@ context('api/link', function () {
             expect($strandB->hasExited())->to->be->true;
         });
 
-        rit('breaks bidirectional links', function () {
+        it('breaks bidirectional links', function () {
             $strandA = yield Recoil::execute(function () {
                 yield 10;
             });
@@ -356,7 +356,7 @@ context('api/link', function () {
             $strandA->terminate();
         });
 
-        rit('does not fail if linked to itself', function () {
+        it('does not fail if linked to itself', function () {
             $strand = yield Recoil::execute(function () {
                 yield 10;
             });
@@ -368,7 +368,7 @@ context('api/link', function () {
             expect($strand->hasExited())->to->be->true;
         });
 
-        rit('does not fail if unlinked from itself', function () {
+        it('does not fail if unlinked from itself', function () {
             $strand = yield Recoil::execute(function () {
                 yield 10;
             });

@@ -14,37 +14,37 @@ context('api/write', function () {
         fclose($this->stream);
     });
 
-    rit('writes to the stream', function () {
+    it('writes to the stream', function () {
         yield Recoil::write($this->stream, '<buffer>');
         fseek($this->stream, 0);
         expect(stream_get_contents($this->stream))->to->equal('<buffer>');
     });
 
-    rit('can be invoked by yielding a stream and buffer', function () {
+    it('can be invoked by yielding a stream and buffer', function () {
         yield '<buffer>' => $this->stream;
         fseek($this->stream, 0);
         expect(stream_get_contents($this->stream))->to->equal('<buffer>');
     });
 
-    rit('only writes up to the specified maximum length', function () {
+    it('only writes up to the specified maximum length', function () {
         yield Recoil::write($this->stream, '<buffer>', 4);
         fseek($this->stream, 0);
         expect(stream_get_contents($this->stream))->to->equal('<buf');
     });
 
-    rit('can be called with a length of zero', function () {
+    it('can be called with a length of zero', function () {
         yield Recoil::write($this->stream, '<buffer>', 0);
         fseek($this->stream, 0);
         expect(stream_get_contents($this->stream))->to->equal('');
     });
 
-    rit('can be called with an empty buffer', function () {
+    it('can be called with an empty buffer', function () {
         yield Recoil::write($this->stream, '');
         fseek($this->stream, 0);
         expect(stream_get_contents($this->stream))->to->equal('');
     });
 
-    rit('stops waiting for the stream when the strand is terminated', function () {
+    it('stops waiting for the stream when the strand is terminated', function () {
         $temp = tempnam(sys_get_temp_dir(), 'recoil-test-fifo-');
         unlink($temp);
         posix_mkfifo($temp, 0644);
@@ -77,7 +77,7 @@ context('api/write', function () {
         @unlink($temp);
     });
 
-    rit('synchronises access across multiple strands', function () {
+    it('synchronises access across multiple strands', function () {
         $temp = tempnam(sys_get_temp_dir(), 'recoil-test-fifo-');
         unlink($temp);
         posix_mkfifo($temp, 0644);

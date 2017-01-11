@@ -4,6 +4,8 @@
  * NOT an alias for \Generator are not instrumented.
  */
 
+use Iterator as Coroutine;
+
 function fn() : Coroutine
 {
     yield 1;
