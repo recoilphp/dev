@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.0 (2017-01-11)
+
+- **[BC]** Renamed `Scope::install()` to `PlugIn::install()`
+- **[BC]** Remove `rit()` and `xrit()` functions, the regular Peridot DSL can now be used
+
 ## 0.2.0 (2017-01-09)
 
 - **[BC]** Require `recoil/api` 1.0.0-alpha.2
