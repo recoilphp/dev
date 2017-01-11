@@ -6,6 +6,7 @@
         "php": "^7",
         "composer-plugin-api": "^1",
         "eloquent/enumeration": "^5",
+        "hamcrest/hamcrest-php": "^2.0",
         "nikic/php-parser": "^2.1",
         "recoil/api": "1.0.0-alpha.2"
     },

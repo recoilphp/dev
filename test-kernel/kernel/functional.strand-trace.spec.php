@@ -5,6 +5,7 @@ declare(strict_types=1); // @codeCoverageIgnore
 namespace Recoil;
 
 use Eloquent\Phony\Phony;
+use Hamcrest\Core\IsInstanceOf;
 
 context('kernel/strand-trace', function () {
     beforeEach(function () {
