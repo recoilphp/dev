@@ -9,7 +9,7 @@ use Recoil\Exception\TerminatedException;
 use Recoil\Exception\TimeoutException;
 
 context('api/timeout', function () {
-    rit('throws a timeout exception if the coroutine takes too long', function () {
+    it('throws a timeout exception if the coroutine takes too long', function () {
         try {
             yield Recoil::timeout(
                 0.05,
@@ -23,7 +23,7 @@ context('api/timeout', function () {
         }
     });
 
-    rit('returns value if the coroutine returns before the timeout', function () {
+    it('returns value if the coroutine returns before the timeout', function () {
         $result = yield Recoil::timeout(
             1,
             function () {
@@ -35,7 +35,7 @@ context('api/timeout', function () {
         expect($result)->to->equal('<ok>');
     });
 
-    rit('propagates exception if the coroutine throws before the timeout', function () {
+    it('propagates exception if the coroutine throws before the timeout', function () {
         try {
             yield Recoil::timeout(
                 1,
@@ -50,7 +50,7 @@ context('api/timeout', function () {
         }
     });
 
-    rit('propagates exception if the coroutine is terminated before the timeout', function () {
+    it('propagates exception if the coroutine is terminated before the timeout', function () {
         try {
             yield Recoil::timeout(
                 1,
@@ -64,7 +64,7 @@ context('api/timeout', function () {
         }
     });
 
-    rit('terminates the substrand if the calling strand is terminated', function () {
+    it('terminates the substrand if the calling strand is terminated', function () {
         $strand = yield Recoil::execute(function () {
             yield (function () {
                 yield Recoil::timeout(

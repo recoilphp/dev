@@ -9,7 +9,7 @@ use UnexpectedValueException;
 
 context('api/callable', function () {
     context('when it returns a generator', function () {
-        rit('invokes the generator as a coroutine', function () {
+        it('invokes the generator as a coroutine', function () {
             $fn = function () {
                 return '<result>';
                 yield;
@@ -20,7 +20,7 @@ context('api/callable', function () {
     });
 
     context('when it returns a non-generator', function () {
-        rit('resumes the calling strand with an exception', function () {
+        it('resumes the calling strand with an exception', function () {
             $fn = function () {
                 return '<string>';
             };

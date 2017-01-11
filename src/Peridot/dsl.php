@@ -1,42 +1,113 @@
 <?php
+// @codeCoverageIgnoreStart
 
-declare(strict_types=1); // @codeCoverageIgnore
+declare(strict_types=1);
 
 use Peridot\Runner\Context;
-use Recoil\Dev\Peridot\Executor;
+use Recoil\Dev\Peridot\Plugin;
 
 /**
- * A coroutine-based version of Peridot's it() function, for use in the
- * functional test suite.
+ * Creates a suite and sets it on the suite factory.
  *
- * @codeCoverageIgnore
+ * @param string   $description
+ * @param callable $fn
  */
-function rit(string $description, callable $test)
+function describe($description, callable $fn)
 {
-    Context::getInstance()->addTest(
-        $description,
-        function () use ($test) {
-            $executor = Executor::create($this->kernel());
-            $executor->execute($test);
-        }
-    );
+    $fn = Plugin::wrap($fn);
+    Context::getInstance()->addSuite($description, $fn);
 }
 
 /**
- * A coroutine-based version of Peridot's fit() function, for use in the
- * functional test suite.
+ * Identical to describe. Useful for test readability.
  *
- * @codeCoverageIgnore
+ * @param $description
+ * @param callable $fn
  */
-function frit(string $description, callable $test)
+function context($description, callable $fn)
 {
-    Context::getInstance()->addTest(
-        $description,
-        function () use ($test) {
-            $executor = Executor::create($this->kernel());
-            $executor->execute($test);
-        },
-        null,
-        true
-    );
+    $fn = Plugin::wrap($fn);
+    describe($description, $fn);
 }
+
+/**
+ * Create a spec and add it to the current suite.
+ *
+ * @param $description
+ * @param $fn
+ */
+function it($description, callable $fn = null)
+{
+    if ($fn !== null) {
+        $fn = Plugin::wrap($fn);
+    }
+
+    Context::getInstance()->addTest($description, $fn);
+}
+
+/**
+ * Create a pending suite.
+ *
+ * @param $description
+ * @param callable $fn
+ */
+function xdescribe($description, callable $fn)
+{
+    $fn = Plugin::wrap($fn);
+    Context::getInstance()->addSuite($description, $fn, true);
+}
+
+/**
+ * Create a pending context.
+ *
+ * @param $description
+ * @param callable $fn
+ */
+function xcontext($description, callable $fn)
+{
+    xdescribe($description, $fn);
+}
+
+/**
+ * Create a pending spec.
+ *
+ * @param $description
+ * @param callable $fn
+ */
+function xit($description, callable $fn = null)
+{
+    $fn = Plugin::wrap($fn);
+    Context::getInstance()->addTest($description, $fn, true);
+}
+
+/**
+ * Add a setup function for all specs in the
+ * current suite.
+ *
+ * @param callable $fn
+ */
+function beforeEach(callable $fn)
+{
+    $fn = Plugin::wrap($fn);
+    Context::getInstance()->addSetupFunction($fn);
+}
+
+/**
+ * Add a tear down function for all specs in the
+ * current suite.
+ *
+ * @param callable $fn
+ */
+function afterEach(callable $fn)
+{
+    $fn = Plugin::wrap($fn);
+    Context::getInstance()->addTearDownFunction($fn);
+}
+
+/*
+ * Change default assert behavior to throw exceptions
+ */
+assert_options(ASSERT_WARNING, false);
+assert_options(ASSERT_CALLBACK, function ($script, $line, $message, $description) {
+    throw new Exception($description);
+});

@@ -9,7 +9,7 @@ use Exception;
 
 context('api/thenable', function () {
     context('when it has a then method', function () {
-        rit('resumes the strand when the promise is resolved', function () {
+        it('resumes the strand when the promise is resolved', function () {
             $promise = Phony::partialMock(
                 [
                     'then' => function (callable $resolve, callable $reject) {
@@ -21,7 +21,7 @@ context('api/thenable', function () {
             expect(yield $promise->get())->to->equal('<value>');
         });
 
-        rit('resumes the strand with an exception when the promise is rejected', function () {
+        it('resumes the strand with an exception when the promise is rejected', function () {
             $promise = Phony::partialMock(
                 [
                     'then' => function (callable $resolve, callable $reject) {
@@ -38,7 +38,7 @@ context('api/thenable', function () {
             }
         });
 
-        rit('resumes the strand with an exception when the promise is rejected with a non-exception', function () {
+        it('resumes the strand with an exception when the promise is rejected with a non-exception', function () {
             $promise = Phony::partialMock(
                 [
                     'then' => function (callable $resolve, callable $reject) {
@@ -55,7 +55,7 @@ context('api/thenable', function () {
             }
         });
 
-        rit('cancels the promise when the strand is terminated', function () {
+        it('cancels the promise when the strand is terminated', function () {
             $promise = Phony::partialMock(
                 [
                     'then' => function (callable $resolve, callable $reject) {
@@ -78,7 +78,7 @@ context('api/thenable', function () {
     });
 
     context('when it has both then and done methods', function () {
-        rit('resumes the strand when the promise is resolved', function () {
+        it('resumes the strand when the promise is resolved', function () {
             $promise = Phony::partialMock(
                 [
                     'then' => function (callable $resolve, callable $reject) {
@@ -92,7 +92,7 @@ context('api/thenable', function () {
             expect(yield $promise->get())->to->equal('<value>');
         });
 
-        rit('resumes the strand with an exception when the promise is rejected', function () {
+        it('resumes the strand with an exception when the promise is rejected', function () {
             $promise = Phony::partialMock(
                 [
                     'then' => function (callable $resolve, callable $reject) {
@@ -111,7 +111,7 @@ context('api/thenable', function () {
             }
         });
 
-        rit('resumes the strand with an exception when the promise is rejected with a non-exception', function () {
+        it('resumes the strand with an exception when the promise is rejected with a non-exception', function () {
             $promise = Phony::partialMock(
                 [
                     'then' => function (callable $resolve, callable $reject) {
@@ -130,7 +130,7 @@ context('api/thenable', function () {
             }
         });
 
-        rit('cancels the promise when the strand is terminated', function () {
+        it('cancels the promise when the strand is terminated', function () {
             $promise = Phony::partialMock(
                 [
                     'then' => function (callable $resolve, callable $reject) {

@@ -15,11 +15,11 @@ context('api/read', function () {
         fclose($this->stream);
     });
 
-    rit('reads the entire stream by default', function () {
+    it('reads the entire stream by default', function () {
         expect(yield Recoil::read($this->stream))->to->equal($this->content);
     });
 
-    rit('can be invoked by yielding a stream', function () {
+    it('can be invoked by yielding a stream', function () {
         $buffer = '';
 
         do {
@@ -30,17 +30,17 @@ context('api/read', function () {
         expect($buffer)->to->equal($this->content);
     });
 
-    rit('only reads up to the specified maximum length', function () {
+    it('only reads up to the specified maximum length', function () {
         expect(yield Recoil::read($this->stream, 1, 16))->to->equal(substr($this->content,  0, 16));
         expect(yield Recoil::read($this->stream, 1, 16))->to->equal(substr($this->content, 16, 16));
     });
 
-    rit('returns an empty string at eof', function () {
+    it('returns an empty string at eof', function () {
         yield Recoil::read($this->stream);
         expect(yield Recoil::read($this->stream))->to->equal('');
     });
 
-    rit('stops waiting for the stream when the strand is terminated', function () {
+    it('stops waiting for the stream when the strand is terminated', function () {
         $temp = tempnam(sys_get_temp_dir(), 'recoil-test-fifo-');
         unlink($temp);
         posix_mkfifo($temp, 0644);
@@ -59,7 +59,7 @@ context('api/read', function () {
         @unlink($temp);
     });
 
-    rit('synchronises access across multiple strands', function () {
+    it('synchronises access across multiple strands', function () {
         $temp = tempnam(sys_get_temp_dir(), 'recoil-test-fifo-');
         unlink($temp);
         posix_mkfifo($temp, 0644);

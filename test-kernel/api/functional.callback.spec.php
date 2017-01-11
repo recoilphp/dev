@@ -7,7 +7,7 @@ namespace Recoil;
 use Recoil\Kernel\Strand;
 
 context('api/callback', function () {
-    rit('creates a callback that runs a coroutine in a new strand', function () {
+    it('creates a callback that runs a coroutine in a new strand', function () {
         ob_start();
 
         $fn = yield Recoil::callback(function ($argument) {

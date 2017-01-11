@@ -9,7 +9,7 @@ use Recoil\Exception\CompositeException;
 use Recoil\Exception\TerminatedException;
 
 context('api/any', function () {
-    rit('executes the coroutines', function () {
+    it('executes the coroutines', function () {
         ob_start();
         yield Recoil::any(
             function () {
@@ -26,7 +26,7 @@ context('api/any', function () {
         expect(ob_get_clean())->to->equal('ab');
     });
 
-    rit('terminates the substrands when the calling strand is terminated', function () {
+    it('terminates the substrands when the calling strand is terminated', function () {
         $strand = yield Recoil::execute(function () {
             yield (function () {
                 yield Recoil::any(
@@ -48,7 +48,7 @@ context('api/any', function () {
     });
 
     context('when one of the substrands succeeds', function () {
-        rit('returns the coroutine return value', function () {
+        it('returns the coroutine return value', function () {
             expect(yield Recoil::any(
                 function () {
                     yield;
@@ -62,7 +62,7 @@ context('api/any', function () {
             ))->to->equal('b');
         });
 
-        rit('terminates the remaining strands', function () {
+        it('terminates the remaining strands', function () {
             yield Recoil::any(
                 function () {
                     yield;
@@ -77,7 +77,7 @@ context('api/any', function () {
     });
 
     context('when all of the substrands fail or are terminated', function () {
-        rit('throws a composite exception', function () {
+        it('throws a composite exception', function () {
             try {
                 yield Recoil::any(
                     function () {
@@ -96,7 +96,7 @@ context('api/any', function () {
             }
         });
 
-        rit('sorts the previous exceptions based on the order that the substrands exit', function () {
+        it('sorts the previous exceptions based on the order that the substrands exit', function () {
             try {
                 yield Recoil::any(
                     function () {

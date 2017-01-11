@@ -5,7 +5,7 @@ declare(strict_types=1); // @codeCoverageIgnore
 namespace Recoil;
 
 context('api/suspend', function () {
-    rit('suspends the calling strand', function () {
+    it('suspends the calling strand', function () {
         $suspending = false;
         $strand = yield Recoil::execute(function () use (&$suspending) {
             $suspending = true;
@@ -22,7 +22,7 @@ context('api/suspend', function () {
         expect($strand->hasExited())->to->be->false;
     });
 
-    rit('passes the strand to the given callback', function () {
+    it('passes the strand to the given callback', function () {
         $expected = yield Recoil::strand();
         $strand = yield Recoil::suspend(function ($strand) {
             $strand->send($strand);
@@ -31,7 +31,7 @@ context('api/suspend', function () {
         expect($strand)->to->equal($expected);
     });
 
-    rit('invokes the terminate callback if the strand is terminated', function () {
+    it('invokes the terminate callback if the strand is terminated', function () {
         $strand = yield Recoil::execute(function () {
             $expected = yield Recoil::strand();
             yield Recoil::suspend(

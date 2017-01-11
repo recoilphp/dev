@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1b2d6a0454db22ced4c2bb84e14c3b39",
+    "hash": "28e82c74b80cd249dbce140355519593",
     "content-hash": "7e66df8dd3e0d2413131a9fad8672ab9",
     "packages": [
         {
@@ -1209,18 +1209,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/recoilphp/recoil.git",
-                "reference": "5820aaaf1612d3bdb68edb0bcc5ccf1db5ec0bb7"
+                "reference": "6fb4624792a4d6af50d860693ce73b4c0fada9e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/recoilphp/recoil/zipball/5820aaaf1612d3bdb68edb0bcc5ccf1db5ec0bb7",
-                "reference": "5820aaaf1612d3bdb68edb0bcc5ccf1db5ec0bb7",
+                "url": "https://api.github.com/repos/recoilphp/recoil/zipball/6fb4624792a4d6af50d860693ce73b4c0fada9e2",
+                "reference": "6fb4624792a4d6af50d860693ce73b4c0fada9e2",
                 "shasum": ""
             },
             "require": {
                 "php": "^7",
-                "recoil/api": "1.0.0-alpha.2",
-                "recoil/kernel": "1.0.0-alpha.2"
+                "recoil/api": "^1@alpha",
+                "recoil/kernel": "^1@alpha"
             },
             "require-dev": {
                 "eloquent/phony": "^0.14",
@@ -1229,7 +1229,7 @@
                 "peridot-php/peridot": "^1",
                 "peridot-php/peridot-code-coverage-reporters": "^2",
                 "react/dns": "^0.4",
-                "recoil/dev": "^0.1",
+                "recoil/dev": "^0.2",
                 "recoil/react": "^1@alpha"
             },
             "type": "library",
@@ -1263,7 +1263,7 @@
                 "multitasking",
                 "react"
             ],
-            "time": "2017-01-09 04:41:49"
+            "time": "2017-01-09 23:53:43"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",

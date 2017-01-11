@@ -14,7 +14,7 @@ context('kernel/strand-trace', function () {
     if (ini_get('zend.assertions') > 0) {
         context('when assertions are enabled', function () {
             describe('->trace()', function () {
-                rit('returns the trace object', function () {
+                it('returns the trace object', function () {
                     $strand = yield Recoil::execute(function () {
                         yield;
                     });
@@ -28,7 +28,7 @@ context('kernel/strand-trace', function () {
             });
 
             describe('->setTrace()', function () {
-                rit('sets the trace object', function () {
+                it('sets the trace object', function () {
                     $strand = yield Recoil::execute(function () {
                         yield;
                     });
@@ -38,7 +38,7 @@ context('kernel/strand-trace', function () {
                     expect($strand->trace())->to->equal($this->trace->get());
                 });
 
-                rit('can set the trace object to null', function () {
+                it('can set the trace object to null', function () {
                     $strand = yield Recoil::execute(function () {
                         yield;
                     });

@@ -18,10 +18,7 @@
         "peridot-php/peridot-code-coverage-reporters": "^2",
         "recoil/recoil": "dev-master#5820aaa"
     },
-    "autoload": {
-        "psr-4": { "Recoil\\Dev\\": "src" },
-        "files": [ "src/Peridot/dsl.php" ]
-    },
+    "autoload": { "psr-4": { "Recoil\\Dev\\": "src" } },
     "autoload-dev": { "psr-4" : { "Recoil\\Dev\\": "test/src" } },
     "bin": [
         "bin/recoil-instrument"
