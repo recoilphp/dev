@@ -5,7 +5,9 @@ declare(strict_types=1); // @codeCoverageIgnore
 namespace Recoil;
 
 use Eloquent\Phony\Phony;
+use Exception;
 use Hamcrest\Core\IsInstanceOf;
+use Recoil\Exception\TerminatedException;
 
 context('kernel/strand-trace', function () {
     beforeEach(function () {
@@ -52,16 +54,17 @@ context('kernel/strand-trace', function () {
 
             context('when the strand is tracing', function () {
                 it('traces the events in order', function () {
-                    $strand = yield Recoil::execute(function () {
-                        $value = yield '<key>' => (function () {
-                            return 100;
-                            yield;
-                        })();
+                    $generator = (function () {
+                        return 100;
+                        yield;
+                    })();
 
-                        return $value + 200;
-                    });
+                    $strand = yield Recoil::execute((function () use ($generator) {
+                        return (yield '<key>' => $generator) + 200;
+                    })());
 
-                    $strand->start();
+                    $strand->setTrace($this->trace->get());
+                    yield $strand;
 
                     Phony::inOrder(
                         $this->trace->push->calledWith(
@@ -72,7 +75,7 @@ context('kernel/strand-trace', function () {
                             $strand,
                             1, // call-stack depth
                             '<key>',
-                            IsInstanceOf::anInstanceOf(Generator::class)
+                            $generator
                         ),
                         $this->trace->push->calledWith(
                             $strand,
@@ -108,12 +111,51 @@ context('kernel/strand-trace', function () {
                     $this->trace->exit->once()->called();
                 });
 
-                it('traces strand suspension', function () {
+                it('traces exit values', function () {
                     $strand = yield Recoil::execute(function () {
+                        return '<value>';
                         yield;
                     });
 
-                    $strand->start();
+                    $strand->setTrace($this->trace->get());
+                    yield $strand;
+
+                    $this->trace->exit->calledWith(
+                        $strand,
+                        0, // call-stack depth
+                        'send',
+                        '<value>'
+                    );
+                });
+
+                it('traces exit exception', function () {
+                    $strand = yield Recoil::execute(function () {
+                        throw new Exception();
+                        yield;
+                    });
+
+                    $strand->setTrace($this->trace->get());
+
+                    try {
+                        yield Recoil::adopt($strand);
+                        expect(false)->to->be->ok('expected exception was not thrown');
+                    } catch (Exception $e) {
+                        $this->trace->exit->calledWith(
+                            $strand,
+                            0, // call-stack depth
+                            'throw',
+                            $e
+                        );
+                    }
+                });
+
+                it('traces strand suspension', function () {
+                    $strand = yield Recoil::execute((function () {
+                        yield Recoil::suspend();
+                    })());
+
+                    $strand->setTrace($this->trace->get());
+                    yield;
 
                     Phony::inOrder(
                         $this->trace->push->calledWith(
@@ -124,7 +166,7 @@ context('kernel/strand-trace', function () {
                             $strand,
                             1, // call-stack depth
                             0,
-                            null
+                            Recoil::suspend()
                         ),
                         $this->trace->suspend->calledWith(
                             $strand,
@@ -141,11 +183,12 @@ context('kernel/strand-trace', function () {
                 });
 
                 it('traces strand termination', function () {
-                    $strand = yield Recoil::execute(function () {
+                    $strand = yield Recoil::execute((function () {
                         yield;
-                    });
+                    })());
 
-                    $strand->start();
+                    $strand->setTrace($this->trace->get());
+                    $strand->terminate();
 
                     $this->trace->exit->calledWith(
                         $strand,
@@ -154,9 +197,9 @@ context('kernel/strand-trace', function () {
                         IsInstanceOf::anInstanceOf(TerminatedException::class)
                     );
 
-                    $this->trace->push->once()->called();
+                    $this->trace->push->never()->called();
                     $this->trace->pop->never()->called();
-                    $this->trace->yield->once()->called();
+                    $this->trace->yield->never()->called();
                     $this->trace->resume->never()->called();
                     $this->trace->suspend->never()->called();
                     $this->trace->exit->once()->called();
