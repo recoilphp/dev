@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1 (2017-01-13)
+
+- **[FIX]** Fixed functional "strand tracing" kernel tests
+
 ## 0.3.0 (2017-01-11)
 
 - **[BC]** Renamed `Scope::install()` to `PlugIn::install()`
