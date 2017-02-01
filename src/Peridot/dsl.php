@@ -26,7 +26,6 @@ function describe($description, callable $fn)
  */
 function context($description, callable $fn)
 {
-    $fn = Plugin::wrap($fn);
     describe($description, $fn);
 }
 
@@ -78,6 +77,41 @@ function xit($description, callable $fn = null)
 {
     $fn = Plugin::wrap($fn);
     Context::getInstance()->addTest($description, $fn, true);
+}
+
+/**
+ * Create a focused suite.
+ *
+ * @param $description
+ * @param callable $fn
+ */
+function fdescribe($description, callable $fn)
+{
+    $fn = Plugin::wrap($fn);
+    Context::getInstance()->addSuite($description, $fn, null, true);
+}
+
+/**
+ * Create a focused context.
+ *
+ * @param $description
+ * @param callable $fn
+ */
+function fcontext($description, callable $fn)
+{
+    fdescribe($description, $fn);
+}
+
+/**
+ * Create a focused spec.
+ *
+ * @param $description
+ * @param callable $fn
+ */
+function fit($description, callable $fn = null)
+{
+    $fn = Plugin::wrap($fn);
+    Context::getInstance()->addTest($description, $fn, null, true);
 }
 
 /**
