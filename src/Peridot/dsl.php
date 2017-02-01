@@ -81,6 +81,42 @@ function xit($description, callable $fn = null)
 }
 
 /**
+ * Create a focused suite
+ *
+ * @param $description
+ * @param callable $fn
+ */
+function fdescribe($description, callable $fn)
+{
+    $fn = Plugin::wrap($fn);
+    Context::getInstance()->addSuite($description, $fn, null, true);
+}
+
+/**
+ * Create a focused context
+ *
+ * @param $description
+ * @param callable $fn
+ */
+function fcontext($description, callable $fn)
+{
+    $fn = Plugin::wrap($fn);
+    Context::getInstance()->addSuite($description, $fn, null, true);
+}
+
+/**
+ * Create a focused spec
+ *
+ * @param $description
+ * @param callable $fn
+ */
+function fit($description, callable $fn = null)
+{
+    $fn = Plugin::wrap($fn);
+    Context::getInstance()->addTest($description, $fn, null, true);
+}
+
+/**
  * Add a setup function for all specs in the
  * current suite.
  *
