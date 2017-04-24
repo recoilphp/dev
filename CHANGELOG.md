@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.2 (2017-04-24)
+
+- **[NEW]** Added `fdescribe()` `fcontext()` and `fit()` Peridot DSL functions
+- **[IMPROVED]** Updated to `php-parser` version 3.x
+
 ## 0.3.1 (2017-01-13)
 
 - **[FIX]** Fixed functional "strand tracing" kernel tests
