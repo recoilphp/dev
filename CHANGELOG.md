@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.3 (2017-10-18)
+
+- **[IMPROVED]** Update Recoil dependencies to stable releases
+
 ## 0.3.2 (2017-04-24)
 
 - **[NEW]** Added `fdescribe()` `fcontext()` and `fit()` Peridot DSL functions
