@@ -185,4 +185,27 @@ context('api/some', function () {
             }
         });
     });
+
+    context('when no coroutines are provided', function () {
+        it('yields control to another strand', function () {
+            ob_start();
+
+            yield Recoil::execute(function () {
+                echo 'b';
+
+                return;
+                yield;
+            });
+
+            echo 'a';
+            yield Recoil::some(0);
+            echo 'c';
+
+            expect(ob_get_clean())->to->equal('abc');
+        });
+
+        it('returns an empty array', function () {
+            expect(yield Recoil::some(0))->to->be->equal([]);
+        });
+    });
 });

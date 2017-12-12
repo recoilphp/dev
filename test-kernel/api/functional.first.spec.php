@@ -147,4 +147,27 @@ context('api/first', function () {
             }
         });
     });
+
+    context('when no coroutines are provided', function () {
+        it('yields control to another strand', function () {
+            ob_start();
+
+            yield Recoil::execute(function () {
+                echo 'b';
+
+                return;
+                yield;
+            });
+
+            echo 'a';
+            yield Recoil::first();
+            echo 'c';
+
+            expect(ob_get_clean())->to->equal('abc');
+        });
+
+        it('returns null', function () {
+            expect(yield Recoil::first())->to->be->null();
+        });
+    });
 });
