@@ -52,22 +52,6 @@ context('api/some', function () {
         $strand->terminate();
     });
 
-    it('throws when the count is zero', function () {
-        try {
-            yield Recoil::some(
-                0,
-                function () {
-                },
-                function () {
-                }
-            );
-        } catch (InvalidArgumentException $e) {
-            expect($e->getMessage())->to->equal(
-                'Can not wait for 0 coroutines, count must be between 1 and 2, inclusive.'
-            );
-        }
-    });
-
     it('throws when the count is negative', function () {
         try {
             yield Recoil::some(
@@ -79,7 +63,7 @@ context('api/some', function () {
             );
         } catch (InvalidArgumentException $e) {
             expect($e->getMessage())->to->equal(
-                'Can not wait for -1 coroutines, count must be between 1 and 2, inclusive.'
+                'Can not wait for -1 coroutines, count must be between 0 and 2, inclusive.'
             );
         }
     });
@@ -95,7 +79,7 @@ context('api/some', function () {
             );
         } catch (InvalidArgumentException $e) {
             expect($e->getMessage())->to->equal(
-                'Can not wait for 3 coroutines, count must be between 1 and 2, inclusive.'
+                'Can not wait for 3 coroutines, count must be between 0 and 2, inclusive.'
             );
         }
     });
@@ -183,6 +167,84 @@ context('api/some', function () {
             } catch (CompositeException $e) {
                 expect(array_keys($e->exceptions()))->to->equal([1, 0]);
             }
+        });
+    });
+
+    context('when the count is zero', function () {
+        it('returns an empty array', function () {
+            expect(yield Recoil::some(
+                0,
+                function () {
+                    yield;
+
+                    return 'a';
+                },
+                function () {
+                    return 'b';
+                    yield;
+                },
+                function () {
+                    return 'c';
+                    yield;
+                }
+            ))->to->equal([]);
+        });
+
+        it('terminates all strands', function () {
+            yield Recoil::some(
+                0,
+                function () {
+                    yield;
+                    expect(false)->to->be->ok('strand was not terminated');
+                },
+                function () {
+                    yield;
+                    expect(false)->to->be->ok('strand was not terminated');
+                }
+            );
+        });
+
+        it('yields control to another strand', function () {
+            ob_start();
+
+            yield Recoil::execute(function () {
+                echo 'b';
+
+                return;
+                yield;
+            });
+
+            echo 'a';
+            yield Recoil::some(0, function () {
+                yield;
+                expect(false)->to->be->ok('strand was not terminated');
+            });
+            echo 'c';
+
+            expect(ob_get_clean())->to->equal('abc');
+        });
+    });
+
+    context('when no coroutines are provided', function () {
+        it('yields control to another strand', function () {
+            ob_start();
+
+            yield Recoil::execute(function () {
+                echo 'b';
+
+                return;
+                yield;
+            });
+
+            echo 'a';
+            yield Recoil::some(0);
+            echo 'c';
+
+            expect(ob_get_clean())->to->equal('abc');
+        });
+
+        it('returns an empty array', function () {
+            expect(yield Recoil::some(0))->to->be->equal([]);
         });
     });
 });

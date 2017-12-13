@@ -173,4 +173,31 @@ context('api/all', function () {
             }
         });
     });
+
+    context('when no coroutines are provided', function () {
+        it('yields control to another strand', function () {
+            ob_start();
+
+            yield Recoil::execute(function () {
+                echo 'b';
+
+                return;
+                yield;
+            });
+
+            echo 'a';
+            yield Recoil::all();
+            echo 'c';
+
+            expect(ob_get_clean())->to->equal('abc');
+        });
+
+        it('returns an empty array when invoked directly', function () {
+            expect(yield Recoil::all())->to->equal([]);
+        });
+
+        it('returns an empty array when invoked by yielding an empty array', function () {
+            expect(yield [])->to->equal([]);
+        });
+    });
 });
