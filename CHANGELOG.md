@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.4 (2017-12-13)
+
+- **[IMPROVED]** Added functional tests for behaviour of `all()`, `any()`, `some()`
+  and `first()` when no coroutines are provided
+
 ## 0.3.3 (2017-10-18)
 
 - **[IMPROVED]** Update Recoil dependencies to stable releases
