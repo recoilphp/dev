@@ -1,11 +1,11 @@
 <?php
 
 $finder = PhpCsFixer\Finder::create()
-    ->in(__DIR__ . '/src', __DIR__ . '/test')
+    ->in(__DIR__)
     ->exclude([
         'artifacts',
         'vendor',
-        'test/fixture/Instrumentation/Instrumentor',
+        'test/fixture',
     ]);
 
 return PhpCsFixer\Config::create()

@@ -46,7 +46,7 @@ context('kernel/execute', function () {
 
     it('accepts a coroutine provider', function () {
         $this->kernel()->execute(new class() implements CoroutineProvider {
-            public function coroutine() : Generator
+            public function coroutine(): Generator
             {
                 echo '<ok>';
 
@@ -62,7 +62,7 @@ context('kernel/execute', function () {
 
     it('accepts an awaitable provider', function () {
         $this->kernel()->execute(new class() implements AwaitableProvider {
-            public function awaitable() : Awaitable
+            public function awaitable(): Awaitable
             {
                 return new class() implements Awaitable {
                     public function await(Listener $listener)

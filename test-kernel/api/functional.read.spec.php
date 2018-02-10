@@ -31,7 +31,7 @@ context('api/read', function () {
     });
 
     it('only reads up to the specified maximum length', function () {
-        expect(yield Recoil::read($this->stream, 1, 16))->to->equal(substr($this->content,  0, 16));
+        expect(yield Recoil::read($this->stream, 1, 16))->to->equal(substr($this->content, 0, 16));
         expect(yield Recoil::read($this->stream, 1, 16))->to->equal(substr($this->content, 16, 16));
     });
 

@@ -24,7 +24,7 @@ final class Plugin
         EventEmitterInterface $emitter,
         callable $factory
     ) {
-        $scope = new Scope();
+        $scope = new         Scope();
 
         $emitter->on('peridot.configure', function ($config) {
             $config->setDsl(__DIR__ . '/dsl.php');

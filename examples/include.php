@@ -7,16 +7,16 @@ namespace Recoil\Dev\Examples;
 use Generator as Coroutine;
 use Recoil\ReferenceKernel\ReferenceKernel;
 
-function outer(int $value) : Coroutine
+function outer(int $value): Coroutine
 {
-    $closure = function ($value) : Coroutine {
+    $closure = function ($value): Coroutine {
         yield middle($value + 1);
     };
 
     yield $closure($value + 1);
 }
 
-function middle(int $value) : Coroutine
+function middle(int $value): Coroutine
 {
     yield 0.25;
     yield Fail::inner($value + 1);
@@ -24,16 +24,16 @@ function middle(int $value) : Coroutine
 
 class Fail
 {
-    public static function inner(int $value) : Coroutine
+    public static function inner(int $value): Coroutine
     {
-        $closure = function ($value) : Coroutine {
+        $closure = function ($value): Coroutine {
             yield Fail::failer($value + 1);
         };
 
         yield $closure($value + 1);
     }
 
-    public static function failer(int $value) : Coroutine
+    public static function failer(int $value): Coroutine
     {
         yield;
         self::fail($value + 1);
