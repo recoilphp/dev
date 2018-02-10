@@ -31,7 +31,7 @@ final class Instrumentor extends NodeVisitorAbstract
      *
      * @param Mode|null $mode The instrumentation mode (null = Mode::ALL).
      */
-    public static function create(Mode $mode = null) : self
+    public static function create(Mode $mode = null): self
     {
         return new self($mode ?? Mode::ALL());
     }
@@ -43,7 +43,7 @@ final class Instrumentor extends NodeVisitorAbstract
      *
      * @return string The instrumented code.
      */
-    public function instrument(string $source) : string
+    public function instrument(string $source): string
     {
         if ($this->mode === Mode::NONE()) {
             return $source;
@@ -115,7 +115,7 @@ final class Instrumentor extends NodeVisitorAbstract
     /**
      * Get the "type" of the call, as described debug_backtrace().
      */
-    private function callType(FunctionLike $node) : string
+    private function callType(FunctionLike $node): string
     {
         if ($node instanceof Closure) {
             $isStatic = $node->static;
@@ -137,7 +137,7 @@ final class Instrumentor extends NodeVisitorAbstract
      * @param FunctionLike     $node           The AST node, after passing through the name resolver.
      * @param Name|string|null $hintReturnType The original return type, before name resolution.
      */
-    private function isCoroutine(FunctionLike $node, $hintReturnType) : bool
+    private function isCoroutine(FunctionLike $node, $hintReturnType): bool
     {
         $realReturnType = $node->getReturnType();
 

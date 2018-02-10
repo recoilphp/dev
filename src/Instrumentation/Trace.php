@@ -18,7 +18,7 @@ final class Trace implements StrandTrace
     /**
      * Install a trace on the current strand.
      */
-    public static function install() : Awaitable
+    public static function install(): Awaitable
     {
         return new class() implements Awaitable {
             public function await(Listener $listener)

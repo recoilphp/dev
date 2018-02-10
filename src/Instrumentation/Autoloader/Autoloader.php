@@ -25,7 +25,7 @@ final class Autoloader
      *
      * @see Mode
      */
-    public static function install(ClassLoader $composerLoader, string $mode) : ClassLoader
+    public static function install(ClassLoader $composerLoader, string $mode): ClassLoader
     {
         if (
             self::$instance !== null ||

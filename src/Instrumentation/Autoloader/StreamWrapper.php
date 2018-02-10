@@ -26,7 +26,7 @@ final class StreamWrapper
      *
      * @return string The scheme.
      */
-    public static function install(Instrumentor $instrumentor) : string
+    public static function install(Instrumentor $instrumentor): string
     {
         $scheme = self::SCHEME_PREFIX . \spl_object_hash($instrumentor);
 
@@ -53,7 +53,7 @@ final class StreamWrapper
         string $mode,
         int $options = 0,
         string &$openedPath = null
-    ) : bool {
+    ): bool {
         if ($mode[0] !== 'r') {
             return false;
         }
@@ -83,7 +83,7 @@ final class StreamWrapper
      * This method is part of the stream wrapper specification.
      * @see http://php.net/manual/en/class.streamwrapper.php
      */
-    public function stream_read(int $count) : string
+    public function stream_read(int $count): string
     {
         return \fread($this->stream, $count);
     }
@@ -94,7 +94,7 @@ final class StreamWrapper
      * This method is part of the stream wrapper specification.
      * @see http://php.net/manual/en/class.streamwrapper.php
      */
-    public function stream_close() : bool
+    public function stream_close(): bool
     {
         return \fclose($this->stream);
     }
@@ -105,7 +105,7 @@ final class StreamWrapper
      * This method is part of the stream wrapper specification.
      * @see http://php.net/manual/en/class.streamwrapper.php
      */
-    public function stream_eof() : bool
+    public function stream_eof(): bool
     {
         return \feof($this->stream);
     }
@@ -143,7 +143,7 @@ final class StreamWrapper
      *
      * @return tuple<string, string>
      */
-    private static function parse(string $path) : array
+    private static function parse(string $path): array
     {
         $index = \strpos($path, '://');
         assert($index !== false);

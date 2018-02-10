@@ -45,7 +45,7 @@ final class Plugin
      *
      * @access private
      */
-    public static function wrap(callable $fn) : callable
+    public static function wrap(callable $fn): callable
     {
         return function () use ($fn) {
             $fn = $this->peridotBindTo($fn);
