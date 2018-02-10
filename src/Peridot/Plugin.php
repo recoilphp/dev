@@ -24,7 +24,7 @@ final class Plugin
         EventEmitterInterface $emitter,
         callable $factory
     ) {
-        $scope = new Scope();
+        $scope = new         Scope();
 
         $emitter->on('peridot.configure', function ($config) {
             $config->setDsl(__DIR__ . '/dsl.php');
@@ -45,7 +45,7 @@ final class Plugin
      *
      * @access private
      */
-    public static function wrap(callable $fn) : callable
+    public static function wrap(callable $fn): callable
     {
         return function () use ($fn) {
             $fn = $this->peridotBindTo($fn);

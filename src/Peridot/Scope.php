@@ -15,7 +15,7 @@ final class Scope extends BaseScope
     /**
      * Get the kernel.
      */
-    public function kernel() : Kernel
+    public function kernel(): Kernel
     {
         return $this->kernel;
     }

@@ -30,7 +30,7 @@ context('strand', function () {
 
     it('can invoke coroutine provider', function () {
         $result = yield new class() implements CoroutineProvider {
-            public function coroutine() : Generator
+            public function coroutine(): Generator
             {
                 return '<ok>';
                 yield;
@@ -42,7 +42,7 @@ context('strand', function () {
 
     it('can invoke awaitable provider', function () {
         $result = yield new class() implements AwaitableProvider {
-            public function awaitable() : Awaitable
+            public function awaitable(): Awaitable
             {
                 return new class() implements Awaitable {
                     public function await(Listener $listener)
@@ -69,7 +69,7 @@ context('strand', function () {
 
     it('prefers await() to awaitable()', function () {
         $result = yield new class() implements AwaitableProvider, Awaitable {
-            public function awaitable() : Awaitable
+            public function awaitable(): Awaitable
             {
                 expect(false)->to->be->ok('awaitable() was called');
             }

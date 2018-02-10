@@ -13,7 +13,7 @@
     "require-dev": {
         "composer/composer": "1.0.0",
         "eloquent/phony": "^2",
-        "friendsofphp/php-cs-fixer": "^1",
+        "friendsofphp/php-cs-fixer": "^2",
         "peridot-php/leo": "^1",
         "peridot-php/peridot": "^1",
         "peridot-php/peridot-code-coverage-reporters": "^2",
