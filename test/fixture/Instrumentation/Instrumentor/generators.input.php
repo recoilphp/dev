@@ -29,7 +29,7 @@ new class
     }
 };
 
-function fn() : Generator
+function func() : Generator
 {
     yield;
 }

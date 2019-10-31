@@ -124,6 +124,19 @@ final class StreamWrapper
     }
 
     /**
+     * Set options on the stream.
+     *
+     * This method is part of the stream wrapper specification.
+     * @see http://php.net/manual/en/class.streamwrapper.php
+     *
+     * @return bool
+     */
+    public function stream_set_option(int $option, int $arg1, int $arg2) : bool
+    {
+        return false;
+    }
+
+    /**
      * Perform a stat() operation on a specific path.
      *
      * This method is part of the stream wrapper specification.
