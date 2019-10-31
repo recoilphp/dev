@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.5 (2019-10-31)
+
+- **[IMPROVED]** Add `StreamWrapper::set_stream_option()` in preparation for PHP 7.4
+
 ## 0.3.4 (2017-12-13)
 
 - **[IMPROVED]** Added functional tests for behaviour of `all()`, `any()`, `some()`
