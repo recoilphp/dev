@@ -5,7 +5,7 @@
 
 use Generator as Coroutine;
 
-function fn() : Coroutine
+function func() : Coroutine
 {
     yield 1;
     yield 2;
