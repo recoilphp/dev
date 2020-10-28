@@ -30,6 +30,29 @@ final class Plugin implements PluginInterface, EventSubscriberInterface
     }
 
     /**
+     * Deactivate the plugin.
+     *
+     * @param Composer    $composer
+     * @param IOInterface $io
+     */
+    public function deactivate(Composer $composer, IOInterface $io)
+    {
+        $this->instrumentationMode = Mode::NONE;
+    }
+
+    /**
+     * Prepare the plugin to be uninstalled.
+     *
+     * This will be called after deactivate.
+     *
+     * @param Composer    $composer
+     * @param IOInterface $io
+     */
+    public function uninstall(Composer $composer, IOInterface $io)
+    {
+    }
+
+    /**
      * Returns an array of event names this subscriber wants to listen to.
      *
      * @return array<string, array|string> The event names to listen to.

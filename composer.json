@@ -4,14 +4,14 @@
     "description": "Development and debugging tools for Recoil applications.",
     "require": {
         "php": "^7.1",
-        "composer-plugin-api": "^1",
+        "composer-plugin-api": "^1|^2",
         "eloquent/enumeration": "^5",
         "hamcrest/hamcrest-php": "^2",
         "nikic/php-parser": "^3",
         "recoil/api": "^1"
     },
     "require-dev": {
-        "composer/composer": "1.0.0",
+        "composer/composer": "^1|^2",
         "eloquent/phony": "^3.2",
         "friendsofphp/php-cs-fixer": "^2",
         "peridot-php/leo": "^1",
