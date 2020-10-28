@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.0 (2020-10-29)
+
+- **[BC]** Drop support for PHP v7.1
+- Update the instrumentation plugin to support Composer v2
+
 ## 0.3.5 (2019-10-31)
 
 - **[IMPROVED]** Add `StreamWrapper::set_stream_option()` in preparation for PHP 7.4
