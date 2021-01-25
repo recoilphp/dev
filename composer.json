@@ -3,16 +3,16 @@
     "type": "composer-plugin",
     "description": "Development and debugging tools for Recoil applications.",
     "require": {
-        "php": "^7.2",
+        "php": ">=7.3",
         "composer-plugin-api": "^1|^2",
         "eloquent/enumeration": "^5",
         "hamcrest/hamcrest-php": "^2",
         "nikic/php-parser": "^3",
-        "recoil/api": "^1"
+        "recoil/api": "^1.0.2"
     },
     "require-dev": {
         "composer/composer": "^1|^2",
-        "eloquent/phony": "^3.2",
+        "eloquent/phony": "^5",
         "friendsofphp/php-cs-fixer": "^2",
         "peridot-php/leo": "^1",
         "peridot-php/peridot": "^1",
@@ -49,7 +49,7 @@
     "config": {
         "sort-packages": true,
         "platform": {
-            "php": "7.2"
+            "php": "7.3"
         }
     },
     "minimum-stability": "dev",
