@@ -41,7 +41,7 @@ class Fail
 
     public static function fail(int $value)
     {
-        throw new \Exception('<OH SHIT>');
+        throw new \Exception('<FAILURE>');
     }
 }
 
