@@ -7,18 +7,24 @@
         "composer-plugin-api": "^1|^2",
         "eloquent/enumeration": "^5",
         "hamcrest/hamcrest-php": "^2",
-        "nikic/php-parser": "^3",
-        "recoil/api": "^1.0.2"
+        "nikic/php-parser": "^4",
+        "recoil/api": "^1"
     },
     "require-dev": {
         "composer/composer": "^1|^2",
         "eloquent/phony": "^5",
         "friendsofphp/php-cs-fixer": "^2",
-        "peridot-php/leo": "^1",
+        "peridot-php/leo": "dev-php-8 as 1.999.999",
         "peridot-php/peridot": "^1",
         "peridot-php/peridot-code-coverage-reporters": "^2",
         "recoil/recoil": "^1"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/recoilphp/leo"
+        }
+    ],
     "autoload": { "psr-4": { "Recoil\\Dev\\": "src" } },
     "autoload-dev": { "psr-4" : { "Recoil\\Dev\\": "test/src" } },
     "bin": [
