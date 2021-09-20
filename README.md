@@ -46,8 +46,10 @@ environment.
 2. Ensure that your coroutines are explicitly identified using `: Coroutine` 
 type hint, as described above.
 3. Syntax errors in your source files may break the PHP parsing used to 
-generate instrumentation, leaving those files uninstrumentated -- check your
+generate instrumentation, leaving those files uninstrumented -- check your
 syntax!
+4. For further issues with autoload, or to disable instrumentation, see [these
+further notes](res/autoload.php.tmpl).
 
 ## Building and testing
 
