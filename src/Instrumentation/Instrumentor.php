@@ -120,7 +120,7 @@ final class Instrumentor extends NodeVisitorAbstract
         if ($node instanceof Closure) {
             $isStatic = $node->static;
         } elseif ($node instanceof ClassMethod) {
-            $isStatic = $node->type & Class_::MODIFIER_STATIC;
+            $isStatic = $node->flags & Class_::MODIFIER_STATIC;
         } else {
             return '';
         }
