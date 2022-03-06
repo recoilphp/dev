@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.2 (2022-03-06)
+
+- **[FIXED]** `some()` functional tests to account for non-deterministic strand order
+
 ## 0.4.1 (2022-03-06)
 
 - Add support for PHP 8
