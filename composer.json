@@ -1,63 +1,75 @@
 {
-    "name": "recoil/dev",
-    "type": "composer-plugin",
-    "description": "Development and debugging tools for Recoil applications.",
-    "require": {
-        "php": ">=7.3",
-        "composer-plugin-api": "^1|^2",
-        "eloquent/enumeration": "^5",
-        "hamcrest/hamcrest-php": "^2",
-        "nikic/php-parser": "^4",
-        "recoil/api": "^1"
+  "name": "recoil/dev",
+  "type": "composer-plugin",
+  "description": "Development and debugging tools for Recoil applications.",
+  "require": {
+    "php": ">=7.4",
+    "composer-plugin-api": "^1|^2",
+    "eloquent/enumeration": "^5",
+    "hamcrest/hamcrest-php": "^2",
+    "nikic/php-parser": "^4",
+    "recoil/api": "^1"
+  },
+  "require-dev": {
+    "composer/composer": "^1|^2",
+    "eloquent/phony": "^5",
+    "friendsofphp/php-cs-fixer": "^2",
+    "peridot-php/leo": "dev-php-8 as 1.999.999",
+    "peridot-php/peridot": "dev-php-8 as 1.999.999",
+    "peridot-php/peridot-code-coverage-reporters": "^2",
+    "recoil/recoil": "^1"
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/recoilphp/leo"
     },
-    "require-dev": {
-        "composer/composer": "^1|^2",
-        "eloquent/phony": "^5",
-        "friendsofphp/php-cs-fixer": "^2",
-        "peridot-php/leo": "dev-php-8 as 1.999.999",
-        "peridot-php/peridot": "^1",
-        "peridot-php/peridot-code-coverage-reporters": "^2",
-        "recoil/recoil": "^1"
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/recoilphp/leo"
-        }
-    ],
-    "autoload": { "psr-4": { "Recoil\\Dev\\": "src" } },
-    "autoload-dev": { "psr-4" : { "Recoil\\Dev\\": "test/src" } },
-    "bin": [
-        "bin/recoil-instrument"
-    ],
-    "extra": {
-        "class": "Recoil\\Dev\\Composer\\Plugin"
-    },
-    "keywords": [
-        "async",
-        "asynchronous",
-        "stack",
-        "trace",
-        "instrumentation",
-        "debug",
-        "exception",
-        "recoil"
-    ],
-    "homepage": "https://github.com/recoilphp/dev",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "James Harris",
-            "email": "james.harris@icecave.com.au",
-            "homepage": "https://github.com/jmalloc"
-        }
-    ],
-    "config": {
-        "sort-packages": true,
-        "platform": {
-            "php": "7.3"
-        }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    {
+      "type": "vcs",
+      "url": "https://github.com/recoilphp/peridot"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Recoil\\Dev\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Recoil\\Dev\\": "test/src"
+    }
+  },
+  "bin": [
+    "bin/recoil-instrument"
+  ],
+  "extra": {
+    "class": "Recoil\\Dev\\Composer\\Plugin"
+  },
+  "keywords": [
+    "async",
+    "asynchronous",
+    "stack",
+    "trace",
+    "instrumentation",
+    "debug",
+    "exception",
+    "recoil"
+  ],
+  "homepage": "https://github.com/recoilphp/dev",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "James Harris",
+      "email": "james.harris@icecave.com.au",
+      "homepage": "https://github.com/jmalloc"
+    }
+  ],
+  "config": {
+    "sort-packages": true,
+    "platform": {
+      "php": "7.4"
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }
