@@ -19,12 +19,12 @@ context('api/some', function () {
                 yield;
             },
             function () {
+                yield 0.01;
                 echo 'b';
-                yield;
             },
             function () {
+                yield 0.02;
                 echo 'c';
-                yield;
             }
         );
         expect(ob_get_clean())->to->equal('abc');
@@ -89,21 +89,22 @@ context('api/some', function () {
             expect(yield Recoil::some(
                 2,
                 function () {
-                    yield;
+                    yield 1; // ensure 'a' takes much longer than the others
 
                     return 'a';
                 },
                 function () {
+                    yield; // ensure 'b' takes longer than 'c'
+
                     return 'b';
-                    yield;
                 },
                 function () {
                     return 'c';
                     yield;
                 }
             ))->to->equal([
-                1 => 'b',
                 2 => 'c',
+                1 => 'b',
             ]);
         });
 
