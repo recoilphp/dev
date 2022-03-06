@@ -16,7 +16,7 @@
     "friendsofphp/php-cs-fixer": "^2",
     "peridot-php/leo": "dev-php-8 as 1.999.999",
     "peridot-php/peridot": "dev-php-8 as 1.999.999",
-    "peridot-php/peridot-code-coverage-reporters": "^2",
+    "peridot-php/peridot-code-coverage-reporters": "dev-php-8 as 2.999.999",
     "recoil/recoil": "^1"
   },
   "repositories": [
@@ -27,6 +27,10 @@
     {
       "type": "vcs",
       "url": "https://github.com/recoilphp/peridot"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/recoilphp/peridot-code-coverage-reporters"
     }
   ],
   "autoload": {
