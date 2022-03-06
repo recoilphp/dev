@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.1 (2022-03-06)
+
+- Add support for PHP 8
+- Drop support for PHP 7.2 and 7.3
+
 ## 0.4.0 (2020-10-29)
 
 - **[BC]** Drop support for PHP v7.1
